@@ -11,8 +11,9 @@
 // BEGIN OF SNIP todo
 // END OF SNIP
 
-using std::endl, std::cin, std::cout, std::cerr, std::string;
+//#define NDEBUG   // define if asserts are NOT to be checked.
 
+using std::endl, std::cin, std::cout, std::cerr, std::string;
 
 constexpr uint8_t MDTUI_MAJOR 				{0};
 constexpr uint8_t MDTUI_MINOR 				{1};

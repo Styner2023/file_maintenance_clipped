@@ -7,10 +7,10 @@
 #include "window_panel.h"
 #include "lib_tty.h"  // todo: don't seem to need it due to other headers, but I should have it here.
 #include "interaction_result.h"
-#include "io_table.h"
-#include "actions.h"
-#include "action_io_row.h"
-#include "action_dialog.h"
+//#include "io_table.h"
+//#include "actions.h"
+//#include "action_io_row.h"
+//#include "action_dialog.h"
 using std::endl, std::cin, std::cerr, std::cout;
 
 Menu_option const & input_menu_selection( State_menu & state_menu, std::shared_ptr<Menu> const menu_sp ) {  // loop until we return either a menu selection or a number representing the entry to be selected

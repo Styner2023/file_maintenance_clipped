@@ -1,6 +1,5 @@
 #include <iostream>
 #include <algorithm>
-//#include "lib_tty.h"
 #include "menu.h"
 #include "menu_actions.h"
 #include "window_panel.h"

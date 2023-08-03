@@ -11,7 +11,6 @@
 #include <bitset>
 #include <type_traits>
 #include "global_entities.h"
-//#include "lib_tty.h"
 #include "valid_values.h"
 #include "interaction_result.h"
 class IO_table;

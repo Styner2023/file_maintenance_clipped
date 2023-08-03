@@ -63,7 +63,7 @@ InteractionResult action_io_row_list_rows(State_menu & state, IO_table const & t
         case InteractionResultNav::na :
         case InteractionResultNav::no_result :  // todo: correct?
         case InteractionResultNav::exit_all_menu :  // todo: correct?
-            throw std::logic_error( std::to_string(__LINE__)+":"+__FUNCTION__); // todo: complete this: code above case's.
+            throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
         }
         cout << i+1 << ":";
         ir = action_io_row_print_index(state, table, i);
@@ -109,7 +109,7 @@ InteractionResult action_io_row_search_list_rows(State_menu & state, IO_table co
     case InteractionResultNav::na :
         case InteractionResultNav::no_result :  // todo: correct?
         case InteractionResultNav::exit_all_menu :  // todo: correct?
-        throw std::logic_error( std::to_string(__LINE__)+":"+__FUNCTION__); // todo: complete this: code above case's.
+        throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
     }
 
     ir = action_io_row_list_rows( state, table, state.getApplication_data_sp()->getRow_range() );
@@ -170,7 +170,7 @@ InteractionResult prompt_for_existing_pk( State_menu & state, IO_table & table, 
         case InteractionResultNav::na :
         case InteractionResultNav::no_result :  // todo: correct?
         case InteractionResultNav::exit_all_menu :  // todo: correct?
-            throw std::logic_error( std::to_string(__LINE__)+":"+__FUNCTION__); // todo: complete this: code above case's.
+            throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
         }
         // *** NOTE: for the below code to work, we cannot do a 'continue' statement above this line in the loop!
         if ( pk_index == pk_components.size() )
@@ -227,7 +227,7 @@ InteractionResult action_io_row_select(State_menu &state, IO_table &table) {
         case InteractionResultNav::na :
         case InteractionResultNav::no_result :  // todo: correct?
         case InteractionResultNav::exit_all_menu :  // todo: correct?
-            throw std::logic_error( std::to_string(__LINE__)+":"+__FUNCTION__); // todo: complete this: code above case's.
+            throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
         }
     }
     else { // since no pk, we need to prompt the whole row.
@@ -264,7 +264,7 @@ InteractionResult action_io_row_select(State_menu &state, IO_table &table) {
             case InteractionResultNav::na :
         case InteractionResultNav::no_result :  // todo: correct?
         case InteractionResultNav::exit_all_menu :  // todo: correct?
-                throw std::logic_error( std::to_string(__LINE__)+":"+__FUNCTION__); // todo: complete this: code above case's.
+                throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
             }
             cout << '\n'+message << endl;
             ir = action_io_row_print( state, row_opt.value() );
@@ -338,7 +338,7 @@ InteractionResult action_io_row_create(State_menu &state, IO_table &table) {
         case InteractionResultNav::na :
         case InteractionResultNav::no_result :  // todo: correct?
         case InteractionResultNav::exit_all_menu :  // todo: correct?
-            throw std::logic_error( std::to_string(__LINE__)+":"+__FUNCTION__); // todo: complete this: code above case's.
+            throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
         }
         // *** NOTE: for the below code to work, we cannot do a 'continue' statement above this line in the loop!
         // *** TESTING by limiting entry to 4? elements
@@ -434,7 +434,7 @@ InteractionResult action_io_row_update(State_menu &state, IO_table &table) {
             case InteractionResultNav::na :
         case InteractionResultNav::no_result :  // todo: correct?
         case InteractionResultNav::exit_all_menu :  // todo: correct?
-                throw std::logic_error( std::to_string(__LINE__)+":"+__FUNCTION__); // todo: complete this: code above case's.
+                throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
             }
             // *** NOTE: for the below code to work, we cannot do a 'continue' statement above this line in the loop!
             if ( field_index > 3 )

@@ -7,7 +7,7 @@
 #include <cmath>
 #include <cstdlib>
 #include "io_field.h"
-#include "io_table.h"
+//#include "io_table.h"
 
 using std::endl, std::cin, std::cout, std::cerr, std::string;
 
@@ -30,13 +30,13 @@ almost_equal(T x, T y, int ulp)
 //    } else if ( std::holds_alternative< IO_field_spec_character >( table.spec.fields.at(num).field_spec )) {
 //        if ( val.length() == 0 ) return {};  // todo: should return std::monostate?
 //        else if (val.length() == 1 ) return val[0];
-//        else throw std::logic_error( "value_to_field():FATAL ERROR: expecting zero or one characters and got more than one in a string." );
+//        else throw std::logic_error( "value_to_field():FATAL ERROR: expecting zero or one characters and got more than one in a string."+__FILE_NAME__ );
 
 //    } else if ( std::holds_alternative< IO_field_spec_uint64 >( table.spec.fields.at(num).field_spec )) {
-//        throw std::logic_error( "value_to_field():FATAL ERROR: disallowed IO_field_spec_*" );
+//        throw std::logic_error( "value_to_field():FATAL ERROR: disallowed IO_field_spec_*"+__FILE_NAME__ );
 
 //    } else if ( std::holds_alternative< IO_field_spec_time_point >( table.spec.fields.at(num).field_spec )) {
-//        throw std::logic_error( "value_to_field():FATAL ERROR: disallowed IO_field_spec_*" );
+//        throw std::logic_error( "value_to_field():FATAL ERROR: disallowed IO_field_spec_*"+__FILE_NAME__ );
 
 //    } else if ( std::holds_alternative< IO_field_spec_tm >( table.spec.fields.at(num).field_spec )) {
 //        std::tm my_tm = {0,0,0,27,10,85
@@ -65,7 +65,7 @@ almost_equal(T x, T y, int ulp)
 //        return stod( val );
 
 //    } else
-//        throw std::logic_error( "value_to_field():FATAL ERROR: unknown IO_field_spec_*" );
+//        throw std::logic_error( "value_to_field():FATAL ERROR: unknown IO_field_spec_*"+__FILE_NAME__ );
 //}
 */
 
