@@ -26,6 +26,12 @@ SOURCES += \
         valid_values.cpp \
         window_panel.cpp
 
+
+
+
+
+
+
 HEADERS += \
     action_detail_row.h \
     action_dialog.h \
@@ -66,8 +72,8 @@ LIBS += \
 win32:CONFIG(release, debug|release):    LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/release/ -llib_tty
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/debug/ -llib_tty
 #else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/ -llib_tty
-#else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_6_2_2_GCC_64bit-Debug/ -llib_tty
-else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop-Debug/ -llib_tty
+else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_6_5_2_GCC_64bit-Debug/ -llib_tty
+#else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop-Debug/ -llib_tty
 
 INCLUDEPATH += $$PWD/../lib_tty
 #DEPENDPATH +=  $$PWD/../lib_tty

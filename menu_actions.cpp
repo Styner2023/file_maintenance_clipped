@@ -74,7 +74,7 @@ InteractionResult action_print_menu( State_menu & state, Menu const & menu) {
 
 InteractionResult action_home_menu( State_menu & ) {
     cerr << "int action_home_menu( State & state):" << endl;
-    return { {},{}, {}, {}, InteractionResultNav::main_menu };  // note: going to MAIN.
+    return { {}, {}, {}, {}, InteractionResultNav::main_menu };  // note: going to MAIN.
 }
 
 /*/InteractionResult action_menu_forward_pagination( State_menu & ) {  // todo: complete this: need a "pagination menu" that can be used anytime that a variable size list is printed.
