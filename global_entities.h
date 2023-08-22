@@ -7,6 +7,8 @@
 #include <variant>
 #include <cstdint>
 #include <iostream>
+#include <stacktrace>
+#include <source_location>
 
 // BEGIN OF SNIP todo
 // END OF SNIP
@@ -14,7 +16,13 @@
 //#define NDEBUG   // define if asserts are NOT to be checked.
 
 using std::endl, std::cin, std::cout, std::cerr, std::string;
+#define LOGGER_( msg )    using loc = std::source_location;std::cerr<<loc::current().file_name()<<'('<<loc::current().line()<<':'<<loc::current().column()<<")`"<<loc::current().function_name()<<"`:" <<#msg<<".\n";
+#define LOGGERI( msg,i ) using loc = std::source_location;std::cerr<<loc::current().file_name()<<'('<<loc::current().line()<<':'<<loc::current().column()<<")`"<<loc::current().function_name()<<"`:" <<#msg<<","<<i<<".\n";
+#define LOGGERS( msg,s ) using loc = std::source_location;std::cerr<<loc::current().file_name()<<'('<<loc::current().line()<<':'<<loc::current().column()<<")`"<<loc::current().function_name()<<"`:" <<#msg<<","<<s<<".\n";
 
+using namespace std::string_literals;
+
+// describes this program's versioning scheme, similar to how Linux does it.
 constexpr uint8_t MDTUI_MAJOR 				{0};
 constexpr uint8_t MDTUI_MINOR 				{1};
 constexpr uint8_t MDTUI_PATCH 				{0};
@@ -65,9 +73,9 @@ struct Version {  // used for both software and file format version.
 };
 
 static Version version_application {};  // the program code
-static Version version_file {};			// the data written to file that the program reads needed for crypto !
+static Version version_file {};			// SNIP SNIP not used in this version. // the data written to file that the program reads needed for crypto !
 
-static_assert ( sizeof(Version) <=255 ,"Lenght of Version is stored in a char, but its length is too great." );
+static_assert( sizeof(Version) <=255, "The lenght of Version is stored in a char, but its value is too great to fit." );
 
 struct Software_product {
     std::string				product_category 		{"Grant's software"};  //

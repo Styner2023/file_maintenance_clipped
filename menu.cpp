@@ -7,6 +7,7 @@
 #include "menu_option.h"
 #include "state_menu.h"
 #include "menu_actions.h"
+#include "process_menu.h"
 #include "actions.h"
 #include "action_io_row.h"
 #include "window_panel.h"
@@ -14,7 +15,6 @@
 using std::cout, std::cin, std::cerr, std::endl;
 
 InteractionResult Menu::print( State_menu & state_menu) const {  // Note: we might use state in the future, for example to designate where to "print".
-    // pagination_reset( state_menu, {1,0} );
     pagination_reset( state_menu, {.height = 1, .width = name.length() + 2 } );  // todo: TODO is it a bad idea to use this C99?
     cout << name << ": ";
     cout.flush();
@@ -38,8 +38,6 @@ InteractionResult Menu::print( State_menu & state_menu) const {  // Note: we mig
 }
 
 void initialize_universal_options(State_menu & state, std::shared_ptr<Menu> menu) {
-    // menu->name has already been set by menu that these options are being added too.
-    // menu->description
     menu->options.emplace_back (  Menu_option
     { "q",
       "quit",
@@ -147,20 +145,20 @@ void initialize_universal_options(State_menu & state, std::shared_ptr<Menu> menu
 */
 
     // test for duplicate input_tokens, or action names, using sets.
-    cerr << "Menu construction sanity check: " << endl;
+    LOGGER_("Menu construction sanity check");
     std::set<decltype(Menu_option::input_token)> t {};
-    std::set<decltype(Menu_option::name)> n {};
+    std::set<decltype(Menu_option::name)       > n {};
     for (Menu_option & m : menu->options) {
         auto[tmp1,t_inserted] = t.insert( m.input_token );
-        if (t_inserted == false) cerr << "duplicate menu option input token: " << m.name << endl;
+        assert(t_inserted && ("duplicate menu option input token: "s+ m.input_token).c_str());
         auto[tmp2,n_inserted] = n.insert( m.name );
-        if (n_inserted == false) cerr << "duplicate menu option name:        " << m.name << endl;
+        assert(n_inserted && ("duplicate menu option name:        "s+ m.name).c_str());
     }
 }
 
 // --------------------------------------------------------------------------------
 
-void initialize_menu_main_options(State_menu & state, std::shared_ptr<Menu> menu ) { // this this the top level menu, ie. the first menu entered on running the program.
+void initialize_menu_main_options(State_menu & state, std::shared_ptr<Menu> menu ) {
             menu->name = "Main Menu";
             menu->description = "The first menu shown: Main or Home menu.";
             menu->options.emplace_back( Menu_option

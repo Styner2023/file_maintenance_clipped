@@ -4,7 +4,7 @@
 #include "valid_values.h"
 #include "interaction_result.h"
 
-/* Following are a collection of actions associated with the general (or universal)
+/** Following are a collection of actions associated with the general (or universal)
  * operations available to the user from the menu prompt.
  * The return value of these actions determines subsequent menu behaviour.
  * The invoking menu is retained and re-prompts the user if ::retain is returned.
@@ -18,8 +18,6 @@
  * - actions.cpp
  * - actions_io_row.cpp
  * - actions_dialog.cpp
- *
- *
  */
 
 InteractionResult action_save_work( 				State_menu &);
@@ -29,12 +27,5 @@ InteractionResult action_go_back_up_menu( 			State_menu &);
 InteractionResult action_print_menu_help( 			State_menu &, Menu const &);
 InteractionResult action_print_menu( 				State_menu &, Menu const &);
 InteractionResult action_home_menu( 				State_menu &);
-
-//InteractionResult action_undo( State &);
-//InteractionResult action_space_forward( State &);
-//InteractionResult action_tab_forward( State &);
-//InteractionResult action_null_forward( State &);
-//InteractionResult action_menu_forward_pagination( State_menu &);
-//InteractionResult action_menu_backward_pagination( State_menu &);
 
 #endif // MENU_ACTIONS_H

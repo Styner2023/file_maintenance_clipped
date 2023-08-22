@@ -3,13 +3,7 @@
 #include <filesystem>
 #include "state_menu.h"
 #include "interaction_result.h"
-//InteractionResult action_print_categories( 				State_menu &);
-//InteractionResult action_print_search_entries( 			State_menu &);
-//InteractionResult action_entry_selection( 				State_menu &);
-//InteractionResult action_entry_viewing( 				State_menu &);
-//InteractionResult action_add_entry( 					State_menu &);
-//InteractionResult action_entry_edit( 					State_menu &);
-//InteractionResult action_delete_entry( 					State_menu &);
+
 InteractionResult action_delete_all( 					State_menu &);
 InteractionResult action_save_changes_to_disk( 			State_menu &);
 InteractionResult action_save_as_changes_to_disk( 		State_menu &);

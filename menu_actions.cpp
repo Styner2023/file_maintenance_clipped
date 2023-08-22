@@ -2,11 +2,10 @@
 #include <algorithm>
 #include "menu.h"
 #include "menu_actions.h"
+#include "actions.h"
 #include "window_panel.h"
 #include "interaction_result.h"
 #include "action_dialog.h"
-
-// #include "menu_option.h"
 
 using std::cin, std::cout, std::endl, std::cerr;
 

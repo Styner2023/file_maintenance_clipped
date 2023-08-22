@@ -58,7 +58,7 @@ HEADERS += \
 #INCLUDEPATH +=/home/grostig/libs/include/
 
 QMAKE_CXXFLAGS += \
-        -std=c++2a 		\
+        -std=c++2b 		\
         -Wno-comment 		\
         -Wno-uninitialized 	\
         -Wno-reorder 		\
@@ -67,6 +67,7 @@ QMAKE_CXXFLAGS += \
 LIBS += \
         -lpthread 		\
         -lrt 			\
+        -lstdc++_libbacktrace 			\
         -L /home/grostig/libs/lib \
 
 win32:CONFIG(release, debug|release):    LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/release/ -llib_tty

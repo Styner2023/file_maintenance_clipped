@@ -6,28 +6,10 @@
 #include "global_entities.h"
 #include "actions.h"
 #include "action_dialog.h"
-#include "window_panel.h"
 #include "interaction_result.h"
 // BEGIN OF SNIP todo
 // END OF SNIP
 using std::cin, std::cout, std::endl, std::cerr, std::clog;
-
-using namespace std::string_literals;
-
-/*InteractionResult action_print_categories( State_menu &) {
-//    cerr << "int action_print_categories( State &) {" << endl;
-//    return InteractionResult { {}, {}, {}, {}, InteractionResultNav::retain_menu };
-//}
-
-//InteractionResult action_print_search_entries( State_menu &) {
-//    cerr << "int action_print_search_entries( State &) {" << endl;
-//    return InteractionResult { {}, {}, {}, {}, InteractionResultNav::retain_menu };
-//}
-
-//InteractionResult action_entry_viewing( State_menu &) {
-//    cerr << "int action_entry_viewing( State &) {" << endl;
-//    return InteractionResult { {}, {}, {}, {}, InteractionResultNav::retain_menu };
-//}*/
 
 InteractionResult action_delete_all( State_menu & state ) {
     cerr << "int action_delete_all( State &) {" << endl;

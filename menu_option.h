@@ -4,10 +4,6 @@
 #include <functional>
 #include <variant>
 #include "state_menu.h"
-#include "menu_actions.h"
-#include "actions.h"
-#include "action_io_row.h"
-#include "process_menu.h"
 
 // using my_test = decltype (action_program_exit_with_prompts);  // todo: used below for another todo:
 using Menu_action_fn_variant = std::variant<
@@ -32,25 +28,25 @@ using Menu_action_fn_variant = std::variant<
                 //std::function<decltype( action_save_as_changes_to_disk )>
               >; // a function with the code for the action to be performed.
 
-struct Menu_option {
-    std::string input_token {}; // 'hot-key' when set by for universal_options.
-    std::string name {};  // short name shown on menu.
-    std::string description {}; // long name.
-    std::string help {}; 	// full help explanation of this option and how this option relates to other options.
-    std::string loading_message {};  // printed while loading the action. Shown until the first prompt from the action.
+struct Menu_option {  /// one user selectable menu option from a particualar menu that contains it.
+    std::string input_token {};		/// todo: the user input in the form of a kb_selection to select this menu option, todo: clarify?? or 'hot-key' when set by for universal_options.
+    std::string name {};  			/// short name shown on menu.
+    std::string description {}; 	/// long name.
+    std::string help {}; 			/// full help explanation of this option and how this option relates to other options.
+    std::string loading_message {}; /// printed while loading the action. Shown until the first prompt from the action.
 
     // int  (* action_ptr2)(double) = nullptr;
     // std::any 					my_callable_any;
 
-    Menu_action_fn_variant menu_action_fn_variant; // an optional (really?) function for the "action" to be performed.
+    Menu_action_fn_variant menu_action_fn_variant; /// the function for the "action" to be performed, or maybe nothing?/nullptr?
     // int			option_value {0};  // todo: implement this, this has meaning only if above is null, else if 0 = stay on menu, otherwise return that value. // todo: need a way to formalize return codes, but meaning varies depending on function that return it.
 
-    short		sort_order 				{0};  // optional, if zero then ordered by order of creation todo: not used.
-    bool		is_advanced_menu_option {false}; // todo: not used.
-    bool		is_enabled_option 		{true};  // todo: not used.
-    bool		is_warning_enabled 		{false}; // todo: not used.
+    short		sort_order 				{0};   		/// optional, if zero then ordered by order of creation todo: not used.
+    bool		is_advanced_menu_option {false}; 	/// todo: not used.
+    bool		is_enabled_option 		{true};  	/// todo: not used.
+    bool		is_warning_enabled 		{false}; 	/// todo: not used.
 
-    InteractionResult print( State_menu &) const;
+    InteractionResult print( State_menu &) const; /// prints the user readable text describing the selectable menu option.
 };
 
 #endif // MENU_OPTION_H
