@@ -7,6 +7,7 @@
 #include <variant>
 #include <cstdint>
 #include <iostream>
+#include <csignal>
 #include <stacktrace>
 #include <source_location>
 
@@ -16,33 +17,37 @@
 //#define NDEBUG   // define if asserts are NOT to be checked.
 
 using std::endl, std::cin, std::cout, std::cerr, std::string;
+using namespace std::string_literals;
+
+/* few items for debugging purposes */
 #define LOGGER_( msg )    using loc = std::source_location;std::cerr<<loc::current().file_name()<<'('<<loc::current().line()<<':'<<loc::current().column()<<")`"<<loc::current().function_name()<<"`:" <<#msg<<".\n";
 #define LOGGERI( msg,i ) using loc = std::source_location;std::cerr<<loc::current().file_name()<<'('<<loc::current().line()<<':'<<loc::current().column()<<")`"<<loc::current().function_name()<<"`:" <<#msg<<","<<i<<".\n";
 #define LOGGERS( msg,s ) using loc = std::source_location;std::cerr<<loc::current().file_name()<<'('<<loc::current().line()<<':'<<loc::current().column()<<")`"<<loc::current().function_name()<<"`:" <<#msg<<","<<s<<".\n";
 
-using namespace std::string_literals;
+/// describes this program's versioning scheme, similar to how Linux does it.
+inline constexpr uint8_t MDTUI_MAJOR 				{0};
+inline constexpr uint8_t MDTUI_MINOR 				{1};
+inline constexpr uint8_t MDTUI_PATCH 				{0};
+inline constexpr uint8_t MDTUI_PRE_RELEASE 		{0};  // 0=alpha, 1=beta, 2=RC1, ... or some other meannig?  TBD.
+inline constexpr uint8_t MDTUI_BUILD 				{1};
+inline constexpr uint8_t MDTUI_SOFTWARE_PLATFORM   {1};  // 1 = linux
+inline constexpr uint8_t MDTUI_HARDWARE_PLATFORM   {1};  // 1 = x86_64
+inline constexpr uint8_t MDTUI_ENDIANNESS 			{0};  //  0=unknown, 1=big endian, 2=little endian, ... there are other types!!  todo: NOT set properly or USED
 
-// describes this program's versioning scheme, similar to how Linux does it.
-constexpr uint8_t MDTUI_MAJOR 				{0};
-constexpr uint8_t MDTUI_MINOR 				{1};
-constexpr uint8_t MDTUI_PATCH 				{0};
-constexpr uint8_t MDTUI_PRE_RELEASE 		{0};  // 0=alpha, 1=beta, 2=RC1, ... or some other meannig?  TBD.
-constexpr uint8_t MDTUI_BUILD 				{1};
-constexpr uint8_t MDTUI_SOFTWARE_PLATFORM   {1};  // 1 = linux
-constexpr uint8_t MDTUI_HARDWARE_PLATFORM   {1};  // 1 = x86_64
-constexpr uint8_t MDTUI_ENDIANNESS 			{0};  //  0=unknown, 1=big endian, 2=little endian, ... there are other types!!  todo: NOT set properly or USED
-
-constexpr int IO_ROW_FIELDS_NUM_MAX 		{20}; // zero origin, so human number is: this value + 1
-constexpr int IO_ROW_FIELDS_NUM_PERSON 	  	{8};  // zero origin, so human number is: this value + 1, so if we have 9 actual fields, we use 8, since that gives 9 positions.
+/// current limits of the program
+inline constexpr int IO_ROW_FIELDS_NUM_MAX 		{20}; // zero origin, so human number is: this value + 1
+inline constexpr int IO_ROW_FIELDS_NUM_PERSON 	  	{8};  // zero origin, so human number is: this value + 1, so if we have 9 actual fields, we use 8, since that gives 9 positions.
 static_assert ( IO_ROW_FIELDS_NUM_MAX >= IO_ROW_FIELDS_NUM_PERSON );
 
-const std::string  DEFAULT_FILE_NAME { "file_data.json" };
+inline constexpr std::string  DEFAULT_FILE_NAME { "file_data.json" };
 
-constexpr uint64_t ADATA_MAX_LENGTH = 4096;  // purely arbitrary, but exists to warn programmer of unlimited memory use and possible crash from attack.
+/// some crypto stuff not used in this version
+inline constexpr uint64_t ADATA_MAX_LENGTH = 4096;  // purely arbitrary, but exists to warn programmer of unlimited memory use and possible crash from attack.
 static_assert ( ADATA_MAX_LENGTH <= INT16_MAX, "number too large" );
-constexpr std::streamoff PDATA_MAX_LENGTH = 4096*100000;  // purely arbitrary, but exists to warn programmer of unlimited memory use and possible crash from attack.
+inline constexpr std::streamoff PDATA_MAX_LENGTH = 4096*100000;  // purely arbitrary, but exists to warn programmer of unlimited memory use and possible crash from attack.
 static_assert ( PDATA_MAX_LENGTH <= INT32_MAX, "number too large" );
 
+/// key program types
 using Data_type_boolean 		= bool;
 using Data_type_character 		= char;
 using Data_type_uint64 			= uint64_t;  		// todo: should GUID be 128 bits?  Was that the only reason for this type?
@@ -73,7 +78,7 @@ struct Version {  // used for both software and file format version.
 };
 
 static Version version_application {};  // the program code
-static Version version_file {};			// SNIP SNIP not used in this version. // the data written to file that the program reads needed for crypto !
+static Version version_file {};			// SNIP SNIP not used in this version. // the data written to file that the program reads, needed for crypto version !
 
 static_assert( sizeof(Version) <=255, "The lenght of Version is stored in a char, but its value is too great to fit." );
 

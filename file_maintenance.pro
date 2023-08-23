@@ -2,6 +2,32 @@ TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
+CONFIG += c++latest
+#CONFIG += c++20
+CONFIG += warn_on
+# ??CONFIG += QMAKE_CFLAGS_WARN_ON
+# ??CONFIG += QMAKE_CXXFLAGS_WARN_ON
+
+QMAKE_CXXFLAGS += \
+# could be wrong:
+        -std=gnu++2b 		\
+        -g3 		        \
+        -O0 		        \
+        -Wno-comment 		\
+        -Wno-uninitialized 	\
+        -Wno-reorder 		\
+        -Wno-unused-parameter 	\
+
+LIBS += \
+        -lpthread 		\
+        -lrt 			\
+        -lstdc++_libbacktrace 	\
+        -L /home/grostig/libs/lib \
+
+#INCLUDEPATH +=../../cereal/include/
+#INCLUDEPATH +=/home/grostig/libs/include/
+INCLUDEPATH += $$PWD/../lib_tty
+#DEPENDPATH +=  $$PWD/../lib_tty
 
 SOURCES += \
         action_detail_row.cpp \
@@ -24,13 +50,7 @@ SOURCES += \
         state_application.cpp \
         state_menu.cpp \
         valid_values.cpp \
-        window_panel.cpp
-
-
-
-
-
-
+        window_panel.cpp \
 
 HEADERS += \
     action_detail_row.h \
@@ -52,32 +72,16 @@ HEADERS += \
     state_application.h \
     state_menu.h \
     valid_values.h \
-    window_panel.h
+    window_panel.h \
 
-#INCLUDEPATH +=../../cereal/include/
-#INCLUDEPATH +=/home/grostig/libs/include/
-
-QMAKE_CXXFLAGS += \
-        -std=c++2b 		\
-        -Wno-comment 		\
-        -Wno-uninitialized 	\
-        -Wno-reorder 		\
-        -Wno-unused-parameter 	\
-
-LIBS += \
-        -lpthread 		\
-        -lrt 			\
-        -lstdc++_libbacktrace 			\
-        -L /home/grostig/libs/lib \
+DISTFILES += \
+    model_test.qmodel
 
 win32:CONFIG(release, debug|release):    LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/release/ -llib_tty
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/debug/ -llib_tty
 #else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/ -llib_tty
 else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_6_5_2_GCC_64bit-Debug/ -llib_tty
 #else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop-Debug/ -llib_tty
-
-INCLUDEPATH += $$PWD/../lib_tty
-#DEPENDPATH +=  $$PWD/../lib_tty
 
 # win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../build-lib_tty-Desktop_Qt_5_13_1_GCC_64bit-Debug/release/liblib_tty.a
 # else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../build-lib_tty-Desktop_Qt_5_13_1_GCC_64bit-Debug/debug/liblib_tty.a
@@ -87,6 +91,3 @@ INCLUDEPATH += $$PWD/../lib_tty
 
 #unix: PRE_TARGETDEPS +=                           $$PWD/../build-lib_tty-Desktop_Qt_*_GCC_64bit-Debug/liblib_tty.a
 #unix: PRE_TARGETDEPS +=                            $$PWD/../build-lib_tty-Desktop_Qt_6_2_2_GCC_64bit-Debug/liblib_tty.a
-
-DISTFILES += \
-    model_test.qmodel

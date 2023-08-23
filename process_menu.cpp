@@ -19,15 +19,16 @@ input_menu_selection( State_menu & state_menu, std::shared_ptr<Menu> const menu_
         pagination_reset( state_menu, {0,0});
 
         auto const [kb_regular_value, hot_key, file_status] =
-                      Lib_tty::get_kb_keys_raw( 1, false, true /* echo skc */, true, false );
-        cout << endl; // We finish our prompt and user input.
+                      Lib_tty::get_kb_keys_raw( 1, false, true, true, false );
 
         // *** handle file_status *** // todo: this
         // *** handle hot_keys *** // WARNING NOTE: todo: improve this! Here we link the hot_key to the regular key for getting "help", ie. F1 key. The mapping is found in lib_tty::consider_hot_key()::hot_keys.
         Lib_tty::Kb_regular_value user_menu_selection { hot_key.function_cat == Lib_tty::HotKeyFunctionCat::help_popup ? "h" : kb_regular_value };
         for ( Menu_option const & menu_option: menu_sp->options )
-            if ( user_menu_selection == menu_option.input_token )
+            if ( user_menu_selection == menu_option.input_token ) {
+                cout << endl; // We finish our prompt and user input sucessfully.
                 return menu_option;
+            }
         cout << "\aInvalid menu selection or key press, try again, or press the single <h> key for (h)elp.\n";
     }
     assert(false && "We should never get here.");  // infinute loop that is exited via a menu selection.  Should never get here, obviously not needed, but placed here for clarity. todo:  fix this up.
@@ -96,7 +97,7 @@ InteractionResult const process_menu_selection( State_menu & state, Menu_option 
 InteractionResult const
 process_menu( State_menu & 			state, 	   		// needed for menu and application, like a global variable/singleton.  todo: improve this?
               std::shared_ptr<Menu> menu_sp  )  { 	// the menu we will run/process
-    assert( menu_sp != nullptr );
+    assert( menu_sp != nullptr && "We must have a menu to process");
     state.push_menu_sp( menu_sp ); // our currently active menu is stored at top of stack
     while (true) {  /* input menu selection and run it */
         Menu_option const 		menu_option  	{ input_menu_selection(   state, menu_sp )};

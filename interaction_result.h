@@ -70,12 +70,17 @@ enum class InteractionCategory {
     na		// must be last element due to verify() on interaction map
 };
 
-struct InteractionResult {
-        Lib_tty::Hot_key		hot_key		{};  // interaction within interaction requires this value.  ie. help within a field interaction.
-        size_t				index		{};  // points to most recent item processed
+struct InteractionResult { // between the user and the computer via the keyboard
+        Lib_tty::Hot_key				hot_key		{};  // interaction within interaction requires this value.  ie. help within a field interaction.
+        size_t							index		{};  // points to most recent item processed
         InteractionResultData_Variant  	data 		{};  // the most important data value of the item processed. ie. name or code or ID.
-        InteractionResultError	   	error 		{};	 // any error that occurred.
+        InteractionResultError	   		error 		{};	 // any error that occurred.
         InteractionResultNav 	       	navigation 	{InteractionResultNav::no_result};  // hint that is passed to the caller on user's intent for future processing, or that which is required due to an error.
+        std::string to_string(){  /// for debugging  todo: finish this
+            std::string s { hot_key.to_string() +
+                            std::to_string(index) };
+            return s;
+        };
       };
 
 //struct ActionResultSpec {

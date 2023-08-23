@@ -9,9 +9,9 @@
 #include "action_dialog.h"
 
 // turn off logger in this file, and comment out //cerr
-#define LOGGER_( msg )
-#define LOGGERI( msg,i )
-#define LOGGERS( msg,s )
+//#define LOGGER_( msg )
+//#define LOGGERI( msg,i )
+//#define LOGGERS( msg,s )
 
 void pagination_reset(State_menu &state, const Panel_dimensions &used_content) {
     auto & pnl_d = state.getApplication_data_sp()->panel_dimensions;
@@ -32,8 +32,7 @@ void pagination_reset(State_menu &state, const Panel_dimensions &used_content) {
     // getting serious
 */
     state.getApplication_data_sp()->used_dimensions = used_content;
-    LOGGER_("used_content:");
-    //cerr<<used_content<<endl;
+    LOGGERS("used_content:", used_content);
 }
 
 /// calculate sizes
