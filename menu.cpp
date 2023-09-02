@@ -3,6 +3,7 @@
 #include <set>
 #include <functional>
 #include <memory>
+#include <global_entities.h>
 #include "menu.h"
 #include "menu_option.h"
 #include "state_menu.h"

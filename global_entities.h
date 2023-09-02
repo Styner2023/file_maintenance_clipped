@@ -13,16 +13,25 @@
 
 // BEGIN OF SNIP todo
 // END OF SNIP
+/// define if asserts are NOT to be checked.  Put in *.h file not *.CPP
+//#define 	NDEBUG
+/// define I'm Debugging LT.  Put in *.h file not *.CPP
+//#define  	GR_DEBUG
+//#ifdef   	GR_DEBUG
+//#endif  # GR_DEBUG
 
-//#define NDEBUG   // define if asserts are NOT to be checked.
+//#define LOGGER_( msg )   using loc = std::source_location;std::cerr<<"[loc::current().file_name()<<':'<<loc::current().line()<<','<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<".\n";
+//#define LOGGER2( msg, x )using loc = std::source_location;std::cerr<<"[loc::current().file_name()<<':'<<loc::current().line()<<','<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<",{"<<x<<"}.\n";
+
 
 using std::endl, std::cin, std::cout, std::cerr, std::string;
 using namespace std::string_literals;
 
 /* few items for debugging purposes */
-#define LOGGER_( msg )    using loc = std::source_location;std::cerr<<loc::current().file_name()<<'('<<loc::current().line()<<':'<<loc::current().column()<<")`"<<loc::current().function_name()<<"`:" <<#msg<<".\n";
-#define LOGGERI( msg,i ) using loc = std::source_location;std::cerr<<loc::current().file_name()<<'('<<loc::current().line()<<':'<<loc::current().column()<<")`"<<loc::current().function_name()<<"`:" <<#msg<<","<<i<<".\n";
-#define LOGGERS( msg,s ) using loc = std::source_location;std::cerr<<loc::current().file_name()<<'('<<loc::current().line()<<':'<<loc::current().column()<<")`"<<loc::current().function_name()<<"`:" <<#msg<<","<<s<<".\n";
+#define LOGGER_( msg )   using loc = std::source_location;std::cerr<<"["<<loc::current().file_name()<<':'<<loc::current().line()<<','<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<".\n";
+#define LOGGERS( msg, x )using loc = std::source_location;std::cerr<<"["<<loc::current().file_name()<<':'<<loc::current().line()<<','<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<",{"<<x<<"}.\n";
+//#define LOGGER_( msg )
+//#define LOGGER2( msg,x )
 
 /// describes this program's versioning scheme, similar to how Linux does it.
 inline constexpr uint8_t MDTUI_MAJOR 				{0};
@@ -62,7 +71,8 @@ using Data_type_integer 		= int;
 using Data_type_decimal 		= double;  			// a floating point
 using Data_type_scientific 		= long double;  	// a floating point // todo: kludge!, see below regarding: Data_type_scientific
 
-struct Version {  // used for both software and file format version.
+/// used for both software and file format versions.
+struct Version {
     unsigned char major 			{ MDTUI_MAJOR };  // https://semver.org/
     unsigned char minor 			{ MDTUI_MINOR};
     unsigned char patch 			{ MDTUI_PATCH };
@@ -91,11 +101,12 @@ struct Software_product {
     Version 				application_version 	{ version_application };  // no warnings on these values.
     uint64_t				product_gtin_14	  		{ 14 }; // GTIN-14, global UPC like code defined by GS1 organization.https://en.wikipedia.org/wiki/International_Article_Number
     template< class Archive >
-    void serialize( Archive & archive ) {
+    void serialize( Archive & archive ) {           // used by Cereal the serialization library
         archive( application_version, product_gtin_14, product_category, product_series, product_model, product_model_variant );
     }
 };
 
+/// types of data supported for file_maintenance and user input
 using Data_type_variant = std::variant<		// todo: What was I thinking? How many of these are used?
     std::monostate,
     Data_type_boolean,
@@ -109,6 +120,7 @@ using Data_type_variant = std::variant<		// todo: What was I thinking? How many 
     Data_type_scientific  // NOTE: each of these types must be unique.
     >;
 
+/// types of data supported for the result of user input, ie function return types
 using InteractionResultData_Variant = std::variant<  // todo: What was I thinking? How many of these are used?
     std::monostate,
     Data_type_boolean,

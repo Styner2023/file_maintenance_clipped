@@ -9,14 +9,15 @@ CONFIG += warn_on
 # ??CONFIG += QMAKE_CXXFLAGS_WARN_ON
 
 QMAKE_CXXFLAGS += \
-# could be wrong:
-        -std=gnu++2b 		\
+        -std=gnu++2b 		\  # could be wrong:
         -g3 		        \
         -O0 		        \
-        -Wno-comment 		\
-        -Wno-uninitialized 	\
-        -Wno-reorder 		\
-        -Wno-unused-parameter 	\
+        -Wall   		\  # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
+        -Wextra   		\
+        #-Wno-comment 		\
+        #-Wno-uninitialized 	\
+        #-Wno-reorder 		\
+        #-Wno-unused-parameter 	\
 
 LIBS += \
         -lpthread 		\

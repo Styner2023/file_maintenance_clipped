@@ -2,6 +2,7 @@
 #include <cassert>
 #include "lib_tty.h"  // todo: don't seem to need it due to other headers, but I should have it here.
 #include "interaction_result.h"
+#include "global_entities.h"
 #include "state_menu.h"
 #include "menu.h"
 #include "menu_option.h"

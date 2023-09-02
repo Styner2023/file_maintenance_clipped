@@ -8,10 +8,16 @@
 #include "interaction_result.h"
 #include "action_dialog.h"
 
-// turn off logger in this file, and comment out //cerr
-//#define LOGGER_( msg )
-//#define LOGGERI( msg,i )
-//#define LOGGERS( msg,s )
+/// define if asserts are NOT to be checked.  Put in *.h file not *.CPP
+//#define 	NDEBUG
+/// define I'm Debugging LT.  Put in *.h file not *.CPP
+#define  	GR_DEBUG
+//#undef  	GR_DEBUG
+//#ifdef   	GR_DEBUG
+//#endif  # GR_DEBUG
+#define LOGGER_( msg )   using loc = std::source_location;std::cerr<<"["<<loc::current().file_name()<<':'<<loc::current().line()<<','<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<".\n";
+#define LOGGERS( msg, x )using loc = std::source_location;std::cerr<<"["<<loc::current().file_name()<<':'<<loc::current().line()<<','<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<",{"<<x<<"}.\n";
+
 
 void pagination_reset(State_menu &state, const Panel_dimensions &used_content) {
     auto & pnl_d = state.getApplication_data_sp()->panel_dimensions;

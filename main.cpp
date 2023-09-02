@@ -26,6 +26,16 @@
 /// tells user where this program crashed for debugging..
 using std::endl, std::cin, std::cout, std::cerr, std::string;
 
+/// define if asserts are NOT to be checked.  Put in *.h file not *.CPP
+//#define 	NDEBUG
+/// define I'm Debugging LT.  Put in *.h file not *.CPP
+//#define  	GR_DEBUG
+//#ifdef   	GR_DEBUG
+//#endif  # GR_DEBUG
+
+//#define LOGGER_( msg )
+//#define LOGGERS( msg,s )
+
 auto crash_tracer(int const signal_number) ->void {
     cout << "CRASH_ERROR: signal#, stack trace:<<<" << signal_number << ">>>,<<<" << std::stacktrace::current() << "<<<END STACK TRACE.\n";
 }
