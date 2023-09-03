@@ -11,7 +11,6 @@
 
 using std::endl, std::cin, std::cout, std::cerr, std::string;
 
-
 struct Value_nup {
     std::optional<Lib_tty::Kb_regular_value> kb_regular_value_opt {};
     Lib_tty::Hot_key hot_key {};
@@ -619,34 +618,35 @@ Value_nup input_field_response( State_menu 						      & state,
     exclude_disallowed_fields( field_spec ); // todo: complete this: field_spec.lengths_input.max don't think we can/need to enforce min for an integer.
     pagination_reset( state, { 1, 40 } ); cout << '\n';  // create a new line on display and use that one line again and again as we reprompt for every character typed.// todo: complete this, is this reset true?  20 is an estimate!
     std::optional<Value_nup> gotten_field_data				{std::nullopt};
-    std::string 			 deficiency_message 		    { field_spec.full_description };  // initially shows generic hint, but can show user's error in input.
+    std::string 			 deficiency_message 		    {field_spec.full_description };  // initially shows generic hint, but can show user's error in input.
     bool 					 is_editing_mode_insert 		{true};
     bool					 is_user_entered_a_valid_char	{false};
 
-    auto const 				 validity_spec 					= std::get<ValidityFieldSpecBool> (
+    auto const 				 validity_spec 					= std::get< ValidityFieldSpecBool > (
                                                                             *field_spec.validity_spec );  // todo: TODO can I replace this type with a decltype?
     auto const 			     my_set_variant 				= validity_spec.base.valid_values;
-    auto const 			     valid_value_set 				= std::get<ValidValueBoolean_set> (my_set_variant );  // todo: TODO can I replace this type with a decltype?
+    auto const 			     valid_value_set 				= std::get< ValidValueBoolean_set > ( my_set_variant );  // todo: TODO can I replace this type with a decltype?
     auto const			     valid_value_itr 				= find_default_valid_value_itr( valid_value_set );
     auto const			     valid_value_itr_begin			= valid_value_set.begin();
     auto const			     valid_value_itr_end			= valid_value_set.end();
     auto 			         current_valid_value_itr 		{ valid_value_itr != valid_value_itr_end ?
-                                                              valid_value_itr : valid_value_itr_begin };  // set default if present, else at begining
+                                                                valid_value_itr : valid_value_itr_begin };  // set default if present, else at begining
     auto const 				 default_typed_value 			{ retrieve_default( current_valid_value_itr,
                                                                                 valid_value_set.end())};
     std::optional<Lib_tty::Kb_regular_value>
                              default_value 					{ to_string_typed_value( default_typed_value) };
-    Lib_tty::Kb_regular_value 		 current_value 					{ existing_o_default(
+    Lib_tty::Kb_regular_value current_value 					{ existing_o_default(
                                                                         default_value, existing_value ) };  // we build up the value we want to return character by character.
 
     while ( ! gotten_field_data.has_value() ) {
         prompt_for_field_data( state, field_spec, current_value, deficiency_message );
         deficiency_message = field_spec.full_description;  // reset hint, since user has seen deficiency from prior entry error.
         auto [kb_regular_value, hot_key, file_status] =
-                Lib_tty::get_kb_keys_raw( 1, false,
-                    field_spec.prompt_field_spec.echo_mode == IO_field_echo_mode::normal ? true : false,
-                    validity_spec.base.is_strip_control_chars,
-                    false );
+                Lib_tty::get_kb_keys_raw( 1,
+                                          false,
+                                          field_spec.prompt_field_spec.echo_mode == IO_field_echo_mode::normal ? true : false,
+                                          validity_spec.base.is_strip_control_chars,
+                                          false );
         // *** Start Hot_key Handling ***  Here we fully handle user intents expressed by hot_keys and loop or proceed to non-hot_key processing.  bool represents handling, else keep checking/handling.
         if ( auto hk_opt = process_hk_help( state, field_spec, hot_key.function_cat ) ) {
                 hot_key = hk_opt.value();  // Reset to new hot_key, we now have a new user intent after displaying the help and the user's response.  // todo: not sure I don't just need function_cat, but this may evolve.
@@ -721,10 +721,11 @@ Value_nup input_field_response( State_menu 								& state,
         prompt_for_field_data( state, field_spec, current_value, deficiency_message );
         deficiency_message = field_spec.full_description;  // let the user see the hint, unless of course we find a deficiency below.
         auto [kb_regular_value, hot_key, file_status] =
-                Lib_tty::get_kb_keys_raw( 1, false,
-                    field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
-                    validity_spec.base.is_strip_control_chars,
-                    validity_spec.is_password );
+                Lib_tty::get_kb_keys_raw( 1,
+                                          false,
+                                          field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
+                                          validity_spec.base.is_strip_control_chars,
+                                          validity_spec.is_password );
 
         // *** Start Hot_key Handling ***  Here we fully handle user intents expressed by hot_keys and loop or proceed to non-hot_key processing.  bool represents handling, else keep checking/handling.
         if ( auto hk_opt = process_hk_help( state, field_spec, hot_key.function_cat ) ) {
@@ -786,10 +787,11 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_integer 		cons
     while ( !gotten_field_data.has_value() ) {
         prompt_for_field_data( state, field_spec, current_value, deficiency_message );
         deficiency_message = field_spec.full_description;  // let the user see the hint, unless of course we find a deficiency below.
-        auto [kb_regular_value, hot_key, file_status] =  Lib_tty::get_kb_keys_raw( 1, false,
-                    field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
-                    validity_spec.base.is_strip_control_chars, false );
-        // auto [kb_regular_value, hot_key, file_status] = Lib_tty::get_kb_keys_raw( 1, field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false, validity_spec.base.is_strip_control_chars );
+        auto [kb_regular_value, hot_key, file_status] =  Lib_tty::get_kb_keys_raw( 1,
+                                                                                 false,
+                                                                                 field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
+                                                                                 validity_spec.base.is_strip_control_chars,
+                                                                                 false );
         // *** Start Hot_key Handling ***
         if ( auto hk_opt = process_hk_help( state, field_spec, hot_key.function_cat ) ) {
                 hot_key = hk_opt.value();  // we may have a new user intent from the display of the help and the user's action.
@@ -851,10 +853,11 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
     while ( !gotten_field_data.has_value() ) {
         prompt_for_field_data( state, field_spec, current_value, deficiency_message );
         deficiency_message = field_spec.full_description;  // let the user see the hint, unless of course we find a deficiency below.
-        auto [kb_regular_value, hot_key, file_status] =  Lib_tty::get_kb_keys_raw( 1, false,
-                    field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
-                    validity_spec.base.is_strip_control_chars, false );
-        // auto [kb_regular_value, hot_key, file_status] = Lib_tty::get_kb_keys_raw( 1, field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false, validity_spec.base.is_strip_control_chars );
+        auto [kb_regular_value, hot_key, file_status] =  Lib_tty::get_kb_keys_raw( 1,
+                                                                                 false,
+                                                                                 field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
+                                                                                 validity_spec.base.is_strip_control_chars,
+                                                                                 false );
         // *** Start Hot_key Handling ***
         if ( auto hk_opt = process_hk_help( state, field_spec, hot_key.function_cat ) ) {
                 hot_key = hk_opt.value();  // we may have a new user intent from the display of the help and the user's action.

@@ -13,25 +13,21 @@
 
 // BEGIN OF SNIP todo
 // END OF SNIP
+
+/* few items for debugging purposes */
 /// define if asserts are NOT to be checked.  Put in *.h file not *.CPP
 //#define 	NDEBUG
-/// define I'm Debugging LT.  Put in *.h file not *.CPP
+/// define GR is Debugging.  Put in *.h file not *.CPP
 //#define  	GR_DEBUG
 //#ifdef   	GR_DEBUG
 //#endif  # GR_DEBUG
-
-//#define LOGGER_( msg )   using loc = std::source_location;std::cerr<<"[loc::current().file_name()<<':'<<loc::current().line()<<','<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<".\n";
-//#define LOGGER2( msg, x )using loc = std::source_location;std::cerr<<"[loc::current().file_name()<<':'<<loc::current().line()<<','<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<",{"<<x<<"}.\n";
-
+#define LOGGER_( msg )   using loc = std::source_location;std::cerr<<"["<<loc::current().file_name()<<':'<<std::setw(3)<<loc::current().line()<<','<<std::setw(2)<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<".\n";
+#define LOGGERS( msg, x )using loc = std::source_location;std::cerr<<"["<<loc::current().file_name()<<':'<<std::setw(3)<<loc::current().line()<<','<<std::setw(2)<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<",{"<<x<<"}.\n";
+//#define LOGGER_( msg )
+//#define LOGGERS( msg,x )
 
 using std::endl, std::cin, std::cout, std::cerr, std::string;
 using namespace std::string_literals;
-
-/* few items for debugging purposes */
-#define LOGGER_( msg )   using loc = std::source_location;std::cerr<<"["<<loc::current().file_name()<<':'<<loc::current().line()<<','<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<".\n";
-#define LOGGERS( msg, x )using loc = std::source_location;std::cerr<<"["<<loc::current().file_name()<<':'<<loc::current().line()<<','<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<",{"<<x<<"}.\n";
-//#define LOGGER_( msg )
-//#define LOGGER2( msg,x )
 
 /// describes this program's versioning scheme, similar to how Linux does it.
 inline constexpr uint8_t MDTUI_MAJOR 				{0};
@@ -134,5 +130,8 @@ using InteractionResultData_Variant = std::variant<  // todo: What was I thinkin
     Data_type_scientific,  // NOTE: each of these types must be unique.
     std::vector<Data_type_variant>  // todo: Seriously a vector? What was I thinking? How many of these are used?
     >;
+
+/// gives a source location for printing.  Used for debugging.
+std::string source_loc();
 
 #endif // GLOBAL_ENTITIES_H
