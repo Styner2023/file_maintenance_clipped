@@ -26,8 +26,8 @@
 //#define LOGGER_( msg )
 //#define LOGGERS( msg,x )
 
-using std::endl, std::cin, std::cout, std::cerr, std::string;
-using namespace std::string_literals;
+using std::cin; using std::cout; using std::cerr; using std::clog; using std::endl; using std::string;  // using namespace std;
+using namespace std::string_literals;;
 
 /// describes this program's versioning scheme, similar to how Linux does it.
 inline constexpr uint8_t MDTUI_MAJOR 				{0};
