@@ -9,27 +9,27 @@ This sub-project shows the use and testing of the code.
 This sample program implements the following menu structure:
 
 Main Menu
-  File Menu  <f>
-    Load <l> {default OR specific file}
-    Save <s> {current}
-    Save As File Name <a> {file_name}
-    Backup <S(bigger save)>
+  File Menu  
+    Load 
+    Save 
+    Save As File Name 
+    Backup 
 
-  Edit Entry Menu <e>
-    Add <a> {new entry id} // should this be "c" for create?
-    Select Entry Id Selection <t(entry)>
-      View <v> // list all fields of an entry   
-      Edit/Update <u> // "u" for update
-      Delete <d> {optional/advanced warning}
-    Delete All <X> {mandatory warning}
+  Edit Entry Menu 
+    Add 
+    Select Entry Id Selection 
+      View 
+      Edit/Update 
+      Delete 
+    Delete All 
 
-  Settings Menu <g>
-    Screen Size Settings <z> {height, width}
-    Show Advanced Selection Setting Switch <A> {T/F}
+  Settings Menu 
+    Screen Size Settings 
+    Show Advanced Selection Setting Switch 
 
-  List Entries <l> {}
-  Search Entries <r> {criteria}
-  Delete All <X> (duplicate as above)
+  List Entries
+  Search Entries 
+  Delete All 
   
 *Operations supported on all? menus:
 
