@@ -358,6 +358,10 @@ public:
     const LengthRange			lengths_storage					{};
     bool 						is_ignore_case_on_validation	{true};  // todo: what does this do?  not implemented yet.
     bool 						is_password						{false};
+                        //assert( (is_password && !is_allow_control_chars) && "Length must be greater than 0." );   // todo: must debug n>1 case later.
+                        //assert( (is_password && !is_echo_skc_to_tty) && "Length must be greater than 0." );   // todo: must debug n>1 case later.
+                        //if (     is_password )
+                        //is_allow_control_chars = false;
 };
 class ValidityFieldSpecInteger {
 public:

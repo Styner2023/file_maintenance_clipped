@@ -23,8 +23,8 @@
 #include "interaction_result.h"
 #include "field_navigation_interaction_map.h"
 
-/// tells user where this program crashed for debugging..
-using std::endl, std::cin, std::cout, std::cerr, std::string;
+using std::cin; using std::cout; using std::cerr; using std::clog; using std::endl; using std::string;  // using namespace std;
+using namespace std::string_literals;
 
 /// define if asserts are NOT to be checked.  Put in *.h file not *.CPP
 //#define 	NDEBUG
@@ -36,10 +36,12 @@ using std::endl, std::cin, std::cout, std::cerr, std::string;
 //#define LOGGER_( msg )
 //#define LOGGERS( msg,s )
 
+/// tells user where this program crashed for debugging..
 auto crash_tracer(int const signal_number) ->void {
     cout << "CRASH_ERROR: signal#, stack trace:<<<" << signal_number << ">>>,<<<" << std::stacktrace::current() << "<<<END STACK TRACE.\n";
 }
 
+/// tells user where this program crashed for debugging..
 auto crash_signals_register() -> void {
     std::signal( SIGHUP,  crash_tracer );
     std::signal( SIGINT,  crash_tracer );

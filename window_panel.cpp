@@ -78,7 +78,7 @@ InteractionResult pagination(State_menu &state, const Panel_dimensions &proposed
         //cerr << "pagination()1: proposed_content:"<< proposed_content <<", proposed_content_wrapped:" << proposed_content_wrapped.value()<< ", over:"<< over_d << ".\n";
         if ( over_d.height > 0 ) {  // width is within line, because we wrapped it just above.
             // cout << ">>Enter <Enter> to continue displaying data.";
-            // Kb_value_plus hot_key = Lib_tty::get_kb_keys_raw( 1 );
+            // cin >> getline();
             InteractionResult ir_modal = action_dialog_modal_notify( state, "...more... Press <Enter> to continue" ); // todo: URGENT put back menu_system function for this!
             if ( ir.navigation == InteractionResultNav::exit_pgm_immediately ||
                  ir.navigation == InteractionResultNav::exit_pgm_with_prompts )

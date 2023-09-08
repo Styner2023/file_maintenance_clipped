@@ -645,8 +645,8 @@ Value_nup input_field_response( State_menu 						      & state,
                 Lib_tty::get_kb_keys_raw( 1,
                                           false,
                                           field_spec.prompt_field_spec.echo_mode == IO_field_echo_mode::normal ? true : false,
-                                          validity_spec.base.is_strip_control_chars,
-                                          false );
+                                          validity_spec.base.is_strip_control_chars
+                                        );
         // *** Start Hot_key Handling ***  Here we fully handle user intents expressed by hot_keys and loop or proceed to non-hot_key processing.  bool represents handling, else keep checking/handling.
         if ( auto hk_opt = process_hk_help( state, field_spec, hot_key.function_cat ) ) {
                 hot_key = hk_opt.value();  // Reset to new hot_key, we now have a new user intent after displaying the help and the user's response.  // todo: not sure I don't just need function_cat, but this may evolve.
@@ -724,8 +724,8 @@ Value_nup input_field_response( State_menu 								& state,
                 Lib_tty::get_kb_keys_raw( 1,
                                           false,
                                           field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
-                                          validity_spec.base.is_strip_control_chars,
-                                          validity_spec.is_password );
+                                          validity_spec.base.is_strip_control_chars
+                                        );
 
         // *** Start Hot_key Handling ***  Here we fully handle user intents expressed by hot_keys and loop or proceed to non-hot_key processing.  bool represents handling, else keep checking/handling.
         if ( auto hk_opt = process_hk_help( state, field_spec, hot_key.function_cat ) ) {
@@ -790,8 +790,8 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_integer 		cons
         auto [kb_regular_value, hot_key, file_status] =  Lib_tty::get_kb_keys_raw( 1,
                                                                                  false,
                                                                                  field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
-                                                                                 validity_spec.base.is_strip_control_chars,
-                                                                                 false );
+                                                                                 validity_spec.base.is_strip_control_chars
+                                                                                 );
         // *** Start Hot_key Handling ***
         if ( auto hk_opt = process_hk_help( state, field_spec, hot_key.function_cat ) ) {
                 hot_key = hk_opt.value();  // we may have a new user intent from the display of the help and the user's action.
@@ -856,8 +856,8 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
         auto [kb_regular_value, hot_key, file_status] =  Lib_tty::get_kb_keys_raw( 1,
                                                                                  false,
                                                                                  field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
-                                                                                 validity_spec.base.is_strip_control_chars,
-                                                                                 false );
+                                                                                 validity_spec.base.is_strip_control_chars
+                                                                                 );
         // *** Start Hot_key Handling ***
         if ( auto hk_opt = process_hk_help( state, field_spec, hot_key.function_cat ) ) {
                 hot_key = hk_opt.value();  // we may have a new user intent from the display of the help and the user's action.

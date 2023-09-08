@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "lib_tty.h"  // todo: don't seem to need it due to other headers, but I should have it here.
+#include "lib_tty.h"
 #include "interaction_result.h"
 #include "global_entities.h"
 #include "state_menu.h"
@@ -10,8 +10,6 @@
 #include "menu_actions.h"
 #include "window_panel.h"
 
-using std::endl, std::cin, std::cerr, std::cout;
-
 Menu_option const &
 input_menu_selection( State_menu & state_menu, std::shared_ptr<Menu> const menu_sp ) {  /// loop until we return either a menu selection.  todo: or a number representing the entry to be selected??
     while (true) {
@@ -20,7 +18,7 @@ input_menu_selection( State_menu & state_menu, std::shared_ptr<Menu> const menu_
         pagination_reset( state_menu, {0,0});
 
         auto const [kb_regular_value, hot_key, file_status] =
-                      Lib_tty::get_kb_keys_raw( 1, false, true, true, false );
+                      Lib_tty::get_kb_keys_raw( 1, false, true, true);
 
         // *** handle file_status *** // todo: this
         // *** handle hot_keys *** // WARNING NOTE: todo: improve this! Here we link the hot_key to the regular key for getting "help", ie. F1 key. The mapping is found in lib_tty::consider_hot_key()::hot_keys.

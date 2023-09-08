@@ -3,8 +3,8 @@
 #include <string>
 #include <variant>
 #include <chrono>
-#include <global_entities.h>
-#include "lib_tty.h"  // this one is needed
+#include "global_entities.h"
+#include "lib_tty.h"
 #include "valid_values.h"
 
 enum class InteractionResultErrorCat {
