@@ -65,6 +65,7 @@ HEADERS += \
     io_field_specs_variant.h \
     io_row.h \
     io_table.h \
+    lib_tty.h \
     menu.h \
     menu_actions.h \
     menu_option.h \
