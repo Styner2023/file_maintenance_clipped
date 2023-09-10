@@ -8,13 +8,6 @@
  * The menu system allows for various function signatures
  * and various configurations of return values.
  */
-
-#include <iostream>
-#include <memory>
-#include <functional>
-#include <variant>
-#include <cassert>
-
 #include "global_entities.h"
 #include "state_menu.h"
 #include "state_application.h"
@@ -22,37 +15,43 @@
 #include "process_menu.h"
 #include "interaction_result.h"
 #include "field_navigation_interaction_map.h"
+//#include <bits/stdc++.h>
+#include <iostream>
+#include <memory>
+#include <functional>
+#include <variant>
+#include <cassert>
+#include <csignal>
+#include <iostream>
+#include <stacktrace>
+#include <source_location>
 
 using std::cin; using std::cout; using std::cerr; using std::clog; using std::endl; using std::string;  // using namespace std;
 using namespace std::string_literals;
 
-/// define if asserts are NOT to be checked.  Put in *.h file not *.CPP
+/* few items for debugging purposes */
+/// define NDEBUG if asserts are NOT to be checked.  Put in *.h file not *.CPP
 //#define 	NDEBUG
-/// define I'm Debugging LT.  Put in *.h file not *.CPP
+/// define GR_DEBUG if we/programmer is Debugging.  Put in *.h file not *.CPP
 //#define  	GR_DEBUG
 //#ifdef   	GR_DEBUG
 //#endif  # GR_DEBUG
-
+/// Some crude logging that privides source location.
+#define LOGGER_( msg )   using loc = std::source_location;std::cerr<<"\n\r["<<loc::current().file_name()<<':'<<std::setw(3)<<loc::current().line()<<','<<std::setw(2)<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:{" <<#msg<<"}.\n";
+#define LOGGERS( msg, x )using loc = std::source_location;std::cerr<<"\n\r["<<loc::current().file_name()<<':'<<std::setw(3)<<loc::current().line()<<','<<std::setw(2)<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:{" <<#msg<<"},{"<<x<<"}.\n";
+/// To turn off debugging just truncate the macro
 //#define LOGGER_( msg )
-//#define LOGGERS( msg,s )
+//#define LOGGERS( msg,x )
 
-/// tells user where this program crashed for debugging..
-auto crash_tracer(int const signal_number) ->void {
-    cout << "CRASH_ERROR: signal#, stack trace:<<<" << signal_number << ">>>,<<<" << std::stacktrace::current() << "<<<END STACK TRACE.\n";
-}
+/// gives a source location for printing.  Used for debugging.
+std::string source_loc();
+/// gives a source location for printing.  Used for debugging.
+void crash_tracer(int const signal_number);
+void crash_signals_register();
 
-/// tells user where this program crashed for debugging..
-auto crash_signals_register() -> void {
-    std::signal( SIGHUP,  crash_tracer );
-    std::signal( SIGINT,  crash_tracer );
-    std::signal( SIGQUIT, crash_tracer );
-    std::signal( SIGILL,  crash_tracer );
-    std::signal( SIGTRAP, crash_tracer );
-    std::signal( SIGABRT, crash_tracer );
-    std::signal( SIGSEGV, crash_tracer );
-}
-
-int main() {
+int main ( int argc, char* arv[] ) { string my_arv { *arv}; cout << "~~~ argc,argv:"<<argc<<","<<my_arv<<"."<<endl;
+    cin.exceptions( std::istream::failbit);  // throw on fail of cin.
+    crash_signals_register();
     LOGGER_ ("********************************BEGIN PROGRAM**************************************");
 #ifndef NDEBUG
     fieldNavigationInteractionMap.verify();  // todo: only needed during debugging and testing.

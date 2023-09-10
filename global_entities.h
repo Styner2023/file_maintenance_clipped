@@ -131,7 +131,8 @@ using InteractionResultData_Variant = std::variant<  // todo: What was I thinkin
     std::vector<Data_type_variant>  // todo: Seriously a vector? What was I thinking? How many of these are used?
     >;
 
-/// gives a source location for printing.  Used for debugging.
+/// Gives a source location for printing.  Used for debugging.
 std::string source_loc();
-
+void crash_tracer(int const signal_number);
+void crash_signals_register();
 #endif // GLOBAL_ENTITIES_H

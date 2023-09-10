@@ -2,6 +2,7 @@ TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
+
 CONFIG += c++latest
 #CONFIG += c++20
 CONFIG += warn_on
@@ -9,7 +10,7 @@ CONFIG += warn_on
 # ??CONFIG += QMAKE_CXXFLAGS_WARN_ON
 
 QMAKE_CXXFLAGS += \
-        -std=gnu++2b 		\  # could be wrong:
+        -std=gnu++23 		\  # could be wrong:
         -g3 		        \
         -O0 		        \
         -Wall   		\  # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
@@ -31,27 +32,27 @@ INCLUDEPATH += $$PWD/../lib_tty
 #DEPENDPATH +=  $$PWD/../lib_tty
 
 SOURCES += \
-        action_detail_row.cpp \
-        action_dialog.cpp \  # must be reconsided to "menu_system" version of this class
-        action_io_row.cpp \
-        actions.cpp \
+    action_detail_row.cpp \
+    action_dialog.cpp \  # must be reconsided to "menu_system" version of this class
+    action_io_row.cpp \
+    actions.cpp \
     field_navigation_interaction_map.cpp \
-        global_entities.cpp \
-        interaction_result.cpp \
-        io_field.cpp \
+    global_entities.cpp \
+    interaction_result.cpp \
+    io_field.cpp \
     io_field_specs_variant.cpp \
-        io_row.cpp \
-        io_table.cpp \
-        main.cpp \
-        menu.cpp \
-        menu_actions.cpp \
-        menu_option.cpp \
-        process_menu.cpp \
+    io_row.cpp \
+    io_table.cpp \
+    main.cpp \
+    menu.cpp \
+    menu_actions.cpp \
+    menu_option.cpp \
+    process_menu.cpp \
     print_functions.cpp \
-        state_application.cpp \
-        state_menu.cpp \
-        valid_values.cpp \
-        window_panel.cpp \
+    state_application.cpp \
+    state_menu.cpp \
+    valid_values.cpp \
+    window_panel.cpp \
 
 HEADERS += \
     action_detail_row.h \
