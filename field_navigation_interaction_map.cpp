@@ -2,15 +2,13 @@
 #include <tuple>
 #include <set>
 
-bool FieldNavigationInteractionMap::verify() const {  // run once by the only function that uses this data structure.
-
-    size_t radix = static_cast<int>(Lib_tty::FieldCompletionNav::na) + 2; /* accounts for duplicate int */
-    assert( mappings.size() % radix == 0 ); /* accounts for duplicate int */
+bool FieldNavigationInteractionMap::verify() const {
+    size_t radix = static_cast<int>(Lib_tty::FieldCompletionNav::na) + 2;           // accounts for duplicate int
+    assert( mappings.size() % radix == 0 );                                         // accounts for duplicate int
     assert( mappings.size() % (static_cast<int>( InteractionCategory::na )) == 0 );
 
     struct Compare {
-        bool operator() (const FieldNavInteractionRelation & lhs,
-                         const FieldNavInteractionRelation & rhs ) const {
+        bool operator() (FieldNavInteractionRelation const & lhs, FieldNavInteractionRelation const & rhs ) const {
             return std::tie( lhs.category, lhs.field_nav ) < std::tie( rhs.category, rhs.field_nav );  // https://foonathan.net/2018/07/ordering-relations-programming/
         }
     };

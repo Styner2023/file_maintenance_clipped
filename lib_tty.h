@@ -310,10 +310,13 @@ using Kb_key_variant = std::variant< std::monostate, Simple_key_char, Hot_key_ch
  *  todo: we have a problem with File_status, don't need it twice!  This one is not currenlty used?.
  *  todo: consider replacing std::tuple/std::pair with struct!
 */
-using Kb_key_a_fstat = std::pair< Kb_key_variant, File_status >;
+using Kb_key_a_fstat = std::pair<   Kb_key_variant,
+                                    File_status     >;
 
 /** a 3 tuple tells us if we got a Kb_key and?, or? a Hot_key, and, or?, is we got EOF. todo?: */
-using Kb_value_plus = std::tuple< Kb_regular_value, Hot_key, File_status >;
+using Kb_value_plus = std::tuple<   Kb_regular_value,
+                                    Hot_key,
+                                    File_status      >;
 // todo?: is this old, or a new idea? using Kb_value_o_hkey    = std::variant< Kb_regular_value, Hot_key >;
 
 /** Gets one single keystroke from user keyboard, which may consist of multiple characters in a key's multi-byte sequence

@@ -1,5 +1,3 @@
-#include <string>
-#include <iterator>
 #include "global_entities.h"
 #include "action_dialog.h"
 #include "state_menu.h"
@@ -8,13 +6,17 @@
 #include "field_navigation_interaction_map.h"
 #include "window_panel.h"
 #include "io_field.h"
+#include <string>
+#include <iterator>
+using std::cin; using std::cout; using std::cerr; using std::clog; using std::endl; using std::string;
 
-using std::endl, std::cin, std::cout, std::cerr, std::string;
-
+/// Everything? that we can know about a field value we got from the user.
+/// todo: Looks too much like Lib_tty::Kb_value_plus, which looks too much like Lib_tty::Kb_key_a_fstat.
+///       Like Kb_value_plus but allows for NOT_VALUE_PROVIDED, by making Lib_tty::Kb_regular_value optional to support is_optional.
 struct Value_nup {
-    std::optional<Lib_tty::Kb_regular_value> kb_regular_value_opt {};
-    Lib_tty::Hot_key hot_key {};
-    Lib_tty::File_status file_status {};  // like Kb_value_plus but allows for NOT_VALUE_PROVIDED, by making Lib_tty::Kb_regular_value optional to support is_optional.
+  std::optional< Lib_tty::Kb_regular_value > kb_regular_value_opt {};
+  Lib_tty::Hot_key                           hot_key {};
+  Lib_tty::File_status                       file_status {};
 };
 
 template< typename Field_spec_T >
@@ -185,7 +187,8 @@ auto to_string_typed_value2( T typed_value ) { // todo: consider combining this 
 InteractionResultNav find_interaction_result_nav( Lib_tty::Hot_key const & hot_key, InteractionCategory const cat ) {
     static bool is_verified_FNIMap {false};
     if ( !is_verified_FNIMap ) {
-        fieldNavigationInteractionMap.verify();  // do this only once in the beginning of a program run.
+        LOGGER_( "Do this only once on the first use within a program run.");
+        fieldNavigationInteractionMap.verify();
         is_verified_FNIMap = true;
     }
 
@@ -204,7 +207,8 @@ InteractionResultNav find_interaction_result_nav( Lib_tty::Hot_key const & hot_k
     else
         return v->interaction_nav;
 }
-/* Is this a valid action for the user to want to take?
+
+/** Is this a valid action for the user to want to take?
  * Is used after the fact, where we can no longer tell the user.
  * Is used as a logic error check, ie. a post-invariant
  * todo: we should let the user know when the bad field completion hot_key is entered.
@@ -218,7 +222,7 @@ bool verify_interaction_result_nav( Lib_tty::Hot_key const & hot_key, Interactio
     else return true;
 }
 
-/****** returns true if we need more input from user
+/** returns true if we need more input from user
  */
 bool process_hk_editing_mode( State_menu & state, Lib_tty::HotKeyFunctionCat const & function_cat, /*OUT*/ bool & is_editing_mode_insert ) {
     if ( function_cat == Lib_tty::HotKeyFunctionCat::editing_mode ) {
@@ -833,7 +837,7 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_integer 		cons
 }
 
 Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		const & field_spec, std::optional<Lib_tty::Kb_regular_value> const & existing_value ) {
-    exclude_disallowed_fields( field_spec ); // todo: complete this: field_spec.lengths_input.max don't think we can/need to enforce min for an integer.
+    exclude_disallowed_fields( field_spec );            // todo: complete this: field_spec.lengths_input.max don't think we can/need to enforce min for an integer.
     std::string 		deficiency_message 		{ field_spec.full_description };
     bool 				is_editing_mode_insert 	{true};
     bool				is_user_entered_a_valid_char {false};
@@ -847,7 +851,8 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
     auto const 			default_typed_value 	{ retrieve_default( current_valid_value_itr, valid_value_set.end() ) };
     std::optional<Lib_tty::Kb_regular_value>
                         default_value 			{ to_string_typed_value( default_typed_value )};
-    Lib_tty::Kb_regular_value 	current_value 			{ existing_o_default( default_value, existing_value ) };  // we build up the value we want to return character by character.
+    Lib_tty::Kb_regular_value
+                        current_value 			{ existing_o_default( default_value, existing_value ) };  // we build up the value we want to return character by character.
     pagination_reset( state, { 1, 40 } ); cout << '\n';  // create a new line on display and use that one line again and again as we reprompt for every character typed.// todo: complete this, is this reset true?  20 is an estimate!
     std::optional<Value_nup> gotten_field_data			{std::nullopt};
     while ( !gotten_field_data.has_value() ) {
@@ -1012,7 +1017,7 @@ bool is_store_value_intent( InteractionResultNav irn ) {
     return false;
 }
 
-/*******
+/**
  * Takes input from the user terminal for a data field defined by a field specification.
  * Input: 	'field' which optionally contains a partially validated value represented as a string.
  * Output:  'user navigation intent', ie. finished, or repeat operation. Currently we always assume "finished". also: error - not used yet, and value - not used and probably won't be.
