@@ -1,21 +1,23 @@
-Menu_System - a TUI/CLI interactive moded menu system in C++.
+Sorry for the poor README.  This code is open to code review. Please note that "doto:" refers to fixes the programmer _needs_ to make by him/herself.  todo?: means questions the programmer has to him/herself that sould be resolved later.  todo??: means these are areas where the programmer could use help from others during a CppMSG.com meetup meeting.
 
 Immedidate mode command line demonstration program mdtui.com
 
-Requires Lib_tty also available on my account.
+Requires Lib_tty.o to fully link the program, which is available by contacting me via linkedin or twitter.  I have copied lib_tty.h for your convienence and to allow partial compilation for the purposes of doing a code review.
+
+Menu_System - a TUI/CLI interactive moded menu system in C++.
 
 This sub-project shows the use and testing of the code.
 
 This sample program implements the following menu structure:
 
-Main Menu
+Main Menu /
   File Menu  
     Load 
     Save 
     Save As File Name 
     Backup 
 
-  Edit Entry Menu 
+  Edit Entry Menu /
     Add 
     Select Entry Id Selection 
       View 
