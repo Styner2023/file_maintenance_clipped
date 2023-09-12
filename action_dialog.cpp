@@ -211,6 +211,7 @@ InteractionResultNav find_interaction_result_nav( Lib_tty::Hot_key const & hot_k
 /** Is this a valid action for the user to want to take?
  * Is used after the fact, where we can no longer tell the user.
  * Is used as a logic error check, ie. a post-invariant
+ * Only used internally
  * todo: we should let the user know when the bad field completion hot_key is entered.
  */
 bool verify_interaction_result_nav( Lib_tty::Hot_key const & hot_key, InteractionCategory const cat ) {  // is this ever used? no?
