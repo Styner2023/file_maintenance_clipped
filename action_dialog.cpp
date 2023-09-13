@@ -11,7 +11,7 @@
 using std::cin; using std::cout; using std::cerr; using std::clog; using std::endl; using std::string;
 
 /// Everything? that we can know about a field value we got from the user.
-/// todo: Looks too much like Lib_tty::Kb_value_plus, which looks too much like Lib_tty::Kb_key_a_fstat.
+/// todo: Looks too much like Lib_tty::Kb_value_plus
 ///       Like Kb_value_plus but allows for NOT_VALUE_PROVIDED, by making Lib_tty::Kb_regular_value optional to support is_optional.
 struct Value_nup {
   std::optional< Lib_tty::Kb_regular_value > kb_regular_value_opt {};
