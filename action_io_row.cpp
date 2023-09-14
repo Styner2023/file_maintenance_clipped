@@ -4,6 +4,7 @@
 #include "action_dialog.h"
 #include "window_panel.h"
 #include "io_table.h"
+#include <cassert>
 
 using std::endl, std::cin, std::cout, std::cerr, std::string;
 

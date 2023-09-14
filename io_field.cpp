@@ -160,14 +160,14 @@ void IO_field_spec_decimal::		setData_value(const Data_type_decimal &value) 		{ 
 void IO_field_spec_scientific::		setData_value(const Data_type_scientific &value) 	{  data_location = value;  is_null_field_location[field_index_in_row] = false;}
 
 
-std::optional<Lib_tty::Kb_regular_value> IO_field_spec_bool::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return data_location ? YES : NO ; 	  				     else return std::nullopt; }
-std::optional<Lib_tty::Kb_regular_value> IO_field_spec_character::	getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
-std::optional<Lib_tty::Kb_regular_value> IO_field_spec_uint64::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
-std::optional<Lib_tty::Kb_regular_value> IO_field_spec_time_point::	getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return /* todo: std::to_string( data_value )*/ std::nullopt; 	 else return std::nullopt; }
-std::optional<Lib_tty::Kb_regular_value> IO_field_spec_tm::			getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return /* todo: std::to_string( data_value )*/ std::nullopt; 	 else return std::nullopt; }
-std::optional<Lib_tty::Kb_regular_value> IO_field_spec_alphanumeric::getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return data_location; 									 else return std::nullopt; }
-std::optional<Lib_tty::Kb_regular_value> IO_field_spec_integer::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
-std::optional<Lib_tty::Kb_regular_value> IO_field_spec_decimal::		getData_value_str() const {
+std::optional<Lib_tty::Key_char_i18> IO_field_spec_bool::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return data_location ? YES : NO ; 	  				     else return std::nullopt; }
+std::optional<Lib_tty::Key_char_i18> IO_field_spec_character::	getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
+std::optional<Lib_tty::Key_char_i18> IO_field_spec_uint64::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
+std::optional<Lib_tty::Key_char_i18> IO_field_spec_time_point::	getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return /* todo: std::to_string( data_value )*/ std::nullopt; 	 else return std::nullopt; }
+std::optional<Lib_tty::Key_char_i18> IO_field_spec_tm::			getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return /* todo: std::to_string( data_value )*/ std::nullopt; 	 else return std::nullopt; }
+std::optional<Lib_tty::Key_char_i18> IO_field_spec_alphanumeric::getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return data_location; 									 else return std::nullopt; }
+std::optional<Lib_tty::Key_char_i18> IO_field_spec_integer::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
+std::optional<Lib_tty::Key_char_i18> IO_field_spec_decimal::		getData_value_str() const {
     if( !is_null_field_location[field_index_in_row]) {
         std::ostringstream oss {};
         oss << std::fixed << std::setprecision( std::get<ValidityFieldSpecDecimal>( *validity_spec ).range.precision )<< data_location;
@@ -175,7 +175,7 @@ std::optional<Lib_tty::Kb_regular_value> IO_field_spec_decimal::		getData_value_
         return oss.str();
     }
     else return std::nullopt; }
-std::optional<Lib_tty::Kb_regular_value> IO_field_spec_scientific::	getData_value_str() const { if( !is_null_field_location[field_index_in_row] ) return /*std::to_string( data_value );*/ std::nullopt; else return std::nullopt; }
+std::optional<Lib_tty::Key_char_i18> IO_field_spec_scientific::	getData_value_str() const { if( !is_null_field_location[field_index_in_row] ) return /*std::to_string( data_value );*/ std::nullopt; else return std::nullopt; }
 
 std::optional<Data_type_boolean > IO_field_spec_bool::				getData_value_location() const { if ( is_null_field_location[field_index_in_row] == false ) return data_location; else return std::nullopt; }
 std::optional<Data_type_alphanumeric> IO_field_spec_alphanumeric::	getData_value_location() const { if ( is_null_field_location[field_index_in_row] == false ) return data_location; else return std::nullopt; }

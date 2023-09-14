@@ -197,7 +197,7 @@ public:
 
     using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
-    std::optional<Lib_tty::Kb_regular_value> 	getData_value_str() const;
+    std::optional<Lib_tty::Key_char_i18> 	getData_value_str() const;
     void 								setData_value(const Data_type_boolean &value);
     void 								setData_range(const Data_range &value);
     IO_field_spec_bool::Data_range 		getData_range() const;
@@ -220,7 +220,7 @@ public:
     using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void setData_value(const Data_type_character &value);
-    std::optional<Lib_tty::Kb_regular_value>     getData_value_str() const;
+    std::optional<Lib_tty::Key_char_i18>     getData_value_str() const;
     void 								setData_range(const Data_range &value);
     IO_field_spec_character::Data_range 		getData_range() const;
 };
@@ -237,7 +237,7 @@ public:
     void print() const override final;
     //IO_field_spec_uint64(
     void 								clear_data_value();
-    std::optional<Lib_tty::Kb_regular_value> 	getData_value_str() const;
+    std::optional<Lib_tty::Key_char_i18> 	getData_value_str() const;
     using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void                                setData_value(const Data_type_uint64 &value);
@@ -257,7 +257,7 @@ public:
     void print() const override final;
     //IO_field_spec_time_point(
     void 								clear_data_value();
-    std::optional<Lib_tty::Kb_regular_value> 	getData_value_str() const;
+    std::optional<Lib_tty::Key_char_i18> 	getData_value_str() const;
     using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(const Data_type_time_point &value);
@@ -277,7 +277,7 @@ public:
     void print() const override final;
     // IO_field_spec_tm(
     void 								clear_data_value();
-    std::optional<Lib_tty::Kb_regular_value> 	getData_value_str() const;
+    std::optional<Lib_tty::Key_char_i18> 	getData_value_str() const;
     using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(const Data_type_tm &value);
@@ -317,7 +317,7 @@ public:
     void 								clear_data_value();
     //std::optional<ValidationFieldError> validate_data( Data_type_alphanumeric const & candidate );
     std::optional<ValidationFieldError> validate_data( std::remove_reference_t<decltype (data_location)> const & candidate);
-    std::optional<Lib_tty::Kb_regular_value> 	getData_value_str() const;
+    std::optional<Lib_tty::Key_char_i18> 	getData_value_str() const;
     using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(const Data_type_alphanumeric &value);
@@ -346,7 +346,7 @@ public:
     void 								clear_data_value();
     //std::optional<ValidationFieldError> validate_data( Data_type_integer const candidate );
     std::optional<ValidationFieldError> validate_data( std::remove_reference_t<decltype (data_location)> const candidate );
-    std::optional<Lib_tty::Kb_regular_value> 	getData_value_str() const;
+    std::optional<Lib_tty::Key_char_i18> 	getData_value_str() const;
     using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(Data_type_integer const & value);
@@ -375,7 +375,7 @@ public:
     void 								clear_data_value();
     // std::optional<ValidationFieldError> validate_data(Data_type_decimal const candidate);
     std::optional<ValidationFieldError> validate_data( std::remove_reference_t<decltype (data_location)> const candidate );
-    std::optional<Lib_tty::Kb_regular_value> 	getData_value_str() const;
+    std::optional<Lib_tty::Key_char_i18> 	getData_value_str() const;
     using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(const Data_type_decimal &value);
@@ -397,7 +397,7 @@ public:
     void 								clear_data_value();
     //std::optional<ValidationFieldError> validate_data(Data_type_scientific const candidate);
     std::optional<ValidationFieldError> validate_data( std::remove_reference_t<decltype (data_location)> const candidate );
-    std::optional<Lib_tty::Kb_regular_value> 	getData_value_str() const;
+    std::optional<Lib_tty::Key_char_i18> 	getData_value_str() const;
     using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(const Data_type_scientific &value);
@@ -432,8 +432,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec > io_field_spec_bool;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ kb_regular_value, hot_key, file_status ] = value_plus;
-//        if ( kb_regular_value == "Y" )
+//        auto [ Key_char_i18, hot_key, file_status ] = value_plus;
+//        if ( Key_char_i18 == "Y" )
 //            field_value = true;
 //        else
 //            field_value = false;
@@ -447,8 +447,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_character > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ kb_regular_value, hot_key, file_status ] = value_plus;
-//        field_value = kb_regular_value;
+//        auto [ Key_char_i18, hot_key, file_status ] = value_plus;
+//        field_value = Key_char_i18;
 //        return true;
 //    }
 //    //~IO_field_bool() = default;
@@ -478,8 +478,8 @@ public:
 //        //    bool 	      is_programmer_only 	{false};  // used by the computer program only, not visible to any user!!
 //        //    bool 		  is_initial_focus 	 	{false};
 //        //    bool		  is_greyed_out 	 	{false};
-//        auto [ kb_regular_value, hot_key, file_status ] = value_plus;
-//        field_value = kb_regular_value;
+//        auto [ Key_char_i18, hot_key, file_status ] = value_plus;
+//        field_value = Key_char_i18;
 //        return true;
 //    }
 //    //~IO_field_bool() = default;
@@ -488,8 +488,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_time_point > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ kb_regular_value, hot_key, file_status ] = value_plus;
-//        field_value = kb_regular_value;
+//        auto [ Key_char_i18, hot_key, file_status ] = value_plus;
+//        field_value = Key_char_i18;
 //        return true;
 //    }
 //    //~IO_field_bool() = default;
@@ -498,8 +498,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_tm > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ kb_regular_value, hot_key, file_status ] = value_plus;
-//        field_value = kb_regular_value;
+//        auto [ Key_char_i18, hot_key, file_status ] = value_plus;
+//        field_value = Key_char_i18;
 //        return true;
 //    }                std::visit( AssignVisitor(), table.spec.fields.at(2), ir);
 
@@ -510,8 +510,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_tm > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ kb_regular_value, hot_key, file_status ] = value_plus;
-//        field_value = kb_regular_value;
+//        auto [ Key_char_i18, hot_key, file_status ] = value_plus;
+//        field_value = Key_char_i18;
 //        return true;
 //    }
 //    //~IO_field_bool() = default;
@@ -521,8 +521,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_integer > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ kb_regular_value, hot_key, file_status ] = value_plus;
-//        field_value = kb_regular_value;
+//        auto [ Key_char_i18, hot_key, file_status ] = value_plus;
+//        field_value = Key_char_i18;
 
 //        io_field_spec_alphanumeric->lengths_input.max;
 
@@ -535,8 +535,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_decimal > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ kb_regular_value, hot_key, file_status ] = value_plus;
-//        field_value = kb_regular_value;
+//        auto [ Key_char_i18, hot_key, file_status ] = value_plus;
+//        field_value = Key_char_i18;
 //        return true;
 //    }
 //    //~IO_field_bool();

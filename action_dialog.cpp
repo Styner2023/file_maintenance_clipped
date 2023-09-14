@@ -6,21 +6,22 @@
 #include "field_navigation_interaction_map.h"
 #include "window_panel.h"
 #include "io_field.h"
+#include <cassert>
 #include <string>
 #include <iterator>
 using std::cin; using std::cout; using std::cerr; using std::clog; using std::endl; using std::string;
 
 /// Everything? that we can know about a field value we got from the user.
 /// todo: Looks too much like Lib_tty::Kb_value_plus
-///       Like Kb_value_plus but allows for NOT_VALUE_PROVIDED, by making Lib_tty::Kb_regular_value optional to support is_optional.
+///       Like Kb_value_plus but allows for NOT_VALUE_PROVIDED, by making Lib_tty::Key_char_i18 optional to support is_optional.
 struct Value_nup {
-  std::optional< Lib_tty::Kb_regular_value > kb_regular_value_opt {};
+  std::optional< Lib_tty::Key_char_i18 > Key_char_i18_opt {};
   Lib_tty::Hot_key                           hot_key {};
   Lib_tty::File_status                       file_status {};
 };
 
 template< typename Field_spec_T >
-void prompt_for_field_data( State_menu & state, Field_spec_T const & field_spec, Lib_tty::Kb_regular_value const & current_value, std::string const & progress_message ) {
+void prompt_for_field_data( State_menu & state, Field_spec_T const & field_spec, Lib_tty::Key_char_i18 const & current_value, std::string const & progress_message ) {
     pagination_reset( state, { 0, 40 } ); // todo: complete this, is this reset true? 0 lines because we just use one again and again, lenght is an estimate!
     static size_t prior_prompt_length 			{};
     static size_t prior_current_value_echo_length 	{};
@@ -30,7 +31,7 @@ void prompt_for_field_data( State_menu & state, Field_spec_T const & field_spec,
     for ( auto i = prior_prompt_length + prior_current_value_echo_length + prior_progress_message_length; i-->0; )
         cout << ' ';
 
-    Lib_tty::Kb_regular_value current_value_echo {};
+    Lib_tty::Key_char_i18 current_value_echo {};
     current_value_echo.reserve( current_value.size() );
     switch ( field_spec.prompt_field_spec.echo_mode ) {
     case IO_field_echo_mode::normal:
@@ -126,7 +127,7 @@ void exclude_disallowed_fields( T const & field_spec ) {
 }
 
 template< typename T >
-Lib_tty::Kb_regular_value existing_o_default( std::optional<T> const & default_value, std::optional<Lib_tty::Kb_regular_value> const & existing_value ) {
+Lib_tty::Key_char_i18 existing_o_default( std::optional<T> const & default_value, std::optional<Lib_tty::Key_char_i18> const & existing_value ) {
     if      ( existing_value.has_value() ) {
         cerr <<"\n existing_o_default() existing_value.value(): "<< existing_value.value()<<endl;
         return existing_value.value();
@@ -140,7 +141,7 @@ Lib_tty::Kb_regular_value existing_o_default( std::optional<T> const & default_v
 }
 
 template< typename T >
-std::optional<Lib_tty::Kb_regular_value> to_string_typed_value( T typed_value ) {
+std::optional<Lib_tty::Key_char_i18> to_string_typed_value( T typed_value ) {
     using T2 = std::decay_t<T>;
     cerr<< "to_string_default_value():START\n";
     if ( typed_value.has_value() ) {
@@ -185,8 +186,7 @@ auto to_string_typed_value2( T typed_value ) { // todo: consider combining this 
 }
 
 InteractionResultNav find_interaction_result_nav( Lib_tty::Hot_key const & hot_key, InteractionCategory const cat ) {
-    static bool is_verified_FNIMap {false};
-    if ( !is_verified_FNIMap ) {
+    if ( static bool is_verified_FNIMap {false}; !is_verified_FNIMap ) {
         LOGGER_( "Do this only once on the first use within a program run.");
         fieldNavigationInteractionMap.verify();
         is_verified_FNIMap = true;
@@ -198,11 +198,7 @@ InteractionResultNav find_interaction_result_nav( Lib_tty::Hot_key const & hot_k
                          return (r.category == cat && r.field_nav == hot_key.f_completion_nav );
                     });
     if ( v == fieldNavigationInteractionMap.mappings.end() ) {
-        //throw std::logic_error( "Missing entry in FNIMap."+std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.  Is there a new way to do this in C++23?
-        #pragma GCC diagnostic push
-        #pragma GCC diagnostic ignored "-Wunused-value"  // todo?: is this the best way to do this, find other occurences in code to fix?
-        assert(( "Missing entry in FNIMap.",false));
-        #pragma GCC diagnostic pop
+        assert( "Missing entry in FNIMap." && false );
     }
     else
         return v->interaction_nav;
@@ -225,7 +221,7 @@ bool verify_interaction_result_nav( Lib_tty::Hot_key const & hot_key, Interactio
 
 /** returns true if we need more input from user
  */
-bool process_hk_editing_mode( State_menu & state, Lib_tty::HotKeyFunctionCat const & function_cat, /*OUT*/ bool & is_editing_mode_insert ) {
+bool process_hk_editing_mode( Lib_tty::HotKeyFunctionCat const & function_cat, /*OUT*/ bool & is_editing_mode_insert ) {
     if ( function_cat == Lib_tty::HotKeyFunctionCat::editing_mode ) {
         is_editing_mode_insert = !is_editing_mode_insert;
         return true;
@@ -245,7 +241,7 @@ std::optional<Lib_tty::Hot_key> process_hk_help( State_menu & state, T const & f
 
 /****** returns true if we need more input from user
  */
-bool process_intra_field_nav( Lib_tty::FieldIntraNav const intra_f_nav, Lib_tty::Kb_regular_value & /*INOUT*/ current_value ) {
+bool process_intra_field_nav( Lib_tty::FieldIntraNav const intra_f_nav, Lib_tty::Key_char_i18 & /*INOUT*/ current_value ) {
     switch ( intra_f_nav ) {
     case Lib_tty::FieldIntraNav::backspace_left_erase:
     case Lib_tty::FieldIntraNav::erase_left:
@@ -279,7 +275,7 @@ bool check_for_bool_type( IO_field_spec_variant const & field_spec) {
     return        ( std::holds_alternative< IO_field_spec_bool > ( field_spec ) );
 }
 
-bool is_lone_negative_sign_o_0_length ( Lib_tty::Kb_regular_value const & current_value, std::string /*OUT*/ & deficiency_message  ) {
+bool is_lone_negative_sign_o_0_length ( Lib_tty::Key_char_i18 const & current_value, std::string /*OUT*/ & deficiency_message  ) {
     if ( current_value.length() == 0 ) {
         deficiency_message = "a zero length response is not allowed. enter a number";
         return true;
@@ -302,7 +298,7 @@ bool is_lone_negative_sign_o_0_length ( Lib_tty::Kb_regular_value const & curren
  */
 bool process_field_completion_nav( State_menu						state,
                                    IO_field_spec_variant const 		& field_spec,
-                                   Lib_tty::Kb_regular_value const			& current_value,
+                                   Lib_tty::Key_char_i18 const			& current_value,
                                    Lib_tty::Hot_key const 					& hot_key,
                                    Lib_tty::File_status const 				& file_status,
                                    std::optional<Value_nup> 		& /*IN&OUT*/ gotten_field_data,
@@ -315,7 +311,7 @@ bool process_field_completion_nav( State_menu						state,
 
     //bool const is_numeric_field { std::is_same<std::decay_t< hot_key. , ValidityFieldSpecDecimal >::value };	// todo: don't need this, could check the field_spec?
     // if ( is_check_for_a_number && is_bool ) assert(false);  // invariant, todo: there are many more similar to this.
-    Lib_tty::Kb_regular_value 	fixed_current_value 	{};
+    Lib_tty::Key_char_i18 	fixed_current_value 	{};
     bool 				skip_additional_checks {false};  // Our return value, with a strange name! NOTE we also have *OUT* variables. Also shows that deficiency message has been updated, but this is not relevant to logic, but does prove we need this bool.
 
     // check for illegal field completion values for the InteractionCategory.
@@ -429,7 +425,7 @@ template< typename Itr_type >
 bool process_valid_values_nav( Itr_type 				& cur_itr, 					// todo: should these be copies so I don't mess up caller?
                                Itr_type const 			& valid_value_itr_begin,
                                Itr_type const 			& valid_value_itr_end,
-                               Lib_tty::Kb_regular_value 		& /*OUT*/ current_value,
+                               Lib_tty::Key_char_i18 		& /*OUT*/ current_value,
                                Lib_tty::Hot_key const 			& hot_key,
                                std::optional<Value_nup> & /*OUT*/ gotten_field_data,
                                std::string 				& /*OUT*/ deficiency_message ) {
@@ -467,7 +463,7 @@ bool process_valid_values_nav( Itr_type 				& cur_itr, 					// todo: should thes
 
 template< typename VSpec_type >
 std::optional<std::string> check_numeric_invalidity( VSpec_type const 		 & validity_spec,
-                                          Lib_tty::Kb_regular_value const & current_value ) {  // todo: should be able to do this without templates, using typeid()
+                                          Lib_tty::Key_char_i18 const & current_value ) {  // todo: should be able to do this without templates, using typeid()
     std::string deficiency_message;
     if ( current_value != "-" && current_value != "+")
         try {  // check if more than a prefixed sign character
@@ -510,10 +506,10 @@ std::optional<std::string> check_numeric_invalidity( VSpec_type const 		 & valid
 
 // returns false if not handled or not relevant and we want to proceed with checks
 bool process_numeric_decorators( size_t const 				length,
-                                 Lib_tty::Kb_regular_value const 	& kb_regular_value,
+                                 Lib_tty::Key_char_i18 const 	& Key_char_i18,
                                  IO_field_spec_variant const& field_spec ,
                                  std::string 				& deficiency_message ) {
-    assert( kb_regular_value.length() == 1 );// allow comma,  todo: anywhere: not good.  study locales and number punctiation.
+    assert( Key_char_i18.length() == 1 );// allow comma,  todo: anywhere: not good.  study locales and number punctiation.
     if ( ! check_for_numeric_type( field_spec ) )
         return false;
 
@@ -521,11 +517,11 @@ bool process_numeric_decorators( size_t const 				length,
     bool is_excepted_decorator 	{true};
     bool is_allowed 			{true}; 	// Disallow anything but numbers except for these allowed decorators AKA excepted_decorators. at this point we have only two, but with this if/else code structure others could be added easily.
 
-    if ( std::isdigit( static_cast<unsigned char>( kb_regular_value.at(0) )))
+    if ( std::isdigit( static_cast<unsigned char>( Key_char_i18.at(0) )))
         is_allowed_digit = true;
     else
     {
-        if ( kb_regular_value.at(0) == '-' || kb_regular_value.at(0) == '+' ) {
+        if ( Key_char_i18.at(0) == '-' || Key_char_i18.at(0) == '+' ) {
             if ( length == 0 ) {  // first position/leading negative sign
                 is_excepted_decorator = true;
             } else {
@@ -533,7 +529,7 @@ bool process_numeric_decorators( size_t const 				length,
                 is_excepted_decorator = false;
             }
         } else {
-            if ( kb_regular_value.at(0) == '.' ) {  // todo: complete this: fix for locale of '.' or ','.
+            if ( Key_char_i18.at(0) == '.' ) {  // todo: complete this: fix for locale of '.' or ','.
                 if ( std::holds_alternative< IO_field_spec_decimal >( field_spec ) )  {
                     deficiency_message = "no decimal point is allowed in a whole number." ;  // todo: complete this: fix for locale of '.' or ','.
                     is_excepted_decorator = false;
@@ -588,7 +584,7 @@ bool check_prohibited_characters( T const & validity_spec, char const ch, std::s
 
 template< typename T >
 bool check_max_input_length( T const 				& field_spec,
-                             Lib_tty::Kb_regular_value const & current_value,
+                             Lib_tty::Key_char_i18 const & current_value,
                              std::string 			& deficiency_message ) {
      //                          bool & is_user_entered_a_valid_char  ) {
     if ( current_value.length() == field_spec.lengths_input.max ) {
@@ -604,7 +600,7 @@ bool check_max_input_length( T const 				& field_spec,
  * Output: 	'field' which optionally contains a partially validated value represented as a string.
  * Mutates: prints to terminal using pagination.
  * Calls:	- prompt_field_data() which tells user what is expected by printing to the user terminal.
- * 			- calls 'Lib_tty::get_kb_keys_raw()' which provides a partially validated value.
+ * 			- calls 'Lib_tty::get_kb_keystrokes_raw()' which provides a partially validated value.
  *
  * Callers:	- called directly by programmer - unlikely.
  * 			- called by an 'action_dialog_modal_io_field' function or similar.
@@ -619,7 +615,7 @@ bool check_max_input_length( T const 				& field_spec,
  */
 Value_nup input_field_response( State_menu 						      & state,
                                 IO_field_spec_bool const 			  & field_spec,
-                                std::optional<Lib_tty::Kb_regular_value> const & existing_value ) {
+                                std::optional<Lib_tty::Key_char_i18> const & existing_value ) {
     exclude_disallowed_fields( field_spec ); // todo: complete this: field_spec.lengths_input.max don't think we can/need to enforce min for an integer.
     pagination_reset( state, { 1, 40 } ); cout << '\n';  // create a new line on display and use that one line again and again as we reprompt for every character typed.// todo: complete this, is this reset true?  20 is an estimate!
     std::optional<Value_nup> gotten_field_data				{std::nullopt};
@@ -638,16 +634,16 @@ Value_nup input_field_response( State_menu 						      & state,
                                                                 valid_value_itr : valid_value_itr_begin };  // set default if present, else at begining
     auto const 				 default_typed_value 			{ retrieve_default( current_valid_value_itr,
                                                                                 valid_value_set.end())};
-    std::optional<Lib_tty::Kb_regular_value>
+    std::optional<Lib_tty::Key_char_i18>
                              default_value 					{ to_string_typed_value( default_typed_value) };
-    Lib_tty::Kb_regular_value current_value 					{ existing_o_default(
+    Lib_tty::Key_char_i18 current_value 					{ existing_o_default(
                                                                         default_value, existing_value ) };  // we build up the value we want to return character by character.
 
     while ( ! gotten_field_data.has_value() ) {
         prompt_for_field_data( state, field_spec, current_value, deficiency_message );
         deficiency_message = field_spec.full_description;  // reset hint, since user has seen deficiency from prior entry error.
-        auto [kb_regular_value, hot_key, file_status] =
-                Lib_tty::get_kb_keys_raw( 1,
+        auto [Key_char_i18, hot_key, file_status] =
+                Lib_tty::get_kb_keystrokes_raw( 1,
                                           false,
                                           field_spec.prompt_field_spec.echo_mode == IO_field_echo_mode::normal ? true : false,
                                           validity_spec.base.is_strip_control_chars
@@ -660,7 +656,7 @@ Value_nup input_field_response( State_menu 						      & state,
                      hot_key.function_cat != Lib_tty::HotKeyFunctionCat::navigation_esc )  // todo: which hot_keys would be just continue to top , versus those to be handled below?
                     continue;
         }
-        if ( process_hk_editing_mode( state, hot_key.function_cat, is_editing_mode_insert ))
+        if ( process_hk_editing_mode( hot_key.function_cat, is_editing_mode_insert ))
             continue;
         if ( process_intra_field_nav( hot_key.intra_f_nav, current_value ))
             continue;
@@ -678,11 +674,11 @@ Value_nup input_field_response( State_menu 						      & state,
                                        deficiency_message )) // we don't allow user to use up arrow once they have started entering a value, unless it is a field completion navigation.
             continue;
         // *** End   Hot_key Handling ***  Hence we must have a character!  Here we reject bad or excess characters.  bool represents a problem which we handle by not using the user entered kb character.
-        if ( check_prohibited_characters( validity_spec, kb_regular_value.at(0), deficiency_message ) )
+        if ( check_prohibited_characters( validity_spec, Key_char_i18.at(0), deficiency_message ) )
             continue;
         if ( check_max_input_length( field_spec, current_value, deficiency_message )) //                        is_user_entered_a_valid_char ))
             continue;
-        current_value += kb_regular_value;
+        current_value += Key_char_i18;
         is_user_entered_a_valid_char = true;
     }
     /* todo: complete this: notify user about length requirements failure.
@@ -692,13 +688,13 @@ Value_nup input_field_response( State_menu 						      & state,
     */
     return gotten_field_data.value();
 }
-//Value_nup input_field_response( State_menu & state, IO_field_spec_character 	const & field_spec, std::optional<Lib_tty::Kb_regular_value> const & existing_value) {
-//Value_nup input_field_response( State_menu & state, IO_field_spec_uint64 		const & field_spec, std::optional<Lib_tty::Kb_regular_value> const & existing_value) {
-//Value_nup input_field_response( State_menu & state, IO_field_spec_time_point 	const & field_spec, std::optional<Lib_tty::Kb_regular_value> const & existing_value) {
-//Value_nup input_field_response( State_menu & state, IO_field_spec_tm 			const & field_spec, std::optional<Lib_tty::Kb_regular_value> const & existing_value) {
+//Value_nup input_field_response( State_menu & state, IO_field_spec_character 	const & field_spec, std::optional<Lib_tty::Key_char_i18> const & existing_value) {
+//Value_nup input_field_response( State_menu & state, IO_field_spec_uint64 		const & field_spec, std::optional<Lib_tty::Key_char_i18> const & existing_value) {
+//Value_nup input_field_response( State_menu & state, IO_field_spec_time_point 	const & field_spec, std::optional<Lib_tty::Key_char_i18> const & existing_value) {
+//Value_nup input_field_response( State_menu & state, IO_field_spec_tm 			const & field_spec, std::optional<Lib_tty::Key_char_i18> const & existing_value) {
 Value_nup input_field_response( State_menu 								& state,
                                 IO_field_spec_alphanumeric const 		& field_spec,
-                                std::optional<Lib_tty::Kb_regular_value> const 	& existing_value) {
+                                std::optional<Lib_tty::Key_char_i18> const 	& existing_value) {
     exclude_disallowed_fields( field_spec ); // todo: complete this: field_spec.lengths_input.max don't think we can/need to enforce min for an integer.
     pagination_reset( state, { 1, 40 } ); cout << '\n';  // create a new line on display and use that one line again and again as we reprompt for every character typed.// todo: complete this, is this reset true?  20 is an estimate!
     std::optional<Value_nup> gotten_field_data				{std::nullopt};
@@ -716,17 +712,17 @@ Value_nup input_field_response( State_menu 								& state,
                                                               valid_value_itr : valid_value_itr_begin };  // set default if present, else at begining// std::set<ValidValueAlphanum>::iterator
     std::optional<Data_type_alphanumeric> const
                             default_typed_value 			{ retrieve_default( current_valid_value_itr, valid_value_set.end() ) };
-    std::optional<Lib_tty::Kb_regular_value>
+    std::optional<Lib_tty::Key_char_i18>
                             default_value 					{ to_string_typed_value(
                                                                     default_typed_value ) };
-    Lib_tty::Kb_regular_value 	    current_value 					{ existing_o_default(
+    Lib_tty::Key_char_i18 	    current_value 					{ existing_o_default(
                                                                     default_value, existing_value ) };  // we build up the value we want to return character by character.
 
     while ( ! gotten_field_data.has_value() ) {
         prompt_for_field_data( state, field_spec, current_value, deficiency_message );
         deficiency_message = field_spec.full_description;  // let the user see the hint, unless of course we find a deficiency below.
-        auto [kb_regular_value, hot_key, file_status] =
-                Lib_tty::get_kb_keys_raw( 1,
+        auto [Key_char_i18, hot_key, file_status] =
+                Lib_tty::get_kb_keystrokes_raw( 1,
                                           false,
                                           field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
                                           validity_spec.base.is_strip_control_chars
@@ -740,7 +736,7 @@ Value_nup input_field_response( State_menu 								& state,
                      hot_key.function_cat != Lib_tty::HotKeyFunctionCat::navigation_esc )  // todo: which hot_keys would be just continue to top , versus those to be handled below?
                     continue;
         }
-        if ( process_hk_editing_mode( state, hot_key.function_cat, is_editing_mode_insert ))
+        if ( process_hk_editing_mode( hot_key.function_cat, is_editing_mode_insert ))
             continue;
         //************************if ( process_hk_cat( state, field_spec, hot_key.function_cat, is_editing_mode_insert ))
             //************************continue;
@@ -760,17 +756,17 @@ Value_nup input_field_response( State_menu 								& state,
                                        deficiency_message )) // we don't allow user to use up arrow once they have started entering a value, unless it is a field completion navigation.
             continue;
         // *** End   Hot_key Handling ***  Hence we must have a character!  Here we reject bad or excess characters.  bool represents a problem which we handle by not using the user entered kb character.
-        if ( check_prohibited_characters( validity_spec, kb_regular_value.at(0), deficiency_message ) )
+        if ( check_prohibited_characters( validity_spec, Key_char_i18.at(0), deficiency_message ) )
             continue;
         if ( check_max_input_length( field_spec, current_value, deficiency_message ) )
             continue;
-        current_value += kb_regular_value;
+        current_value += Key_char_i18;
         is_user_entered_a_valid_char = true;
     }
     return gotten_field_data.value();
 }
 
-Value_nup input_field_response( State_menu & state, IO_field_spec_integer 		const & field_spec, std::optional<Lib_tty::Kb_regular_value> const & existing_value ) {
+Value_nup input_field_response( State_menu & state, IO_field_spec_integer 		const & field_spec, std::optional<Lib_tty::Key_char_i18> const & existing_value ) {
     exclude_disallowed_fields( field_spec ); // todo: complete this: field_spec.lengths_input.max don't think we can/need to enforce min for an integer.
     std::string 		deficiency_message 		{ field_spec.full_description };
     bool 				is_editing_mode_insert 	{true};
@@ -782,17 +778,17 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_integer 		cons
     auto const			valid_value_itr_begin	= valid_value_set.begin();
     auto const			valid_value_itr_end		= valid_value_set.end();
     auto 				current_valid_value_itr { valid_value_itr != valid_value_itr_end ? valid_value_itr : valid_value_itr_begin };  // set default if present, else at begining
-    //Lib_tty::Kb_regular_value 	kludge 					{}; // std::optional<Lib_tty::Kb_regular_value> default_value { /* retrieve_default( current_valid_value_itr, valid_value_set.end(), kludge )*/ std::nullopt };
+    //Lib_tty::Key_char_i18 	kludge 					{}; // std::optional<Lib_tty::Key_char_i18> default_value { /* retrieve_default( current_valid_value_itr, valid_value_set.end(), kludge )*/ std::nullopt };
     auto const 			default_typed_value 	{ retrieve_default( current_valid_value_itr, valid_value_set.end() ) };
-    std::optional<Lib_tty::Kb_regular_value>
+    std::optional<Lib_tty::Key_char_i18>
                         default_value 			{ to_string_typed_value( default_typed_value )};
-    Lib_tty::Kb_regular_value 	current_value 			{ existing_o_default( default_value, existing_value ) };  // we build up the value we want to return character by character.
+    Lib_tty::Key_char_i18 	current_value 			{ existing_o_default( default_value, existing_value ) };  // we build up the value we want to return character by character.
     pagination_reset( state, { 1, 40 } ); cout << '\n';  // create a new line on display and use that one line again and again as we reprompt for every character typed.// todo: complete this, is this reset true?  20 is an estimate!
     std::optional<Value_nup> gotten_field_data			{std::nullopt};
     while ( !gotten_field_data.has_value() ) {
         prompt_for_field_data( state, field_spec, current_value, deficiency_message );
         deficiency_message = field_spec.full_description;  // let the user see the hint, unless of course we find a deficiency below.
-        auto [kb_regular_value, hot_key, file_status] =  Lib_tty::get_kb_keys_raw( 1,
+        auto [Key_char_i18, hot_key, file_status] =  Lib_tty::get_kb_keystrokes_raw( 1,
                                                                                  false,
                                                                                  field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
                                                                                  validity_spec.base.is_strip_control_chars
@@ -803,7 +799,7 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_integer 		cons
                 if ( hot_key.function_cat == Lib_tty::HotKeyFunctionCat::help_popup )
                     continue;
         }
-        if ( process_hk_editing_mode( state, hot_key.function_cat, is_editing_mode_insert ))
+        if ( process_hk_editing_mode( hot_key.function_cat, is_editing_mode_insert ))
             continue;
         // *****************if ( process_hk_cat( state, field_spec, hot_key.function_cat, is_editing_mode_insert ))
             // *****************continue;
@@ -816,13 +812,13 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_integer 		cons
             && process_valid_values_nav( current_valid_value_itr, valid_value_itr_begin, valid_value_itr_end, current_value, hot_key, gotten_field_data, deficiency_message )) // we don't allow user to use up arrow once they have started entering a value, unless it is a field completion navigation.
             continue;
         // *** End   Hot_key Handling ***  hence we must have a character!
-        if ( check_prohibited_characters( validity_spec, kb_regular_value.at(0), deficiency_message ) )
+        if ( check_prohibited_characters( validity_spec, Key_char_i18.at(0), deficiency_message ) )
             continue;
-        if ( process_numeric_decorators( current_value.length(), kb_regular_value, field_spec, deficiency_message ))
+        if ( process_numeric_decorators( current_value.length(), Key_char_i18, field_spec, deficiency_message ))
             continue;
         if ( check_max_input_length( field_spec, current_value, deficiency_message ) )
             continue;
-        current_value += kb_regular_value;
+        current_value += Key_char_i18;
         if ( auto error = check_numeric_invalidity( validity_spec, current_value ) ) {
             deficiency_message = error.value();
             continue;
@@ -837,7 +833,7 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_integer 		cons
     return gotten_field_data.value();
 }
 
-Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		const & field_spec, std::optional<Lib_tty::Kb_regular_value> const & existing_value ) {
+Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		const & field_spec, std::optional<Lib_tty::Key_char_i18> const & existing_value ) {
     exclude_disallowed_fields( field_spec );            // todo: complete this: field_spec.lengths_input.max don't think we can/need to enforce min for an integer.
     std::string 		deficiency_message 		{ field_spec.full_description };
     bool 				is_editing_mode_insert 	{true};
@@ -850,16 +846,16 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
     auto const			valid_value_itr_end		= valid_value_set.end();
     auto 				current_valid_value_itr { valid_value_itr != valid_value_itr_end ? valid_value_itr : valid_value_itr_begin };  // set default if present, else at begining
     auto const 			default_typed_value 	{ retrieve_default( current_valid_value_itr, valid_value_set.end() ) };
-    std::optional<Lib_tty::Kb_regular_value>
+    std::optional<Lib_tty::Key_char_i18>
                         default_value 			{ to_string_typed_value( default_typed_value )};
-    Lib_tty::Kb_regular_value
+    Lib_tty::Key_char_i18
                         current_value 			{ existing_o_default( default_value, existing_value ) };  // we build up the value we want to return character by character.
     pagination_reset( state, { 1, 40 } ); cout << '\n';  // create a new line on display and use that one line again and again as we reprompt for every character typed.// todo: complete this, is this reset true?  20 is an estimate!
     std::optional<Value_nup> gotten_field_data			{std::nullopt};
     while ( !gotten_field_data.has_value() ) {
         prompt_for_field_data( state, field_spec, current_value, deficiency_message );
         deficiency_message = field_spec.full_description;  // let the user see the hint, unless of course we find a deficiency below.
-        auto [kb_regular_value, hot_key, file_status] =  Lib_tty::get_kb_keys_raw( 1,
+        auto [Key_char_i18, hot_key, file_status] =  Lib_tty::get_kb_keystrokes_raw( 1,
                                                                                  false,
                                                                                  field_spec.prompt_field_spec.echo_mode==IO_field_echo_mode::normal ? true : false,
                                                                                  validity_spec.base.is_strip_control_chars
@@ -870,7 +866,7 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
                 if ( hot_key.function_cat == Lib_tty::HotKeyFunctionCat::help_popup )
                     continue;
         }
-        if ( process_hk_editing_mode( state, hot_key.function_cat, is_editing_mode_insert ))
+        if ( process_hk_editing_mode( hot_key.function_cat, is_editing_mode_insert ))
             continue;
         // *****************if ( process_hk_cat( state, field_spec, hot_key.function_cat, is_editing_mode_insert ))  // todo: this.
             // *****************continue;
@@ -883,14 +879,14 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
             && process_valid_values_nav( current_valid_value_itr, valid_value_itr_begin, valid_value_itr_end, current_value, hot_key, gotten_field_data, deficiency_message )) // we don't allow user to use up arrow once they have started entering a value, unless it is a field completion navigation.
             continue;
         // *** End   Hot_key Handling ***  hence we must have a character!
-        if ( check_prohibited_characters( validity_spec, kb_regular_value.at(0), deficiency_message ) )
+        if ( check_prohibited_characters( validity_spec, Key_char_i18.at(0), deficiency_message ) )
             continue;
-        //if ( process_numeric_decorators( current_value.length(), kb_regular_value, deficiency_message, false ))
-        if ( process_numeric_decorators( current_value.length(), kb_regular_value, field_spec, deficiency_message ))
+        //if ( process_numeric_decorators( current_value.length(), Key_char_i18, deficiency_message, false ))
+        if ( process_numeric_decorators( current_value.length(), Key_char_i18, field_spec, deficiency_message ))
             continue;
         if ( check_max_input_length( field_spec, current_value, deficiency_message ) )
             continue;
-        current_value += kb_regular_value;
+        current_value += Key_char_i18;
         if ( auto error = check_numeric_invalidity( validity_spec, current_value ) ) {
             deficiency_message = error.value();
             continue;
@@ -899,21 +895,21 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
     }
     return gotten_field_data.value();
 }
-//Value_nup input_field_response( State_menu & state, IO_field_spec_scientific	const & field_spec, std::optional<Lib_tty::Kb_regular_value> const & existing_value ) // todo: this.
+//Value_nup input_field_response( State_menu & state, IO_field_spec_scientific	const & field_spec, std::optional<Lib_tty::Key_char_i18> const & existing_value ) // todo: this.
 
 /* Value_nup input_dialog_response( State_menu & state, std::string const & prompt, ValidityCriteriaDialog const & validity ) {
     while ( true ) {
         prompt_for_dialog( state, prompt, validity );
         // todo: here we should a support selection from the valid values. complete this.
-        auto [kb_regular_value, hot_key, file_status] = get_value_raw();  // todo: specify size??
+        auto [Key_char_i18, hot_key, file_status] = get_value_raw();  // todo: specify size??
 
-        std::string kludge = kb_regular_value; // todo: TODO why do I need this or get compile error?
+        std::string kludge = Key_char_i18; // todo: TODO why do I need this or get compile error?
 
         switch (validity.default_handling) {
             case ValidityHandlingDialog::default_is_to_notify:
                 return { {}, hot_key, {} }; // no problem, the end value will just be "".
             case ValidityHandlingDialog::default_is_to_approve:
-                if ( kb_regular_value.length() == 0 )
+                if ( Key_char_i18.length() == 0 )
                     //return { validity.value_default_approve_equivalents.at(0), hot_key, {} };
                 //if ( std::find_if( validity.value_default_approve_equivalents.begin(), validity.value_default_approve_equivalents.end(),  [kludge] (std::string a) { return a == kludge; }) != validity.value_default_approve_equivalents.end() )
                     //return { validity.value_default_approve_equivalents.at(0), hot_key, {} };
@@ -921,7 +917,7 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
                     //return { validity.value_default_deny_equivalents.at(0), hot_key, {} };
                 break;
             case ValidityHandlingDialog::default_is_to_deny:
-                if ( kb_regular_value.length() == 0)
+                if ( Key_char_i18.length() == 0)
                     //return { validity.value_default_deny_equivalents.at(0), hot_key, {} };
                 //if ( std::find_if( validity.value_default_deny_equivalents.begin(), validity.value_default_deny_equivalents.end(),  [kludge] (std::string a) { return a == kludge; }) != validity.value_default_deny_equivalents.end() )
                     //return { validity.value_default_deny_equivalents.at(0), hot_key, {} };
@@ -929,9 +925,9 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
                     //return { validity.value_default_approve_equivalents.at(0), hot_key, {} };
                 break;
             case ValidityHandlingDialog::default_is_provided:
-                if ( kb_regular_value.length() == 0 ) {
-                    kb_regular_value = validity.value_default_provided;
-                    return { kb_regular_value, hot_key, {} };
+                if ( Key_char_i18.length() == 0 ) {
+                    Key_char_i18 = validity.value_default_provided;
+                    return { Key_char_i18, hot_key, {} };
                 }
                 break;
             case ValidityHandlingDialog::check_valid_values:
@@ -942,9 +938,9 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
         switch (validity.default_handling) {
             case ValidityHandlingDialog::check_valid_values:
                 if ( validity.valid_values.size() <= 0) assert(false);
-                else { // auto found2 = std::find_if( valid.values.begin(), valid.values.end(), "junk" //kb_regular_value//);  // todo: TODO why on earth do I get a strange iteration compile error on this?
+                else { // auto found2 = std::find_if( valid.values.begin(), valid.values.end(), "junk" //Key_char_i18//);  // todo: TODO why on earth do I get a strange iteration compile error on this?
                     if ( std::find_if( validity.valid_values.begin(), validity.valid_values.end(),  [kludge] (std::string a) { return a == kludge; }) != validity.valid_values.end() )
-                        return { kb_regular_value, hot_key, {} };
+                        return { Key_char_i18, hot_key, {} };
                 }
                 user_error_prompt = "Is not one of the valid values(";
                 pagination( state, {1, user_error_prompt.length()});
@@ -961,16 +957,16 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
             case ValidityHandlingDialog::default_is_provided:
                 if (( validity.lengths.min || validity.lengths.max )   // if we have them then check them.
                        &&
-                    ( kb_regular_value.length() < validity.lengths.min || kb_regular_value.length() > validity.lengths.max ))
+                    ( Key_char_i18.length() < validity.lengths.min || Key_char_i18.length() > validity.lengths.max ))
                 {
                     user_error_prompt = "Value is too ";
                     pagination( state, {1, user_error_prompt.length() + 5 + 1});
-                    cout << user_error_prompt << (kb_regular_value.length() < validity.lengths.min ? "long" : "short");
+                    cout << user_error_prompt << (Key_char_i18.length() < validity.lengths.min ? "long" : "short");
                     cout << ".";
                     break;
                 }
                 else
-                    return { kb_regular_value, hot_key, {} };
+                    return { Key_char_i18, hot_key, {} };
         }
         cout <<'\a'<<endl;  // just ring the bell? // todo: complete this: notify user about length requirements failure.
     }
@@ -978,10 +974,10 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
 
 /* InteractionResult action_dialog_modal_vals(State_menu & state, std::string const & prompt, ValidityCriteriaDialog const & validity) {  // different from process_menu() because we don't expect a major change in the flow of the program, ie. yes/no for a data save to file. BUT yes we do want to support _some_ hot_keys!
     Value_nup 		 	 value_plus 		= input_dialog_response( 	   state, "\n"+prompt+" <ENTER++> to continue.", validity );
-    std::optional<Lib_tty::Kb_regular_value>
-        kb_regular_value 	                = std::get<std::optional<Lib_tty::Kb_regular_value>>(  value_plus );
+    std::optional<Lib_tty::Key_char_i18>
+        Key_char_i18 	                = std::get<std::optional<Lib_tty::Key_char_i18>>(  value_plus );
     InteractionResultNav irn 				= find_interaction_result_nav( std::get<Lib_tty::Hot_key>(value_plus), InteractionCategory::dialog );
-    return { std::get<Lib_tty::Hot_key>(value_plus), {}, kb_regular_value.value_or(""), {}, irn }; // return { kb_regular_value, InteractionResultError {}, InteractionResultNav::retain_menu };
+    return { std::get<Lib_tty::Hot_key>(value_plus), {}, Key_char_i18.value_or(""), {}, irn }; // return { Key_char_i18, InteractionResultError {}, InteractionResultNav::retain_menu };
 } */
 
 bool is_store_value_intent( InteractionResultNav irn ) {
@@ -1042,20 +1038,20 @@ InteractionResult action_dialog_modal_io_field( State_menu & state, IO_field_spe
                 value_nup 		    	= input_field_response( state, field_spec, field_spec.getData_value_str() );
                 irn 					= find_interaction_result_nav( value_nup.hot_key, InteractionCategory::field );
                 if ( is_store_value_intent( irn ) ) {
-                    if ( !value_nup.kb_regular_value_opt.has_value() ) {
+                    if ( !value_nup.Key_char_i18_opt.has_value() ) {
                         field_spec.clear_data_value();
                         return { value_nup.hot_key, {}, {}, {}, irn };
                     } else {
                         std::decay_t<decltype (field_spec.data_location)> typed_value {false};
-                        if ( auto const itr = VALUE_DEFAULT_APPROVE_EQUIVALENTS.find( value_nup.kb_regular_value_opt.value() ); itr != VALUE_DEFAULT_APPROVE_EQUIVALENTS.end() )
+                        if ( auto const itr = VALUE_DEFAULT_APPROVE_EQUIVALENTS.find( value_nup.Key_char_i18_opt.value() ); itr != VALUE_DEFAULT_APPROVE_EQUIVALENTS.end() )
                             typed_value = true;
-                        else if ( auto const itr = VALUE_DEFAULT_DENY_EQUIVALENTS.find( value_nup.kb_regular_value_opt.value() ); itr != VALUE_DEFAULT_DENY_EQUIVALENTS.end() )
+                        else if ( auto const itr = VALUE_DEFAULT_DENY_EQUIVALENTS.find( value_nup.Key_char_i18_opt.value() ); itr != VALUE_DEFAULT_DENY_EQUIVALENTS.end() )
                             typed_value = false;
                         else
                             assert(false);
                         if ( std::optional<ValidationFieldError> vfr = field_spec.validate_data( typed_value ); !vfr.has_value() ) {
                             field_spec.setData_value( typed_value );
-                            // return { value_nup.hot_key, {}, value_nup.kb_regular_value_opt.value(), {}, irn }; // return GOOD Typed VALUE
+                            // return { value_nup.hot_key, {}, value_nup.Key_char_i18_opt.value(), {}, irn }; // return GOOD Typed VALUE
                             return { value_nup.hot_key, {}, typed_value, {}, irn }; // return GOOD Typed VALUE
                         } else {
                             cout << "Invalid boolean or (y/n) value."<< endl; // prompt final validation error ; throw away this value, get another value.
@@ -1078,12 +1074,12 @@ InteractionResult action_dialog_modal_io_field( State_menu & state, IO_field_spe
                 value_nup 		    	= input_field_response( state, field_spec, field_spec.getData_value_str() );
                 irn 					= find_interaction_result_nav( value_nup.hot_key, InteractionCategory::field );
                 if ( is_store_value_intent( irn ) ) {
-                    if ( !value_nup.kb_regular_value_opt.has_value() ) {
+                    if ( !value_nup.Key_char_i18_opt.has_value() ) {
                         field_spec.clear_data_value();
                         return { value_nup.hot_key, {}, {}, {}, irn };
-                    } else if ( std::optional<ValidationFieldError> vfr = field_spec.validate_data( value_nup.kb_regular_value_opt.value() ); !vfr.has_value() ) {
-                        field_spec.setData_value( value_nup.kb_regular_value_opt.value() );
-                        return { value_nup.hot_key, {}, value_nup.kb_regular_value_opt.value(), {}, irn }; // return GOOD Typed VALUE { Data_type_variant {}, InteractionResultError {}, InteractionResultNav::retain_menu };
+                    } else if ( std::optional<ValidationFieldError> vfr = field_spec.validate_data( value_nup.Key_char_i18_opt.value() ); !vfr.has_value() ) {
+                        field_spec.setData_value( value_nup.Key_char_i18_opt.value() );
+                        return { value_nup.hot_key, {}, value_nup.Key_char_i18_opt.value(), {}, irn }; // return GOOD Typed VALUE { Data_type_variant {}, InteractionResultError {}, InteractionResultNav::retain_menu };
                     } else {
                         cout << "Number failed special validation function."<< endl; // prompt final validation error ; throw away this value, get another value.
                     }
@@ -1100,13 +1096,13 @@ InteractionResult action_dialog_modal_io_field( State_menu & state, IO_field_spe
                 value_nup 		    	= input_field_response( state, field_spec, field_spec.getData_value_str() );
                 irn 					= find_interaction_result_nav( value_nup.hot_key, InteractionCategory::field );
                 if ( is_store_value_intent( irn ) ) {
-                    if ( !value_nup.kb_regular_value_opt.has_value() ) {
+                    if ( !value_nup.Key_char_i18_opt.has_value() ) {
                         field_spec.clear_data_value();
                         return { value_nup.hot_key, {}, {}, {}, irn };
                     } else {
                         std::decay_t<decltype (field_spec.data_location)> typed_value;
                         try {
-                            typed_value = stoi( value_nup.kb_regular_value_opt.value() );
+                            typed_value = stoi( value_nup.Key_char_i18_opt.value() );
                         } catch (std::invalid_argument const & ia) {
                             field_spec.clear_data_value();
                             cout << "Invalid number."<<ia.what()<< endl; // prompt final validation error ; throw away this value, get another value.
@@ -1118,7 +1114,7 @@ InteractionResult action_dialog_modal_io_field( State_menu & state, IO_field_spe
                         }
                         if ( std::optional<ValidationFieldError> vfr = field_spec.validate_data( typed_value ); !vfr.has_value() ) {
                             field_spec.setData_value( typed_value );
-                            return { value_nup.hot_key, {}, value_nup.kb_regular_value_opt.value(), {}, irn }; // return GOOD Typed VALUE { Data_type_variant {}, InteractionResultError {}, InteractionResultNav::retain_menu };
+                            return { value_nup.hot_key, {}, value_nup.Key_char_i18_opt.value(), {}, irn }; // return GOOD Typed VALUE { Data_type_variant {}, InteractionResultError {}, InteractionResultNav::retain_menu };
                         } else {
                             field_spec.clear_data_value();
                             cout << "Number failed special validation function."<< endl; // prompt final validation error ; throw away this value, get another value.
@@ -1138,13 +1134,13 @@ InteractionResult action_dialog_modal_io_field( State_menu & state, IO_field_spe
                 value_nup 		    	= input_field_response( state, field_spec, field_spec.getData_value_str() );
                 irn 					= find_interaction_result_nav( value_nup.hot_key, InteractionCategory::field );
                 if ( is_store_value_intent( irn ) ) {
-                    if ( !value_nup.kb_regular_value_opt.has_value() ) {
+                    if ( !value_nup.Key_char_i18_opt.has_value() ) {
                         field_spec.clear_data_value();
                         return { value_nup.hot_key, {}, {}, {}, irn };
                     } else {
                         std::decay_t<decltype (field_spec.data_location)> typed_value;
                         try {
-                            typed_value = stod( value_nup.kb_regular_value_opt.value() );
+                            typed_value = stod( value_nup.Key_char_i18_opt.value() );
                         } catch (std::invalid_argument const &) {
                             field_spec.clear_data_value();
                             cout << "Invalid number."<< endl; // prompt final validation error ; throw away this value, get another value.
@@ -1156,7 +1152,7 @@ InteractionResult action_dialog_modal_io_field( State_menu & state, IO_field_spe
                         }
                         if ( std::optional<ValidationFieldError> vfr = field_spec.validate_data( typed_value ); !vfr.has_value() ) {
                             field_spec.setData_value( typed_value );
-                            return { value_nup.hot_key, {}, value_nup.kb_regular_value_opt.value(), {}, irn }; // return GOOD Typed VALUE { Data_type_variant {}, InteractionResultError {}, InteractionResultNav::retain_menu };
+                            return { value_nup.hot_key, {}, value_nup.Key_char_i18_opt.value(), {}, irn }; // return GOOD Typed VALUE { Data_type_variant {}, InteractionResultError {}, InteractionResultNav::retain_menu };
                         } else {
                             field_spec.clear_data_value();
                             cout << "Number failed special validation function."<< endl; // prompt final validation error ; throw away this value, get another value.

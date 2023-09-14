@@ -13,11 +13,11 @@ QMAKE_CXXFLAGS += \
         -std=gnu++23 		\  # could be wrong:
         -g3 		        \
         -O0 		        \
-        -Wall   		\  # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
-        -Wextra   		\
-        #-Wno-comment 		\
-        #-Wno-uninitialized 	\
-        #-Wno-reorder 		\
+        #-Wall   		\  # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
+        #-Wextra   		\
+        -Wno-comment 		\
+        -Wno-uninitialized 	\
+        -Wno-reorder 		\
         #-Wno-unused-parameter 	\
 
 LIBS += \

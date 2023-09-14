@@ -1,4 +1,5 @@
 #include "field_navigation_interaction_map.h"
+#include <cassert>
 #include <tuple>
 #include <set>
 

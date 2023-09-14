@@ -63,7 +63,7 @@ std::optional<Panel_dimensions> pagination_wrap_effect(const State_menu &state, 
     }
     auto const calc_wrapped_width  = (proposed_content.width + existing_d.width) % panl_d.width;
 
-    Panel_dimensions wrapped_d = {.height = calc_wrapped_height, .width = calc_wrapped_width};
+    //Panel_dimensions wrapped_d = {.height = calc_wrapped_height, .width = calc_wrapped_width};
     //cerr << "pagination_wrap_effect(): panl_d:"<< panl_d <<", proposed_d:"<< proposed_content <<", used_d:"<< used_d <<", wrapped_d:"<< wrapped_d << ".\n";
     LOGGER_("***end***")
 

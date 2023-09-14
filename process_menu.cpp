@@ -17,12 +17,12 @@ input_menu_selection( State_menu & state_menu, std::shared_ptr<Menu> const menu_
         cout << menu_sp->name<<">> "; cout.flush();
         pagination_reset( state_menu, {0,0});
 
-        auto const [kb_regular_value, hot_key, file_status] =
-                      Lib_tty::get_kb_keys_raw( 1, false, true, true);
+        auto const [Key_char_i18, hot_key, file_status] =
+                      Lib_tty::get_kb_keystrokes_raw( 1, false, true, true);
 
         // *** handle file_status *** // todo: this
         // *** handle hot_keys *** // WARNING NOTE: todo: improve this! Here we link the hot_key to the regular key for getting "help", ie. F1 key. The mapping is found in lib_tty::consider_hot_key()::hot_keys.
-        Lib_tty::Kb_regular_value user_menu_selection { hot_key.function_cat == Lib_tty::HotKeyFunctionCat::help_popup ? "h" : kb_regular_value };
+        Lib_tty::Key_char_i18 user_menu_selection { hot_key.function_cat == Lib_tty::HotKeyFunctionCat::help_popup ? "h" : Key_char_i18 };
         for ( Menu_option const & menu_option: menu_sp->options )
             if ( user_menu_selection == menu_option.input_token ) {
                 cout << endl; // We finish our prompt and user input sucessfully.
