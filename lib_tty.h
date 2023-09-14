@@ -121,6 +121,7 @@ using Key_char_singular = KbFundamentalUnit;                /// The most basic c
 /** Is usally one (on a US Kb, but some keys probably have more than one on other language Kbs)
  *  normal/regular alphanumeric/ASCII like characters entered by the user.
  *  todo: Should probably rename this to Kb_regular_keystroke .
+ *  was?: Kb_regular_key .
  *  todo: make this the correct/internationalized char type, which would be KbFundamentalUnit from above?? or what???.
 */
 using Key_char_i18 	    = std::string;
@@ -149,9 +150,9 @@ using Hot_keys = std::vector< Hot_key >; /// Stores all known Hot_keys for inter
  *  todo: does this include an EOF character?
  *  todo: Need to rework the types/structs that contain Hot_key and other related values, there are TOO many similar ones.
  *  todo: only Key_char_singular and File_status are used internally in Lib_tty, so maybe refactor?
+ *  was:  //key_variant = std::variant< std::monostate, Key_char_singular, Key_char_i18, Hot_key_chars, Hot_key, File_status >;
  */
-//using Kb_key_variant = std::variant< std::monostate, Key_char_singular, Key_char_i18, Hot_key_chars, Hot_key, File_status >;
-using   Kb_key_variant = std::variant< std::monostate, Key_char_singular,               Hot_key_chars, Hot_key              >;
+using   Kb_key_variant = std::variant<                 Key_char_singular,               Hot_key_chars, Hot_key              >;
 
 /** Tells us if we got a Kb_key and if we "are at"/"or got?" EOF.
  *  _a_ == "and"
