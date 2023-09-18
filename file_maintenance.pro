@@ -18,22 +18,26 @@ QMAKE_CXXFLAGS += \
         -Wno-comment 		\
         -Wno-uninitialized 	\
         -Wno-reorder 		\
-        #-Wno-unused-parameter 	\
+        -Wno-unused-parameter 	\
 
 LIBS += \
         -lpthread 		\
         -lrt 			\
-        -lstdc++_libbacktrace 	\
-        -L /home/grostig/libs/lib \
+        -lstdc++_libbacktrace   \
+        #-L /home/grostig/libs/lib \
+
+LIBS += \
+        -L$$PWD/../build-lib_tty-Desktop_Qt_6_5_2_GCC_64bit-Debug/ -llib_tty \     # be sure we built lib_tty as a library, not as a test program with main.cpp
+
+INCLUDEPATH += $$PWD/../lib_tty     # be sure we built lib_tty as a library, not as a test program with main.cpp
+#DEPENDPATH +=  $$PWD/../lib_tty
 
 #INCLUDEPATH +=../../cereal/include/
 #INCLUDEPATH +=/home/grostig/libs/include/
-INCLUDEPATH += $$PWD/../lib_tty
-#DEPENDPATH +=  $$PWD/../lib_tty
 
 SOURCES += \
     action_detail_row.cpp \
-    action_dialog.cpp \  # must be reconsided to "menu_system" version of this class
+    action_dialog.cpp \  # todo?: don't recall meaning of this warning: must be reconsided to "menu_system" version of this class
     action_io_row.cpp \
     actions.cpp \
     field_navigation_interaction_map.cpp \
@@ -66,7 +70,7 @@ HEADERS += \
     io_field_specs_variant.h \
     io_row.h \
     io_table.h \
-    lib_tty.h \
+    #lib_tty.h \    # be sure we built lib_tty as a library, not as a test program with main.cpp
     menu.h \
     menu_actions.h \
     menu_option.h \
@@ -80,10 +84,9 @@ HEADERS += \
 DISTFILES += \
     model_test.qmodel
 
-win32:CONFIG(release, debug|release):    LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/release/ -llib_tty
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/debug/ -llib_tty
-#else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/ -llib_tty
-else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_6_5_2_GCC_64bit-Debug/ -llib_tty
+#win32:CONFIG(release, debug|release):    LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/release/ -llib_tty
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/debug/ -llib_tty
+#else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_6_5_2_GCC_64bit-Debug/ -llib_tty
 #else:unix:                              LIBS += -L$$PWD/../build-lib_tty-Desktop-Debug/ -llib_tty
 
 # win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../build-lib_tty-Desktop_Qt_5_13_1_GCC_64bit-Debug/release/liblib_tty.a

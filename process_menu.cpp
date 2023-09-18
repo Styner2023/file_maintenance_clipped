@@ -1,5 +1,3 @@
-#include <iostream>
-#include <cassert>
 #include "lib_tty.h"
 #include "interaction_result.h"
 #include "global_entities.h"
@@ -9,26 +7,31 @@
 #include "process_menu.h"
 #include "menu_actions.h"
 #include "window_panel.h"
+#include <iostream>
+#include <cassert>
 
+/// Loop until we return a menu_selection selected by the user from the menu_options that were prompted.
+/// todo: allow arrow keys to select? or allow a number representing the entry to be selected??
 Menu_option const &
-input_menu_selection( State_menu & state_menu, std::shared_ptr<Menu> const menu_sp ) {  /// loop until we return either a menu selection.  todo: or a number representing the entry to be selected??
+input_menu_selection( State_menu & state_menu, std::shared_ptr<Menu> const menu_sp ) {
+    assert( menu_sp     && "Precondition." );  // todo??: is this the correct check?
+    //assert( state_menu  && "Precondition." );  // todo??: is this the correct check?
     while (true) {
         auto r = pagination( state_menu, {.height= 1, .width= menu_sp->name.length() + 3 + 1} );  // +1 for cursor position. // todo: complete this above.
         cout << menu_sp->name<<">> "; cout.flush();
         pagination_reset( state_menu, {0,0});
-
-        auto const [Key_char_i18, hot_key, file_status] =
-                      Lib_tty::get_kb_keystrokes_raw( 1, false, true, true);
-
+        auto const [key_char_i18ns, hot_key, file_status] { Lib_tty::get_kb_keystrokes_raw( 1, false, true, true )};
         // *** handle file_status *** // todo: this
         // *** handle hot_keys *** // WARNING NOTE: todo: improve this! Here we link the hot_key to the regular key for getting "help", ie. F1 key. The mapping is found in lib_tty::consider_hot_key()::hot_keys.
-        Lib_tty::Key_char_i18 user_menu_selection { hot_key.function_cat == Lib_tty::HotKeyFunctionCat::help_popup ? "h" : Key_char_i18 };
+        Lib_tty::Key_char_i18ns user_menu_selection { (hot_key.function_cat == Lib_tty::HotKeyFunctionCat::help_popup || (key_char_i18ns == "?")) ? "h" : key_char_i18ns };  // todo: h and ? are magic numbers.
+        // *** handle actual selection ***
         for ( Menu_option const & menu_option: menu_sp->options )
             if ( user_menu_selection == menu_option.input_token ) {
-                cout << endl; // We finish our prompt and user input sucessfully.
-                return menu_option;
+                cout << endl;           // We finish our prompt and user input sucessfully.
+                assert( menu_option.name != STRING_NULL && "Precondition." );
+                return  menu_option;     //RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
             }
-        cout << "\aInvalid menu selection or key press, try again, or press the single <h> key for (h)elp.\n";
+        cout << "\aInvalid menu selection or key press, try again, or press the single <h> key for (h)elp." << endl;
     }
     assert(false && "We should never get here.");  // infinute loop that is exited via a menu selection.  Should never get here, obviously not needed, but placed here for clarity. todo:  fix this up.
 }

@@ -28,6 +28,7 @@
 
 using std::cin; using std::cout; using std::cerr; using std::clog; using std::endl; using std::string;  // using namespace std;
 using namespace std::string_literals;;
+inline constexpr std::string STRING_NULL {"NULL"};  // SQL DB show an unset field as NULL, which is different than zero length or some magic number.  Here we turn it into a magic number and hope for the best.
 
 /// describes this program's versioning scheme, similar to how Linux does it.
 inline constexpr uint8_t MDTUI_MAJOR 				{0};

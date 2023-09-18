@@ -1,9 +1,11 @@
 #ifndef MENU_OPTION_H
 #define MENU_OPTION_H
+#include "state_menu.h"
+#include "global_entities.h"
+
 #include <string>
 #include <functional>
 #include <variant>
-#include "state_menu.h"
 
 // using my_test = decltype (action_program_exit_with_prompts);  // todo: used below for another todo:
 using Menu_action_fn_variant = std::variant<
@@ -29,11 +31,11 @@ using Menu_action_fn_variant = std::variant<
               >; // a function with the code for the action to be performed.
 
 struct Menu_option {  /// one user selectable menu option from a particualar menu that contains it.
-    std::string input_token {};		/// todo: the user input in the form of a kb_selection to select this menu option, todo: clarify?? or 'hot-key' when set by for universal_options.
-    std::string name {};  			/// short name shown on menu.
-    std::string description {}; 	/// long name.
-    std::string help {}; 			/// full help explanation of this option and how this option relates to other options.
-    std::string loading_message {}; /// printed while loading the action. Shown until the first prompt from the action.
+    std::string input_token     {STRING_NULL};		/// todo: the user input in the form of a kb_selection to select this menu option, todo: clarify?? or 'hot-key' when set by for universal_options.
+    std::string name            {STRING_NULL};  			/// short name shown on menu.
+    std::string description     {STRING_NULL}; 	/// long name.
+    std::string help            {STRING_NULL}; 			/// full help explanation of this option and how this option relates to other options.
+    std::string loading_message {STRING_NULL}; /// printed while loading the action. Shown until the first prompt from the action.
 
     // int  (* action_ptr2)(double) = nullptr;
     // std::any 					my_callable_any;

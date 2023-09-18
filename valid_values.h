@@ -76,6 +76,7 @@ public:
 std::ostream &operator<<(std::ostream &os, const ScientificValueRange &pd);
 
 enum class CharacterCaseHandling {
+    //initial_state         // todo:
     none,
     force_upper,
     force_lower,
@@ -83,6 +84,7 @@ enum class CharacterCaseHandling {
     force_initial_capitals
 };
 enum class DefaultHandling {
+    //initial_state         // todo:
     default_is_to_approve,  // implies a bool
     default_is_to_deny,  // implies a bool
     default_is_provided,
@@ -100,6 +102,7 @@ enum class ValidValuesHandling {
     validate_membership_valid_values,  // data must match one valid value
     no_membership_validation,  // but we do check lengths.
     no_valid_values_provided
+    //initial_state         // todo:
 };
 enum class ValidationFieldError {  // https://developer.mozilla.org/en-US/docs/Web/API/ValidityState
     value_missing,
@@ -122,6 +125,7 @@ enum class ValidationFieldError {  // https://developer.mozilla.org/en-US/docs/W
         less than
         greater than or equal to
         less than or equal to */
+    //initial_state         // todo:
 };
 
 struct ValidationReport {
@@ -138,6 +142,7 @@ enum class ValidityHandlingDialog {  // todo:  obsolete
     // above used as a logical group for handling defaults, below specify 2 cases, but not defaults.  todo:  could make this better with invariants in ValidityCritera...  todo:  could make this better with invariants in ValidityCritera...
     check_valid_values,
     no_specific_value_checking  // but we do check lengths.
+    //initial_state         // todo:
 };
 
 //enum class DefaultFieldHandling {  // todo: obsolete, notify is just an alphanum with length zero.
@@ -391,12 +396,14 @@ enum class IO_field_trim {
     ws_right_and_inter,
     ws_both_and_inter,
     none
+    //initial_state         // todo:
 };
 enum class IO_field_alignment {  // todo: complete this.
     left,
     right,
     center,
     none
+    //initial_state         // todo:
 };
 enum class IO_field_echo_mode {  // todo: complete this.
     normal,
@@ -405,6 +412,7 @@ enum class IO_field_echo_mode {  // todo: complete this.
     password_echo_one_char, // show one char after it is entered but don't show entire password, instead show * for prior characters.
     password_echo_fixed,
     password_echo_while_editing  // forgot what I meant.
+    //initial_state         // todo:
 };
 class PromptFieldSpecification {
 public:

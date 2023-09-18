@@ -1,7 +1,6 @@
 /* copyright (c) Grant Rostig 2019, all rights reserved
- * permission granted for use during CppMSG events during 2019.
  *
- * Generated as part of Grant's password manager effort to show
+ * Generated as part of Grant's password_manager, file_maintenance effort to show
  * how the Overloaded pattern is used by std::visit.
  *
  * This example code shows how overloaded could be applied to a menu system.
@@ -57,7 +56,6 @@ int main ( int argc, char* arv[] ) { string my_arv { *arv}; cout << "~~~ argc,ar
     fieldNavigationInteractionMap.verify();  // todo: only needed during debugging and testing.
 #endif
 
-    crash_signals_register();
     Menu menu_main; // create main first, then the sub-menus.
     Menu menu_edit;
     Menu menu_file;

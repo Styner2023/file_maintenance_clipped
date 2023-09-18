@@ -5,7 +5,7 @@
 #include <chrono>
 #include "global_entities.h"
 #include "lib_tty.h"
-#include "valid_values.h"
+//#include "valid_values.h"
 
 /// Result of a user interaction on a data field, ie. success, failure, or other?  todo: other?
 enum class InteractionResultErrorCat {
@@ -15,6 +15,7 @@ enum class InteractionResultErrorCat {
     unavailable,  	// todo: maybe?
     greyed_out,     // todo: maybe?
     na
+    //initial_state         // todo:
 };
 
 /// Result of a user interaction on a data field and a message (is it expected to be empty if none?), ie. success, failure, or other?  todo: other?
@@ -60,6 +61,7 @@ enum class InteractionResultNav {  // todo: todo: would this be more compact if 
     // store_value
     // todo: should we have a separate enum for dialFieldCompletionNavogs, menus, data_fields?
     na						// todo: NA not applicable. Does this indicate an error condidtion?
+    //initial_state         // todo:
 };
 
 enum class InteractionCategory {    /// The type of a user data input window/screen/mode, and or field are we referring to.

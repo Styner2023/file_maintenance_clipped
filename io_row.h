@@ -20,6 +20,7 @@ class IO_table;
 enum class IO_row_spec {  // https://www.w3schools.com/html/html_form_attributes.asp
     auto_complete,
     no_validate
+    //initial_state         // todo:
 };
 
 class IO_row_company { // just a stub to demonstrate the type
