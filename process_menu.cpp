@@ -105,40 +105,40 @@ process_menu( State_menu & 			state, 	   		// needed for menu and application, l
         Menu_option const 		menu_option  	{ input_menu_selection(   state, menu_sp )};
         InteractionResult const ir     			{ process_menu_selection( state, menu_option )};
         switch ( ir.navigation ) { 					// post processing: load the correct menu to be shown to user, or exit.
-        case InteractionResultNav::retain_menu:  	// we did something on this menu and we stay on current menu and just loop.
+        case InteractionIntentNav::retain_menu:  	// we did something on this menu and we stay on current menu and just loop.
             break;
-        case InteractionResultNav::prior_menu:   	// we have been asked to go back one level of menu so we get and set that menu, and loop.
+        case InteractionIntentNav::prior_menu:   	// we have been asked to go back one level of menu so we get and set that menu, and loop.
             menu_sp = state.menu_pop_top_sp();
             break;
-        case InteractionResultNav::main_menu:   	// we have been asked to go directly to main menu so we set that menu and loop.
+        case InteractionIntentNav::main_menu:   	// we have been asked to go directly to main menu so we set that menu and loop.
             menu_sp = state.menu_pop_to_sp(state.getMenu_main());
             break;
-        case InteractionResultNav::exit_all_menu:   	// we have been asked to go directly to main menu so we set that menu and loop.
-            return { {}, {}, {}, {}, InteractionResultNav::exit_all_menu };  // returning to main to get out. return result is probably not needed?
+        case InteractionIntentNav::exit_all_menu:   	// we have been asked to go directly to main menu so we set that menu and loop.
+            return { {}, {}, {}, {}, InteractionIntentNav::exit_all_menu };  // returning to main to get out. return result is probably not needed?
 
         // *** above are valid return values from running an "action_", *** below are simply debugging code.
-        case InteractionResultNav::exit_pgm_immediately:
+        case InteractionIntentNav::exit_pgm_immediately:
             // return { {}, {}, {}, {}, InteractionResultNav::exit_pgm_immediately };  // returning to main to get out. return result is probably not needed?
-        case InteractionResultNav::exit_pgm_with_prompts:
+        case InteractionIntentNav::exit_pgm_with_prompts:
             // return { {}, {}, {}, {}, InteractionResultNav::exit_pgm_with_prompts };  // returning to main to get out. return result is probably not needed?
-        case InteractionResultNav::continue_forward_pagination:
-        case InteractionResultNav::continue_backward_pagination:
-        case InteractionResultNav::exit_fn_immediately:
-        case InteractionResultNav::exit_fn_with_prompts:
-        case InteractionResultNav::prior_menu_discard_value:
-        case InteractionResultNav::up_one_field:
-        case InteractionResultNav::down_one_field:
-        case InteractionResultNav::up_one_block:
-        case InteractionResultNav::down_one_block:
-        case InteractionResultNav::save_form_as_is:
-        case InteractionResultNav::skip_one_field:
-        case InteractionResultNav::skip_to_end_of_fields:
-        case InteractionResultNav::next_row:
-        case InteractionResultNav::prior_row:
-        case InteractionResultNav::first_row:
-        case InteractionResultNav::last_row:
-        case InteractionResultNav::na:
-        case InteractionResultNav::no_result :  // todo: correct?
+        case InteractionIntentNav::continue_forward_pagination:
+        case InteractionIntentNav::continue_backward_pagination:
+        case InteractionIntentNav::exit_fn_immediately:
+        case InteractionIntentNav::exit_fn_with_prompts:
+        case InteractionIntentNav::prior_menu_discard_value:
+        case InteractionIntentNav::up_one_field:
+        case InteractionIntentNav::down_one_field:
+        case InteractionIntentNav::up_one_block:
+        case InteractionIntentNav::down_one_block:
+        case InteractionIntentNav::save_form_as_is:
+        case InteractionIntentNav::skip_one_field:
+        case InteractionIntentNav::skip_to_end_of_fields:
+        case InteractionIntentNav::next_row:
+        case InteractionIntentNav::prior_row:
+        case InteractionIntentNav::first_row:
+        case InteractionIntentNav::last_row:
+        case InteractionIntentNav::na:
+        case InteractionIntentNav::no_result :  // todo: correct?
         // TODO assert(( "Logic error: process_menu: invalid InteractionResultNav after doing menu selection.", false));
             break;
         }

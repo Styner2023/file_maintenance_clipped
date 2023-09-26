@@ -13,8 +13,8 @@ QMAKE_CXXFLAGS += \
         -std=gnu++23 		\  # could be wrong:
         -g3 		        \
         -O0 		        \
-        #-Wall   		\  # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
-        #-Wextra   		\
+        -Wall   		\  # https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
+        -Wextra   		\
         -Wno-comment 		\
         -Wno-uninitialized 	\
         -Wno-reorder 		\
@@ -82,6 +82,8 @@ HEADERS += \
     window_panel.h \
 
 DISTFILES += \
+    Makefile \
+    README.txt \
     model_test.qmodel
 
 #win32:CONFIG(release, debug|release):    LIBS += -L$$PWD/../build-lib_tty-Desktop_Qt_5_15_2_GCC_64bit-Debug/release/ -llib_tty

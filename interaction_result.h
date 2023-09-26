@@ -25,7 +25,7 @@ struct InteractionResultError {
 };
 
 /// User's intent for what should happen after inputting a particular hot_key at a data field.
-enum class InteractionResultNav {  // todo: todo: would this be more compact if "char" or "byte"? What are downsides other than performance??
+enum class InteractionIntentNav {  // todo: todo: would this be more compact if "char" or "byte"? What are downsides other than performance??
     no_result,			// there was no interaction, and so there is no result.  is this different from ::na?
     // universal navigation commands, this group operates at all levels
     exit_pgm_immediately,
@@ -80,10 +80,10 @@ struct InteractionResult {   /// ALL about what happened upon user data entry, b
         size_t							index		{};  /// Points to most recent item processed on a detail_row for example.  todo?: more than just detail_rows?
         InteractionResultData_Variant  	data 		{};  /// ***Actual data, the most important data value of the item processed. ie. name or code or ID.  // todo?: probably this should be the first field?
         InteractionResultError	   		error 		{};	 /// Any error that occurred.
-        InteractionResultNav 	       	navigation 	{InteractionResultNav::no_result};  /// hint that is passed to the caller on user's intent for future processing, or that which is required due to an error.
+        InteractionIntentNav 	       	navigation 	{InteractionIntentNav::no_result};  /// hint that is passed to the caller on user's intent for future processing, or that which is required due to an error.
 
         std::string to_string(){  /// for debugging  todo: finish this
-            std::string s { hot_key.to_string() +
+            std::string s { hot_key.to_string() + ", " +
                             std::to_string(index) };
             return s;
         };

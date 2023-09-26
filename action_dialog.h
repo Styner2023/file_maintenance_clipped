@@ -4,7 +4,7 @@
 #include "interaction_result.h"
 #include "io_field_specs_variant.h"
 
-InteractionResultNav find_interaction_result_nav(   Lib_tty::Hot_key const & hot_key, InteractionCategory const cat );
+InteractionIntentNav find_interaction_result_nav(   Lib_tty::Hot_key const & hot_key, InteractionCategory const cat );
 
 InteractionResult action_dialog_modal_io_field( State_menu &, IO_field_spec_variant 		  & field_spec );
 InteractionResult action_dialog_modal_approve(  State_menu &, std::string   			const & prompt );

@@ -8,8 +8,16 @@ source_loc() {
     return result;
 }
 /// Prints a stack trace of crash location for printing.  Used for debugging.
-auto crash_tracer(int const signal_number) ->void { cout << "CRASH_ERROR: signal#, stack trace:<<<" << signal_number << ">>>,<<<" << std::stacktrace::current() << "<<<END STACK TRACE.\n"; }
-/// Prints a stack trace of crash location for printing.  Used for debugging.
+auto crash_tracer(int const signal_number) ->void {
+    cout << "~~~CRASH_ERROR: signal#, stack trace:{" << signal_number << "},{" <<
+            std::stacktrace::current() << "}###END CRASH_ERROR STACK_TRACE.\n"; // We want the user to see this error
+    std::string reply; cout << "CRASH_ERROR: q for exit(1) or CR to continue:"; cout.flush(); cin.clear();
+    getline( cin, reply);
+    if ( reply == "q")
+        exit(1);
+    else
+        return;
+}
 auto crash_signals_register() -> void {    // signals that cause "terminate" and sometimes "core dump"  https://en.wikipedia.org/wiki/Signal_(IPC)
     std::signal( SIGABRT, crash_tracer );
     std::signal( SIGALRM, crash_tracer );

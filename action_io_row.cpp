@@ -10,7 +10,7 @@ using std::endl, std::cin, std::cout, std::cerr, std::string;
 
 InteractionResult action_io_row_print(State_menu &state, IO_row_variant const & row ) {
     std::visit( [] (auto const & row) { row.print(); }, row );
-    return { {}, {}, {}, {}, InteractionResultNav::retain_menu };
+    return { {}, {}, {}, {}, InteractionIntentNav::retain_menu };
 }
 
 InteractionResult action_io_row_print_index(State_menu &state, IO_table const & table, size_t const & row_index ) {
@@ -29,7 +29,7 @@ InteractionResult action_io_row_list_row(State_menu & state, IO_table const & ta
 }
 
 InteractionResult action_io_row_list_rows(State_menu & state, IO_table const & table, Row_range const & row_range) {
-    InteractionResult ir {{},{},{},{}, InteractionResultNav::retain_menu };
+    InteractionResult ir {{},{},{},{}, InteractionIntentNav::retain_menu };
     Row_range rr {row_range};
     pagination_reset( state, {1,0});
     //if ( row_range.first ==0 && row_range.end == 0 && table.rows.size() != 0 )  // if no row_range then do whole list.
@@ -38,32 +38,32 @@ InteractionResult action_io_row_list_rows(State_menu & state, IO_table const & t
     for (size_t i=rr.first; i < rr.end; i++) {
         ir = pagination( state, { .height= 1, .width= 40 + 1} );  // todo: complete this: fix estimate of printed row length.
         switch ( ir.navigation ) {
-        case InteractionResultNav::down_one_field :
-        case InteractionResultNav::skip_one_field :
-        case InteractionResultNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
-        case InteractionResultNav::next_row :
-        case InteractionResultNav::retain_menu :
-        case InteractionResultNav::prior_menu :
-        case InteractionResultNav::down_one_block :
-        case InteractionResultNav::save_form_as_is :  // is this true??
-        case InteractionResultNav::skip_to_end_of_fields :
+        case InteractionIntentNav::down_one_field :
+        case InteractionIntentNav::skip_one_field :
+        case InteractionIntentNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
+        case InteractionIntentNav::next_row :
+        case InteractionIntentNav::retain_menu :
+        case InteractionIntentNav::prior_menu :
+        case InteractionIntentNav::down_one_block :
+        case InteractionIntentNav::save_form_as_is :  // is this true??
+        case InteractionIntentNav::skip_to_end_of_fields :
             break;
-        case InteractionResultNav::up_one_field :
-        case InteractionResultNav::continue_backward_pagination :
-        case InteractionResultNav::up_one_block :
-        case InteractionResultNav::exit_fn_with_prompts :
-        case InteractionResultNav::exit_fn_immediately :
-        case InteractionResultNav::exit_pgm_immediately :
-        case InteractionResultNav::exit_pgm_with_prompts :
-        case InteractionResultNav::prior_row :
-        case InteractionResultNav::first_row :
-        case InteractionResultNav::last_row :
-        case InteractionResultNav::prior_menu_discard_value :
-        case InteractionResultNav::main_menu :
+        case InteractionIntentNav::up_one_field :
+        case InteractionIntentNav::continue_backward_pagination :
+        case InteractionIntentNav::up_one_block :
+        case InteractionIntentNav::exit_fn_with_prompts :
+        case InteractionIntentNav::exit_fn_immediately :
+        case InteractionIntentNav::exit_pgm_immediately :
+        case InteractionIntentNav::exit_pgm_with_prompts :
+        case InteractionIntentNav::prior_row :
+        case InteractionIntentNav::first_row :
+        case InteractionIntentNav::last_row :
+        case InteractionIntentNav::prior_menu_discard_value :
+        case InteractionIntentNav::main_menu :
             return InteractionResult { ir.hot_key, {}, {} , {InteractionResultErrorCat::failed, "User terminated action early."} , ir.navigation } ;
-        case InteractionResultNav::na :
-        case InteractionResultNav::no_result :  // todo: correct?
-        case InteractionResultNav::exit_all_menu :  // todo: correct?
+        case InteractionIntentNav::na :
+        case InteractionIntentNav::no_result :  // todo: correct?
+        case InteractionIntentNav::exit_all_menu :  // todo: correct?
             throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
         }
         cout << i+1 << ":";
@@ -84,32 +84,32 @@ InteractionResult action_io_row_search_list_rows(State_menu & state, IO_table co
     InteractionResult ir {};
     ir = action_io_search_rows( state, table );  // yes we store the range in state, because we may want this for other menu actions.
     switch ( ir.navigation ) {
-    case InteractionResultNav::down_one_field :
-    case InteractionResultNav::skip_one_field :
-    case InteractionResultNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
-    case InteractionResultNav::next_row :
-    case InteractionResultNav::retain_menu :
-    case InteractionResultNav::prior_menu :
-    case InteractionResultNav::down_one_block :
-    case InteractionResultNav::save_form_as_is :  // is this true??
-    case InteractionResultNav::skip_to_end_of_fields :
+    case InteractionIntentNav::down_one_field :
+    case InteractionIntentNav::skip_one_field :
+    case InteractionIntentNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
+    case InteractionIntentNav::next_row :
+    case InteractionIntentNav::retain_menu :
+    case InteractionIntentNav::prior_menu :
+    case InteractionIntentNav::down_one_block :
+    case InteractionIntentNav::save_form_as_is :  // is this true??
+    case InteractionIntentNav::skip_to_end_of_fields :
         break;
-    case InteractionResultNav::up_one_field :
-    case InteractionResultNav::continue_backward_pagination :
-    case InteractionResultNav::up_one_block :
-    case InteractionResultNav::exit_fn_with_prompts :
-    case InteractionResultNav::exit_fn_immediately :
-    case InteractionResultNav::exit_pgm_immediately :
-    case InteractionResultNav::exit_pgm_with_prompts :
-    case InteractionResultNav::prior_row :
-    case InteractionResultNav::first_row :
-    case InteractionResultNav::last_row :
-    case InteractionResultNav::prior_menu_discard_value :
-    case InteractionResultNav::main_menu :
+    case InteractionIntentNav::up_one_field :
+    case InteractionIntentNav::continue_backward_pagination :
+    case InteractionIntentNav::up_one_block :
+    case InteractionIntentNav::exit_fn_with_prompts :
+    case InteractionIntentNav::exit_fn_immediately :
+    case InteractionIntentNav::exit_pgm_immediately :
+    case InteractionIntentNav::exit_pgm_with_prompts :
+    case InteractionIntentNav::prior_row :
+    case InteractionIntentNav::first_row :
+    case InteractionIntentNav::last_row :
+    case InteractionIntentNav::prior_menu_discard_value :
+    case InteractionIntentNav::main_menu :
         return InteractionResult { ir.hot_key, {}, {} , {InteractionResultErrorCat::failed, "User terminated action early."} , ir.navigation } ;
-    case InteractionResultNav::na :
-        case InteractionResultNav::no_result :  // todo: correct?
-        case InteractionResultNav::exit_all_menu :  // todo: correct?
+    case InteractionIntentNav::na :
+    case InteractionIntentNav::no_result :  // todo: correct?
+    case InteractionIntentNav::exit_all_menu :  // todo: correct?
         throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
     }
 
@@ -135,42 +135,42 @@ InteractionResult prompt_for_existing_pk( State_menu & state, IO_table & table, 
         field_index = pk_components.at(pk_index);
         ir = action_dialog_modal_io_field( state, table.spec.fields.at( field_index ) );
         switch ( ir.navigation ) {
-        case InteractionResultNav::down_one_field :
-        case InteractionResultNav::skip_one_field :
-        case InteractionResultNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
+        case InteractionIntentNav::down_one_field :
+        case InteractionIntentNav::skip_one_field :
+        case InteractionIntentNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
             ++pk_index;
             break;
-        case InteractionResultNav::up_one_field :
-        case InteractionResultNav::continue_backward_pagination :
+        case InteractionIntentNav::up_one_field :
+        case InteractionIntentNav::continue_backward_pagination :
             if ( pk_index > 0 ) {
                 --pk_index;
                 field_index = pk_components.at(pk_index);
             }
             else cout << '\a';  // alarm
             break;
-        case InteractionResultNav::skip_to_end_of_fields :
-        case InteractionResultNav::up_one_block :
-        case InteractionResultNav::down_one_block :
-        case InteractionResultNav::save_form_as_is :  // is this true??
+        case InteractionIntentNav::skip_to_end_of_fields :
+        case InteractionIntentNav::up_one_block :
+        case InteractionIntentNav::down_one_block :
+        case InteractionIntentNav::save_form_as_is :  // is this true??
             is_all_fields_presented_to_user = true;
             break;
-        case InteractionResultNav::exit_fn_with_prompts :
-        case InteractionResultNav::exit_fn_immediately :
-        case InteractionResultNav::exit_pgm_immediately :
-        case InteractionResultNav::exit_pgm_with_prompts :
-        case InteractionResultNav::prior_menu :
-        case InteractionResultNav::prior_menu_discard_value :
+        case InteractionIntentNav::exit_fn_with_prompts :
+        case InteractionIntentNav::exit_fn_immediately :
+        case InteractionIntentNav::exit_pgm_immediately :
+        case InteractionIntentNav::exit_pgm_with_prompts :
+        case InteractionIntentNav::prior_menu :
+        case InteractionIntentNav::prior_menu_discard_value :
             is_all_fields_presented_to_user  = true;  // not needed, but...
             return InteractionResult { ir.hot_key, {}, {} , {InteractionResultErrorCat::failed, "no good pk provided by user."} , ir.navigation } ;
-        case InteractionResultNav::prior_row :
-        case InteractionResultNav::next_row :
-        case InteractionResultNav::first_row :
-        case InteractionResultNav::last_row :
-        case InteractionResultNav::retain_menu :
-        case InteractionResultNav::main_menu :
-        case InteractionResultNav::na :
-        case InteractionResultNav::no_result :  // todo: correct?
-        case InteractionResultNav::exit_all_menu :  // todo: correct?
+        case InteractionIntentNav::prior_row :
+        case InteractionIntentNav::next_row :
+        case InteractionIntentNav::first_row :
+        case InteractionIntentNav::last_row :
+        case InteractionIntentNav::retain_menu :
+        case InteractionIntentNav::main_menu :
+        case InteractionIntentNav::na :
+        case InteractionIntentNav::no_result :  // todo: correct?
+        case InteractionIntentNav::exit_all_menu :  // todo: correct?
             throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
         }
         // *** NOTE: for the below code to work, we cannot do a 'continue' statement above this line in the loop!
@@ -202,32 +202,32 @@ InteractionResult action_io_row_select(State_menu &state, IO_table &table) {
     if ( auto pk_components_opt = get_pk_components( table )) {
         ir = prompt_for_existing_pk( state, table, pk_components_opt.value() );    // prompt user for all pk(s) components of a row.
         switch ( ir.navigation ) {
-        case InteractionResultNav::down_one_field :
-        case InteractionResultNav::skip_one_field :
-        case InteractionResultNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
-        case InteractionResultNav::next_row :
-        case InteractionResultNav::retain_menu :
-        case InteractionResultNav::down_one_block :
-        case InteractionResultNav::save_form_as_is :  // is this true??
-        case InteractionResultNav::skip_to_end_of_fields :
+        case InteractionIntentNav::down_one_field :
+        case InteractionIntentNav::skip_one_field :
+        case InteractionIntentNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
+        case InteractionIntentNav::next_row :
+        case InteractionIntentNav::retain_menu :
+        case InteractionIntentNav::down_one_block :
+        case InteractionIntentNav::save_form_as_is :  // is this true??
+        case InteractionIntentNav::skip_to_end_of_fields :
             break;
-        case InteractionResultNav::up_one_field :
-        case InteractionResultNav::continue_backward_pagination :
-        case InteractionResultNav::up_one_block :
-        case InteractionResultNav::exit_fn_with_prompts :
-        case InteractionResultNav::exit_fn_immediately :
-        case InteractionResultNav::exit_pgm_immediately :
-        case InteractionResultNav::exit_pgm_with_prompts :
-        case InteractionResultNav::prior_row :
-        case InteractionResultNav::first_row :
-        case InteractionResultNav::last_row :
-        case InteractionResultNav::prior_menu :
-        case InteractionResultNav::prior_menu_discard_value :
-        case InteractionResultNav::main_menu :
+        case InteractionIntentNav::up_one_field :
+        case InteractionIntentNav::continue_backward_pagination :
+        case InteractionIntentNav::up_one_block :
+        case InteractionIntentNav::exit_fn_with_prompts :
+        case InteractionIntentNav::exit_fn_immediately :
+        case InteractionIntentNav::exit_pgm_immediately :
+        case InteractionIntentNav::exit_pgm_with_prompts :
+        case InteractionIntentNav::prior_row :
+        case InteractionIntentNav::first_row :
+        case InteractionIntentNav::last_row :
+        case InteractionIntentNav::prior_menu :
+        case InteractionIntentNav::prior_menu_discard_value :
+        case InteractionIntentNav::main_menu :
             return InteractionResult { ir.hot_key, {}, {} , {InteractionResultErrorCat::failed, "User terminated action early."} , ir.navigation } ;
-        case InteractionResultNav::na :
-        case InteractionResultNav::no_result :  // todo: correct?
-        case InteractionResultNav::exit_all_menu :  // todo: correct?
+        case InteractionIntentNav::na :
+        case InteractionIntentNav::no_result :  // todo: correct?
+        case InteractionIntentNav::exit_all_menu :  // todo: correct?
             throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
         }
     }
@@ -239,32 +239,32 @@ InteractionResult action_io_row_select(State_menu &state, IO_table &table) {
             std::string message {"Row found."};
             ir = pagination( state, { 1, message.length() } );
             switch ( ir.navigation ) {
-            case InteractionResultNav::down_one_field :
-            case InteractionResultNav::skip_one_field :
-            case InteractionResultNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
-            case InteractionResultNav::next_row :
-            case InteractionResultNav::retain_menu :
-            case InteractionResultNav::prior_menu :
-            case InteractionResultNav::down_one_block :
-            case InteractionResultNav::save_form_as_is :  // is this true??
-            case InteractionResultNav::skip_to_end_of_fields :
+            case InteractionIntentNav::down_one_field :
+            case InteractionIntentNav::skip_one_field :
+            case InteractionIntentNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
+            case InteractionIntentNav::next_row :
+            case InteractionIntentNav::retain_menu :
+            case InteractionIntentNav::prior_menu :
+            case InteractionIntentNav::down_one_block :
+            case InteractionIntentNav::save_form_as_is :  // is this true??
+            case InteractionIntentNav::skip_to_end_of_fields :
                 break;
-            case InteractionResultNav::up_one_field :
-            case InteractionResultNav::continue_backward_pagination :
-            case InteractionResultNav::up_one_block :
-            case InteractionResultNav::exit_fn_with_prompts :
-            case InteractionResultNav::exit_fn_immediately :
-            case InteractionResultNav::exit_pgm_immediately :
-            case InteractionResultNav::exit_pgm_with_prompts :
-            case InteractionResultNav::prior_row :
-            case InteractionResultNav::first_row :
-            case InteractionResultNav::last_row :
-            case InteractionResultNav::prior_menu_discard_value :
-            case InteractionResultNav::main_menu :
+            case InteractionIntentNav::up_one_field :
+            case InteractionIntentNav::continue_backward_pagination :
+            case InteractionIntentNav::up_one_block :
+            case InteractionIntentNav::exit_fn_with_prompts :
+            case InteractionIntentNav::exit_fn_immediately :
+            case InteractionIntentNav::exit_pgm_immediately :
+            case InteractionIntentNav::exit_pgm_with_prompts :
+            case InteractionIntentNav::prior_row :
+            case InteractionIntentNav::first_row :
+            case InteractionIntentNav::last_row :
+            case InteractionIntentNav::prior_menu_discard_value :
+            case InteractionIntentNav::main_menu :
                 return InteractionResult { ir.hot_key, {}, {} , {InteractionResultErrorCat::failed, "User terminated action early."} , ir.navigation } ;
-            case InteractionResultNav::na :
-        case InteractionResultNav::no_result :  // todo: correct?
-        case InteractionResultNav::exit_all_menu :  // todo: correct?
+            case InteractionIntentNav::na :
+            case InteractionIntentNav::no_result :  // todo: correct?
+            case InteractionIntentNav::exit_all_menu :  // todo: correct?
                 throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
             }
             cout << '\n'+message << endl;
@@ -272,14 +272,14 @@ InteractionResult action_io_row_select(State_menu &state, IO_table &table) {
             //std::visit( [] (auto & i) { i.print(); },
             //row_opt.value() );
             state.getApplication_data_sp()->setSize_t_data( ir.index );  // store this for use by user when they want to edit or display a row, via menu system.
-            return { ir.hot_key, ir.index, {}, {}, InteractionResultNav::retain_menu };  // todo: bad practice of having the return value in two places: ir.index.
+            return { ir.hot_key, ir.index, {}, {}, InteractionIntentNav::retain_menu };  // todo: bad practice of having the return value in two places: ir.index.
         }
         else
             assert(false);  // todo: isn't really an optional.
     }
     else {
         cout << "\a\nRow not found."<< endl;
-        return { ir.hot_key, {}, {}, {InteractionResultErrorCat::failed,""}, InteractionResultNav::retain_menu };
+        return { ir.hot_key, {}, {}, {InteractionResultErrorCat::failed,""}, InteractionIntentNav::retain_menu };
     }
 }
 
@@ -307,38 +307,38 @@ InteractionResult action_io_row_create(State_menu &state, IO_table &table) {
         // get a value OR move to other field
         ir = action_dialog_modal_io_field( state, table.spec.fields.at( field_index ) );
         switch ( ir.navigation ) {
-        case InteractionResultNav::down_one_field :
-        case InteractionResultNav::skip_one_field :
-        case InteractionResultNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
+        case InteractionIntentNav::down_one_field :
+        case InteractionIntentNav::skip_one_field :
+        case InteractionIntentNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
             ++field_index;
             break;
-        case InteractionResultNav::up_one_field :
-        case InteractionResultNav::continue_backward_pagination :
+        case InteractionIntentNav::up_one_field :
+        case InteractionIntentNav::continue_backward_pagination :
             if ( field_index > 0 ) --field_index;  else cout << '\a';  // alarm
             break;
-        case InteractionResultNav::skip_to_end_of_fields :
-        case InteractionResultNav::up_one_block :
-        case InteractionResultNav::down_one_block :
-        case InteractionResultNav::save_form_as_is :  // is this true??
+        case InteractionIntentNav::skip_to_end_of_fields :
+        case InteractionIntentNav::up_one_block :
+        case InteractionIntentNav::down_one_block :
+        case InteractionIntentNav::save_form_as_is :  // is this true??
             is_all_fields_presented_to_user = true;
             break;
-        case InteractionResultNav::exit_fn_with_prompts :
-        case InteractionResultNav::exit_fn_immediately :
-        case InteractionResultNav::exit_pgm_immediately :
-        case InteractionResultNav::exit_pgm_with_prompts :
+        case InteractionIntentNav::exit_fn_with_prompts :
+        case InteractionIntentNav::exit_fn_immediately :
+        case InteractionIntentNav::exit_pgm_immediately :
+        case InteractionIntentNav::exit_pgm_with_prompts :
             is_all_fields_presented_to_user  = true;  // not needed, but...
             return InteractionResult { ir.hot_key, {}, {}, {InteractionResultErrorCat::failed, "User terminated action early."}, ir.navigation} ;
-        case InteractionResultNav::prior_row :
-        case InteractionResultNav::next_row :
-        case InteractionResultNav::first_row :
-        case InteractionResultNav::last_row :
-        case InteractionResultNav::retain_menu :
-        case InteractionResultNav::prior_menu :
-        case InteractionResultNav::prior_menu_discard_value :
-        case InteractionResultNav::main_menu :
-        case InteractionResultNav::na :
-        case InteractionResultNav::no_result :  // todo: correct?
-        case InteractionResultNav::exit_all_menu :  // todo: correct?
+        case InteractionIntentNav::prior_row :
+        case InteractionIntentNav::next_row :
+        case InteractionIntentNav::first_row :
+        case InteractionIntentNav::last_row :
+        case InteractionIntentNav::retain_menu :
+        case InteractionIntentNav::prior_menu :
+        case InteractionIntentNav::prior_menu_discard_value :
+        case InteractionIntentNav::main_menu :
+        case InteractionIntentNav::na :
+        case InteractionIntentNav::no_result :  // todo: correct?
+        case InteractionIntentNav::exit_all_menu :  // todo: correct?
             throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
         }
         // *** NOTE: for the below code to work, we cannot do a 'continue' statement above this line in the loop!
@@ -370,11 +370,11 @@ InteractionResult action_io_row_create(State_menu &state, IO_table &table) {
     table.insert_candidate_row(); // write the new row using the target struct
     state.getApplication_data_sp()->setIs_data_unsaved(true);
     state.getApplication_data_sp()->setSize_t_data(table.rows.size() - 1);  // load with the last row, which in the case of vector<> is the one we just inserted/emplaced_back.
-    return { ir.hot_key, field_index, {}, {}, InteractionResultNav::retain_menu };  // InteractionResultData_Variant, InteractionResultError, InteractionResultNav
+    return { ir.hot_key, field_index, {}, {}, InteractionIntentNav::retain_menu };  // InteractionResultData_Variant, InteractionResultError, InteractionResultNav
 }
 
 InteractionResult action_io_row_delete(State_menu &state, IO_table &table) {
-    InteractionResult ir {{},{},{},{},InteractionResultNav::retain_menu};
+    InteractionResult ir {{},{},{},{},InteractionIntentNav::retain_menu};
     size_t row_index = state.getApplication_data_sp()->getSize_t_data();
     ir = action_io_row_print_index( state, table, row_index );  // todo: complete this: check ir in case of pagination.
     ir = action_dialog_modal_deny( state, "Are you sure you want to delete this row:");
@@ -403,38 +403,38 @@ InteractionResult action_io_row_update(State_menu &state, IO_table &table) {
             // get a value OR move to other field
             ir = action_dialog_modal_io_field( state, table.spec.fields.at( field_index ) );
             switch ( ir.navigation ) {
-            case InteractionResultNav::down_one_field :
-            case InteractionResultNav::skip_one_field :
-            case InteractionResultNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
+            case InteractionIntentNav::down_one_field :
+            case InteractionIntentNav::skip_one_field :
+            case InteractionIntentNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
                 ++field_index;
                 break;
-            case InteractionResultNav::up_one_field :
-            case InteractionResultNav::continue_backward_pagination :
+            case InteractionIntentNav::up_one_field :
+            case InteractionIntentNav::continue_backward_pagination :
                 if ( field_index > 0 ) --field_index;  else cout << '\a';  // alarm
                 break;
-            case InteractionResultNav::skip_to_end_of_fields :
-            case InteractionResultNav::up_one_block :
-            case InteractionResultNav::down_one_block :
-            case InteractionResultNav::save_form_as_is :  // is this true??
+            case InteractionIntentNav::skip_to_end_of_fields :
+            case InteractionIntentNav::up_one_block :
+            case InteractionIntentNav::down_one_block :
+            case InteractionIntentNav::save_form_as_is :  // is this true??
                 is_all_fields_presented_to_user = true;
                 break;
-            case InteractionResultNav::exit_fn_with_prompts :
-            case InteractionResultNav::exit_fn_immediately :
-            case InteractionResultNav::exit_pgm_immediately :
-            case InteractionResultNav::exit_pgm_with_prompts :
+            case InteractionIntentNav::exit_fn_with_prompts :
+            case InteractionIntentNav::exit_fn_immediately :
+            case InteractionIntentNav::exit_pgm_immediately :
+            case InteractionIntentNav::exit_pgm_with_prompts :
                 is_all_fields_presented_to_user  = true;  // not needed, but...
                 return InteractionResult { ir.hot_key, {}, {}, {InteractionResultErrorCat::failed, "User terminated action early."}, ir.navigation} ;
-            case InteractionResultNav::prior_row :
-            case InteractionResultNav::next_row :
-            case InteractionResultNav::first_row :
-            case InteractionResultNav::last_row :
-            case InteractionResultNav::retain_menu :
-            case InteractionResultNav::prior_menu :
-            case InteractionResultNav::prior_menu_discard_value :
-            case InteractionResultNav::main_menu :
-            case InteractionResultNav::na :
-        case InteractionResultNav::no_result :  // todo: correct?
-        case InteractionResultNav::exit_all_menu :  // todo: correct?
+            case InteractionIntentNav::prior_row :
+            case InteractionIntentNav::next_row :
+            case InteractionIntentNav::first_row :
+            case InteractionIntentNav::last_row :
+            case InteractionIntentNav::retain_menu :
+            case InteractionIntentNav::prior_menu :
+            case InteractionIntentNav::prior_menu_discard_value :
+            case InteractionIntentNav::main_menu :
+            case InteractionIntentNav::na :
+            case InteractionIntentNav::no_result :  // todo: correct?
+            case InteractionIntentNav::exit_all_menu :  // todo: correct?
                 throw std::logic_error( std::to_string(__LINE__)+__FILE_NAME__+":"+__FUNCTION__); // todo: complete this: code above case's.
             }
             // *** NOTE: for the below code to work, we cannot do a 'continue' statement above this line in the loop!
@@ -464,7 +464,7 @@ InteractionResult action_io_row_update(State_menu &state, IO_table &table) {
         table.update_candidate_row( state.getApplication_data_sp()->getSize_t_data() );
         state.getApplication_data_sp()->setIs_data_unsaved(true);
     }
-    ir.navigation = InteractionResultNav::retain_menu;   // todo: complete this: navigation should be based on converting the IR from above.  applies to other similar functions in this file too....
+    ir.navigation = InteractionIntentNav::retain_menu;   // todo: complete this: navigation should be based on converting the IR from above.  applies to other similar functions in this file too....
     return ir;
 }
 

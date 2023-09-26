@@ -14,8 +14,8 @@ using std::cin, std::cout, std::endl, std::cerr;
 InteractionResult action_save_work( State_menu & state) {  // always save the data if the user requests it, even if we KNOW that there was not change.
     // We could be saving many things here.  Currently we assume only one thing to save, that being the entire database, which comprises all our "work"
     InteractionResult ir { action_save_changes_to_disk( state )};
-
-    InteractionResultNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
+    
+    InteractionIntentNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
     //assert( verify_interaction_result_nav( ir.hot_key, InteractionCategory::menu ));
 
     // we don't need to do any more processing based on how the user responded.  //if ( nav == InteractionResultNav::retain_menu )  //  User didn't ask to exit or esc.
@@ -34,46 +34,46 @@ InteractionResult action_program_exit_with_prompts( State_menu & state) {
             cout << "\n" << message << endl;
         }
     }
-    return { {}, {}, {}, {}, InteractionResultNav::exit_all_menu };
+    return { {}, {}, {}, {}, InteractionIntentNav::exit_all_menu };
 }
 
 InteractionResult action_program_exit_immediately( State_menu & state ) {  // we might use it in later versions?
                                     cerr << "int action_program_exit_immediately( State & state) {" << endl;
-    return InteractionResult { {}, {}, {}, {}, InteractionResultNav::exit_all_menu };  //std::exit(0);  // todo: is this really correct in the context of c++ as opposed to Unix??
+    return InteractionResult { {}, {}, {}, {}, InteractionIntentNav::exit_all_menu };  //std::exit(0);  // todo: is this really correct in the context of c++ as opposed to Unix??
 }
 
 InteractionResult action_go_back_up_menu( State_menu & state) {
     // go back up one levels of menu, only if we are not already at main menu.
     if ( state.is_menu_current_main() ) {
         cerr << "int action_go_back( State &): retain menu." << endl;
-        return { {}, {}, {}, {}, InteractionResultNav::retain_menu };
+        return { {}, {}, {}, {}, InteractionIntentNav::retain_menu };
     }
     cerr << "int action_go_back( State &): prior menu." << endl;
-    return { {}, {}, {}, {}, InteractionResultNav::prior_menu };  // note: going to PRIOR!
+    return { {}, {}, {}, {}, InteractionIntentNav::prior_menu };  // note: going to PRIOR!
 }
 
 InteractionResult action_print_menu_help( State_menu & state, Menu const & menu) {
     menu.print( state );
                                     cerr << "int action_print_menu_help( State &) "<<endl;
     InteractionResult ir 		{ pagination( state, { .height= 1, .width= menu.help.length() })};  // we assume that menu.help() will fit on one screen so we check once and them print entire help in one statement below.
-    InteractionResultNav nav = 	find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
+                                    InteractionIntentNav nav = 	find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
     //assert( verify_interaction_result_nav( ir.hot_key, InteractionCategory::menu ));
-
-    if ( nav == InteractionResultNav::retain_menu )  //  User didn't ask to exit or esc.
+                                    
+                                    if ( nav == InteractionIntentNav::retain_menu )  //  User didn't ask to exit or esc.
         cout << menu.help <<endl;  // print entire message without further pagination.  todo: probably sub-optimal.
     return { {}, {}, {}, {}, nav };
 }
 
 InteractionResult action_print_menu( State_menu & state, Menu const & menu) {
     InteractionResult ir 		{ menu.print( state )};
-    InteractionResultNav nav = 	find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
+    InteractionIntentNav nav = 	find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
     //assert( verify_interaction_result_nav( ir.hot_key, InteractionCategory::menu ));
     return { {}, {}, {}, {}, nav };
 }
 
 InteractionResult action_home_menu( State_menu & ) {
     cerr << "int action_home_menu( State & state):" << endl;
-    return { {}, {}, {}, {}, InteractionResultNav::main_menu };  // note: going to MAIN.
+    return { {}, {}, {}, {}, InteractionIntentNav::main_menu };  // note: going to MAIN.
 }
 
 /*/InteractionResult action_menu_forward_pagination( State_menu & ) {  // todo: complete this: need a "pagination menu" that can be used anytime that a variable size list is printed.

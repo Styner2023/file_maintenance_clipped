@@ -72,7 +72,7 @@ std::optional<Panel_dimensions> pagination_wrap_effect(const State_menu &state, 
 
 InteractionResult pagination(State_menu &state, const Panel_dimensions &proposed_content) {
     LOGGER_("***start***")
-    InteractionResult ir { {}, {}, {}, {}, InteractionResultNav::retain_menu };
+    InteractionResult ir { {}, {}, {}, {}, InteractionIntentNav::retain_menu };
     if (std::optional<Panel_dimensions> proposed_content_wrapped = pagination_wrap_effect( state, proposed_content, true )) {	// content should fit
         Panel_dimensions over_d = oversized_by( state, proposed_content_wrapped.value() );
         //cerr << "pagination()1: proposed_content:"<< proposed_content <<", proposed_content_wrapped:" << proposed_content_wrapped.value()<< ", over:"<< over_d << ".\n";
@@ -80,8 +80,8 @@ InteractionResult pagination(State_menu &state, const Panel_dimensions &proposed
             // cout << ">>Enter <Enter> to continue displaying data.";
             // cin >> getline();
             InteractionResult ir_modal = action_dialog_modal_notify( state, "...more... Press <Enter> to continue" ); // todo: URGENT put back menu_system function for this!
-            if ( ir.navigation == InteractionResultNav::exit_pgm_immediately ||
-                 ir.navigation == InteractionResultNav::exit_pgm_with_prompts )
+            if ( ir.navigation == InteractionIntentNav::exit_pgm_immediately ||
+                ir.navigation == InteractionIntentNav::exit_pgm_with_prompts )
                 ir.navigation = ir_modal.navigation;
             pagination_reset( state, {0,0} );
         }

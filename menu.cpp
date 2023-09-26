@@ -23,7 +23,7 @@ InteractionResult Menu::print( State_menu & state_menu) const {  // Note: we mig
     for (Menu_option const & option: options ) {
         ir = option.print( state_menu );
         ir = pagination( state_menu, {.height = 0, .width = 2} );  // todo: TODO is it a bad idea to use this C99?
-        if ( ir.navigation != InteractionResultNav::continue_forward_pagination ) {
+        if ( ir.navigation != InteractionIntentNav::continue_forward_pagination ) {
             cout << ", ";  // todo: complete this, it's a bug.
         }
         else {} // todo: complete this. should rollback the prior pagination!! chicken or the egg situation.

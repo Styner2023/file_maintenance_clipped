@@ -16,8 +16,8 @@ using std::cin; using std::cout; using std::cerr; using std::clog; using std::en
 ///       Like Kb_value_plus but allows for NOT_VALUE_PROVIDED, by making Lib_tty::Key_char_i18ns optional to support is_optional.
 struct Value_nup {
   std::optional< Lib_tty::Key_char_i18ns > Key_char_i18ns_opt {};
-  Lib_tty::Hot_key                           hot_key {};
-  Lib_tty::File_status                       file_status {};
+  Lib_tty::Hot_key                         hot_key {};
+  Lib_tty::File_status                     file_status {};
 };
 
 template< typename Field_spec_T >
@@ -61,7 +61,7 @@ void prompt_for_field_data( State_menu & state, Field_spec_T const & field_spec,
     cout.flush();
     prior_prompt_length        = field_spec.user_prompt.length() + 2;
     prior_current_value_echo_length = current_value_echo.length();
-    /* switch (validity.default_handling) {
+    /* switch (validity.default_handling) { // TODO
     case ValidityHandlingDialog::default_is_to_approve:
         cout <<"(Yes/No,";
         cout <<"default="<<validity.value_default_approve_prompt << ")>>";
@@ -185,20 +185,20 @@ auto to_string_typed_value2( T typed_value ) { // todo: consider combining this 
     return std::string {};
 }
 
-InteractionResultNav find_interaction_result_nav( Lib_tty::Hot_key const & hot_key, InteractionCategory const cat ) {
-    if ( static bool is_verified_FNIMap {false}; !is_verified_FNIMap ) {
+InteractionIntentNav find_interaction_result_nav( Lib_tty::Hot_key const & hot_key, InteractionCategory const cat ) {
+    if ( static bool is_verified_FNIMap {false}; not is_verified_FNIMap ) {
         LOGGER_( "Do this only once on the first use within a program run.");
-        fieldNavigationInteractionMap.verify();
+        fieldNavInteractionIntentTable.verify();
         is_verified_FNIMap = true;
     }
 
-    auto const v = std::find_if( fieldNavigationInteractionMap.mappings.begin(),
-                                 fieldNavigationInteractionMap.mappings.end(),
-                    [&hot_key, cat] (FieldNavInteractionRelation r) {
+    auto const v = std::find_if( fieldNavInteractionIntentTable.rows.begin(),
+                                fieldNavInteractionIntentTable.rows.end(),
+                                [&hot_key, cat] (FieldNavInteractionIntentRow r) {
                          return (r.category == cat && r.field_nav == hot_key.f_completion_nav );
                     });
-    if ( v == fieldNavigationInteractionMap.mappings.end() ) {
-        assert( "Missing entry in FNIMap." && false );
+    if ( v == fieldNavInteractionIntentTable.rows.end() ) {
+        assert( false && "Missing entry in FNIMap." );
     }
     else
         return v->interaction_nav;
@@ -211,9 +211,9 @@ InteractionResultNav find_interaction_result_nav( Lib_tty::Hot_key const & hot_k
  * todo: we should let the user know when the bad field completion hot_key is entered.
  */
 bool verify_interaction_result_nav( Lib_tty::Hot_key const & hot_key, InteractionCategory const cat ) {  // is this ever used? no?
-    InteractionResultNav irn {};
+    InteractionIntentNav irn {};
     irn = find_interaction_result_nav( hot_key, cat );
-    if ( irn == InteractionResultNav::na ) {
+    if ( irn == InteractionIntentNav::na ) {
         return false;    // todo: It is too late to do this now! See above todo:. action_dialog_modal_notify( state, "Invalid hot key pressed, did you intend <ENTER>? Try again. Press <ENTER> now also, to continue."); // we discard the ir from notification.
     }
     else return true;
@@ -315,7 +315,7 @@ bool process_field_completion_nav( State_menu						state,
     bool 				skip_additional_checks {false};  // Our return value, with a strange name! NOTE we also have *OUT* variables. Also shows that deficiency message has been updated, but this is not relevant to logic, but does prove we need this bool.
 
     // check for illegal field completion values for the InteractionCategory.
-    if ( InteractionResultNav::na == find_interaction_result_nav( hot_key, state.action_top() )) {
+    if ( InteractionIntentNav::na == find_interaction_result_nav( hot_key, state.action_top() )) {
         deficiency_message = "Invalid field completion hot_key " + hot_key.my_name + " pressed, try again.";
         return true;  // skip_additional_checks
     }
@@ -613,8 +613,8 @@ bool check_max_input_length( T const 				& field_spec,
  * Valid value (and additionally default value) processing changes the meaning of hot_keys: up arrow and down arrow.
  * <TAB> means NOT_USER_PROVIDED nup, meaning an optional field is the be NULL.
  */
-Value_nup input_field_response( State_menu 						      & state,
-                                IO_field_spec_bool const 			  & field_spec,
+Value_nup input_field_response( State_menu 						             & state,
+                                IO_field_spec_bool const 			         & field_spec,
                                 std::optional<Lib_tty::Key_char_i18ns> const & existing_value ) {
     exclude_disallowed_fields( field_spec ); // todo: complete this: field_spec.lengths_input.max don't think we can/need to enforce min for an integer.
     pagination_reset( state, { 1, 40 } ); cout << '\n';  // create a new line on display and use that one line again and again as we reprompt for every character typed.// todo: complete this, is this reset true?  20 is an estimate!
@@ -634,7 +634,7 @@ Value_nup input_field_response( State_menu 						      & state,
                                                                 valid_value_itr : valid_value_itr_begin };  // set default if present, else at begining
     auto const 				 default_typed_value 			{ retrieve_default( current_valid_value_itr,
                                                                                 valid_value_set.end())};
-    std::optional<Lib_tty::Key_char_i18ns>
+    std::optional< Lib_tty::Key_char_i18ns >
                              default_value 					{ to_string_typed_value( default_typed_value) };
     Lib_tty::Key_char_i18ns current_value 					{ existing_o_default(
                                                                         default_value, existing_value ) };  // we build up the value we want to return character by character.
@@ -978,34 +978,34 @@ Value_nup input_field_response( State_menu & state, IO_field_spec_decimal 		cons
     return { std::get<Lib_tty::Hot_key>(value_plus), {}, Key_char_i18ns.value_or(""), {}, irn }; // return { Key_char_i18ns, InteractionResultError {}, InteractionResultNav::retain_menu };
 } */
 
-bool is_store_value_intent( InteractionResultNav irn ) {
+bool is_store_value_intent( InteractionIntentNav irn ) {
     switch ( irn  ) {
-    case InteractionResultNav::down_one_field :
-    case InteractionResultNav::up_one_block :  // essentially ignore it, assume equivalent to <Enter>
-    case InteractionResultNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
-    case InteractionResultNav::up_one_field :
-    case InteractionResultNav::continue_backward_pagination :
-    case InteractionResultNav::down_one_block :
-    case InteractionResultNav::save_form_as_is :  // is this true??
-    case InteractionResultNav::retain_menu :
-    case InteractionResultNav::main_menu :
-    case InteractionResultNav::prior_menu :
+    case InteractionIntentNav::down_one_field :
+    case InteractionIntentNav::up_one_block :  // essentially ignore it, assume equivalent to <Enter>
+    case InteractionIntentNav::continue_forward_pagination :  // essentially ignore it, assume equivalent to <Enter>
+    case InteractionIntentNav::up_one_field :
+    case InteractionIntentNav::continue_backward_pagination :
+    case InteractionIntentNav::down_one_block :
+    case InteractionIntentNav::save_form_as_is :  // is this true??
+    case InteractionIntentNav::retain_menu :
+    case InteractionIntentNav::main_menu :
+    case InteractionIntentNav::prior_menu :
         return true;
-    case InteractionResultNav::skip_one_field :
-    case InteractionResultNav::skip_to_end_of_fields :
-    case InteractionResultNav::exit_fn_with_prompts :
-    case InteractionResultNav::exit_fn_immediately :
-    case InteractionResultNav::exit_pgm_immediately :
-    case InteractionResultNav::exit_pgm_with_prompts :
-    case InteractionResultNav::prior_menu_discard_value :
+    case InteractionIntentNav::skip_one_field :
+    case InteractionIntentNav::skip_to_end_of_fields :
+    case InteractionIntentNav::exit_fn_with_prompts :
+    case InteractionIntentNav::exit_fn_immediately :
+    case InteractionIntentNav::exit_pgm_immediately :
+    case InteractionIntentNav::exit_pgm_with_prompts :
+    case InteractionIntentNav::prior_menu_discard_value :
         return false;
-    case InteractionResultNav::first_row :
-    case InteractionResultNav::last_row :
-    case InteractionResultNav::next_row :
-    case InteractionResultNav::prior_row :
-    case InteractionResultNav::na :
-    case InteractionResultNav::no_result: 	// todo: is this correct?
-    case InteractionResultNav::exit_all_menu: 	// todo: is this correct?
+    case InteractionIntentNav::first_row :
+    case InteractionIntentNav::last_row :
+    case InteractionIntentNav::next_row :
+    case InteractionIntentNav::prior_row :
+    case InteractionIntentNav::na :
+    case InteractionIntentNav::no_result: 	// todo: is this correct?
+    case InteractionIntentNav::exit_all_menu: 	// todo: is this correct?
         cerr << static_cast<int>(irn) << endl; // crude debugging info.
         assert(false);  // todo: finish this:
     }
@@ -1031,7 +1031,7 @@ InteractionResult action_dialog_modal_io_field( State_menu & state, IO_field_spe
     struct Input_a_AssignVisitor {
         InteractionResult operator() (State_menu & state, IO_field_spec_bool 			& field_spec ) {
             Value_nup 		 	 			value_nup {};
-            InteractionResultNav 			irn  {};
+            InteractionIntentNav 			irn  {};
             while ( true ) {
                 value_nup 		    	= input_field_response( state, field_spec, field_spec.getData_value_str() );
                 irn 					= find_interaction_result_nav( value_nup.hot_key, InteractionCategory::field );
@@ -1067,7 +1067,7 @@ InteractionResult action_dialog_modal_io_field( State_menu & state, IO_field_spe
         //InteractionResult operator() (State_menu & state, IO_field_spec_tm				& field_spec ) {
         InteractionResult operator() (State_menu & state, IO_field_spec_alphanumeric	& field_spec ) {
             Value_nup 		 	 			value_nup {};
-            InteractionResultNav 			irn  {};
+            InteractionIntentNav 			irn  {};
             while ( true ) {
                 value_nup 		    	= input_field_response( state, field_spec, field_spec.getData_value_str() );
                 irn 					= find_interaction_result_nav( value_nup.hot_key, InteractionCategory::field );
@@ -1089,7 +1089,7 @@ InteractionResult action_dialog_modal_io_field( State_menu & state, IO_field_spe
         }
         InteractionResult operator() (State_menu & state, IO_field_spec_integer			& field_spec ) {
             Value_nup 		 	 			value_nup {};
-            InteractionResultNav 			irn  {};
+            InteractionIntentNav 			irn  {};
             while ( true ) {
                 value_nup 		    	= input_field_response( state, field_spec, field_spec.getData_value_str() );
                 irn 					= find_interaction_result_nav( value_nup.hot_key, InteractionCategory::field );
@@ -1127,7 +1127,7 @@ InteractionResult action_dialog_modal_io_field( State_menu & state, IO_field_spe
         }
         InteractionResult operator() (State_menu & state, IO_field_spec_decimal			& field_spec ) {
             Value_nup 		 	 			value_nup {};
-            InteractionResultNav 			irn  {};
+            InteractionIntentNav 			irn  {};
             while ( true ) {
                 value_nup 		    	= input_field_response( state, field_spec, field_spec.getData_value_str() );
                 irn 					= find_interaction_result_nav( value_nup.hot_key, InteractionCategory::field );
@@ -1194,7 +1194,7 @@ InteractionResult action_dialog_modal_bool( State_menu & state, std::string cons
 
     InteractionResult ir = action_dialog_modal_io_field( state, field_spec_var ) ;
     cout << endl;
-    InteractionResultNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::dialog );
+    InteractionIntentNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::dialog );
     ir.navigation = nav;
     return ir;
 }
@@ -1235,7 +1235,7 @@ InteractionResult action_dialog_modal_notify( State_menu & state, std::string co
     };
     InteractionResult ir = action_dialog_modal_io_field( state, field_spec_var ) ;
     cout << endl;
-    InteractionResultNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::dialog );
+    InteractionIntentNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::dialog );
     ir.navigation = nav;
     return ir;
 }

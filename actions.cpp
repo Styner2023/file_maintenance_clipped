@@ -43,7 +43,7 @@ InteractionResult action_save_changes_to_disk( State_menu & state ) {
     //						pdata_size uint32, pdata_serialized_char*,
     InteractionResult 		ir  	{};  // to be returned
     InteractionResult 		ir_temp {};  // temporary for handling intermediate values.
-    InteractionResultNav 	nav  	{};
+    InteractionIntentNav 	nav  	{};
                                     cerr << "int action_save_changes_to_disk( State &) " << endl;
     // if ( io_table_persons.rows.size() == 0 ) ir = action_dialog_modal_deny( state, "Warning: there are no data records to save, do you wish to proceed?: ");
     // if ( ir.hot_key != proceed ) {  todo: //ir = ?; //return ir; //}
@@ -77,7 +77,7 @@ InteractionResult action_load_data_from_disk( State_menu & state) {
     // END OF SNIP
     state.getApplication_data_sp()->setIs_data_unsaved(false);
     ir = action_dialog_modal_notify( state, "All user data have been loaded from disk, replacing any prior data.");
-    InteractionResultNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
+    InteractionIntentNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
     ir.navigation 			 = nav;
     return ir;
 }
@@ -88,7 +88,7 @@ InteractionResult action_load_as_data_from_disk( State_menu & state) {  // load 
     //todo: get file name, also decide if new name and location is new default?
     InteractionResult ir = action_load_data_from_disk( state );
     ir = action_dialog_modal_notify( state, "All user data have been loaded from disk. Note: Please take care where you will save the data.  TODO TODO!!!! !");
-    InteractionResultNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
+    InteractionIntentNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
     ir.navigation 			 = nav;
     return ir;
 }
@@ -97,7 +97,7 @@ InteractionResult action_backup_data( State_menu & state ) {
     cerr << "int action_backup_data( State &) " << endl;
     // todo: do something.
     InteractionResult 	 ir  = action_dialog_modal_notify( state, "All user data have been backed up to disk in a backup format. Note: data have not been saved in the normal format in the normal location.  Please also normally save any data you wish to save for normal use of the application!");
-    InteractionResultNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
+    InteractionIntentNav nav = find_interaction_result_nav( ir.hot_key, InteractionCategory::menu );
     ir.navigation 			 = nav;
     return ir;
 }
@@ -105,11 +105,11 @@ InteractionResult action_backup_data( State_menu & state ) {
 InteractionResult action_screen_size( State_menu &) {
     cerr << "int action_screen_size( State &) " << endl;
     // todo: do something
-    return InteractionResult { {}, {}, {}, {}, InteractionResultNav::retain_menu };
+    return InteractionResult { {}, {}, {}, {}, InteractionIntentNav::retain_menu };
 }
 
 InteractionResult action_advanced_settings_selection( State_menu &) {
     cerr << "int action_advanced_settings_selection:" << endl;
     // todo: do something
-    return InteractionResult { {}, {}, {}, {}, InteractionResultNav::retain_menu };
+    return InteractionResult { {}, {}, {}, {}, InteractionIntentNav::retain_menu };
 }

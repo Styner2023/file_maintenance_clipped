@@ -53,7 +53,7 @@ int main ( int argc, char* arv[] ) { string my_arv { *arv}; cout << "~~~ argc,ar
     crash_signals_register();
     LOGGER_ ("********************************BEGIN PROGRAM**************************************");
 #ifndef NDEBUG
-    fieldNavigationInteractionMap.verify();  // todo: only needed during debugging and testing.
+    fieldNavInteractionIntentTable.verify();  // todo: only needed during debugging and testing.
 #endif
 
     Menu menu_main; // create main first, then the sub-menus.

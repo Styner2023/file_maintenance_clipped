@@ -25,6 +25,10 @@
 #define LOGGERS( msg, x )using loc = std::source_location;std::cerr<<"["<<loc::current().file_name()<<':'<<std::setw(3)<<loc::current().line()<<','<<std::setw(2)<<loc::current().column()<<"]`"<<loc::current().function_name()<<"`:" <<#msg<<",{"<<x<<"}.\n";
 //#define LOGGER_( msg )
 //#define LOGGERS( msg,x )
+/// Gives a source location for printing.  Used for debugging.
+std::string source_loc();
+void crash_tracer(int const signal_number);
+void crash_signals_register();
 
 using std::cin; using std::cout; using std::cerr; using std::clog; using std::endl; using std::string;  // using namespace std;
 using namespace std::string_literals;;
@@ -34,7 +38,7 @@ inline constexpr std::string STRING_NULL {"NULL"};  // SQL DB show an unset fiel
 inline constexpr uint8_t MDTUI_MAJOR 				{0};
 inline constexpr uint8_t MDTUI_MINOR 				{1};
 inline constexpr uint8_t MDTUI_PATCH 				{0};
-inline constexpr uint8_t MDTUI_PRE_RELEASE 		{0};  // 0=alpha, 1=beta, 2=RC1, ... or some other meannig?  TBD.
+inline constexpr uint8_t MDTUI_PRE_RELEASE          {0};  // 0=alpha, 1=beta, 2=RC1, ... or some other meannig?  TBD.
 inline constexpr uint8_t MDTUI_BUILD 				{1};
 inline constexpr uint8_t MDTUI_SOFTWARE_PLATFORM   {1};  // 1 = linux
 inline constexpr uint8_t MDTUI_HARDWARE_PLATFORM   {1};  // 1 = x86_64
@@ -132,8 +136,4 @@ using InteractionResultData_Variant = std::variant<  // todo: What was I thinkin
     std::vector<Data_type_variant>  // todo: Seriously a vector? What was I thinking? How many of these are used?
     >;
 
-/// Gives a source location for printing.  Used for debugging.
-std::string source_loc();
-void crash_tracer(int const signal_number);
-void crash_signals_register();
 #endif // GLOBAL_ENTITIES_H
