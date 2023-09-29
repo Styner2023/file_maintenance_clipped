@@ -45,8 +45,8 @@ public:
     Data_type_decimal 	min			{ std::numeric_limits<Data_type_decimal>::lowest() };
     Data_type_decimal 	max			{ std::numeric_limits<Data_type_decimal>::max()    };
     int 				precision 	{2};
-    short				significant_values { std::numeric_limits<Data_type_decimal>::digits10 };  // todo: should this be ::digits, without the 10?
-    int			  		step 		{0};				// todo: implement this.
+    short				significant_values { std::numeric_limits<Data_type_decimal>::digits10 };  // TODO: should this be ::digits, without the 10?
+    int			  		step 		{0};				// TODO: implement this.
     bool 				is_check_value_between	{true}; // false represents excluding the range.
     void print() const {
 #define THIS_ this
@@ -62,8 +62,8 @@ public:
     Data_type_scientific 	min			{ std::numeric_limits<Data_type_scientific>::lowest() };
     Data_type_scientific 	max			{ std::numeric_limits<Data_type_scientific>::max()    };
     //int 				precision 	{2};
-    short				significant_values { std::numeric_limits<Data_type_scientific>::digits10 };  // todo: should this be ::digits, without the 10?
-    int			  		step 		{0};				// todo: implement this.
+    short				significant_values { std::numeric_limits<Data_type_scientific>::digits10 };  // TODO: should this be ::digits, without the 10?
+    int			  		step 		{0};				// TODO: implement this.
     bool 				is_check_value_between	{true}; // false represents excluding the range.
     void print() const {
 #define THIS_ this
@@ -76,7 +76,7 @@ public:
 std::ostream &operator<<(std::ostream &os, const ScientificValueRange &pd);
 
 enum class CharacterCaseHandling {
-    //initial_state         // todo:
+    //initial_state         // TODO:
     none,
     force_upper,
     force_lower,
@@ -84,7 +84,7 @@ enum class CharacterCaseHandling {
     force_initial_capitals
 };
 enum class DefaultHandling {
-    //initial_state         // todo:
+    //initial_state         // TODO:
     default_is_to_approve,  // implies a bool
     default_is_to_deny,  // implies a bool
     default_is_provided,
@@ -92,8 +92,8 @@ enum class DefaultHandling {
     na
 };
 
-const std::string 			NOT_USER_PROVIDED {"NOTAVAILABLE"};  // the user can type in this value and it will be considered as a 'skip one value', or 'NULL', or user did not respond.
-const std::string 			YES 			  {"Yes"};  // todo: TODO why can't this be a constexpr?  also can't be a string_view.
+const std::string 			NOT_USER_PROVIDED {"NOTAVAILABLE"};  // TODO: WARNING the user could type in this value and it will be considered as a 'skip one value', or 'NULL', or user did not respond.
+const std::string 			YES 			  {"Yes"};  // TODO: TODO why can't this be a constexpr?  also can't be a string_view.
 const std::string 			NO  			  {"No"};
 const std::set<std::string> VALUE_DEFAULT_APPROVE_EQUIVALENTS { YES,"yes","Y","y","true"};
 const std::set<std::string> VALUE_DEFAULT_DENY_EQUIVALENTS    { NO,"no","N","n","false"};
@@ -102,7 +102,7 @@ enum class ValidValuesHandling {
     validate_membership_valid_values,  // data must match one valid value
     no_membership_validation,  // but we do check lengths.
     no_valid_values_provided
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
 enum class ValidationFieldError {  // https://developer.mozilla.org/en-US/docs/Web/API/ValidityState
     value_missing,
@@ -125,7 +125,7 @@ enum class ValidationFieldError {  // https://developer.mozilla.org/en-US/docs/W
         less than
         greater than or equal to
         less than or equal to */
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
 
 struct ValidationReport {
@@ -134,18 +134,18 @@ struct ValidationReport {
     std::string 	error_message {};
 };
 
-enum class ValidityHandlingDialog {  // todo:  obsolete
+enum class ValidityHandlingDialog {  // TODO:  obsolete
     default_is_to_approve,  // implies a bool
     default_is_to_deny,  // implies a bool
     default_is_provided,
     default_is_to_notify, // accept any keypress, just a notification.
-    // above used as a logical group for handling defaults, below specify 2 cases, but not defaults.  todo:  could make this better with invariants in ValidityCritera...  todo:  could make this better with invariants in ValidityCritera...
+    // above used as a logical group for handling defaults, below specify 2 cases, but not defaults.  TODO:  could make this better with invariants in ValidityCritera...  TODO:  could make this better with invariants in ValidityCritera...
     check_valid_values,
     no_specific_value_checking  // but we do check lengths.
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
 
-//enum class DefaultFieldHandling {  // todo: obsolete, notify is just an alphanum with length zero.
+//enum class DefaultFieldHandling {  // TODO: obsolete, notify is just an alphanum with length zero.
 //    default_is_to_approve,  // implies a bool
 //    default_is_to_deny,  // implies a bool
 //    default_is_provided,
@@ -324,12 +324,12 @@ public:
     bool  		  				is_strip_control_chars 	{true};  // remove everything except human readable alphanumeric and normal punctuation.  https://en.cppreference.com/w/cpp/string/byte/isprint, isspace, isgraph
 
     std::unordered_set<char>	prohibited_characters	{};
-    ValidValueSet_var 			valid_values 			{};	// NOTE: numeric checks are presented as a string and converted, remember to consider the case of the characters ie. upper/lower  // todo: complete this: add this to constructor!
+    ValidValueSet_var 			valid_values 			{};	// NOTE: numeric checks are presented as a string and converted, remember to consider the case of the characters ie. upper/lower  // TODO: complete this: add this to constructor!
     bool						is_valid_values_enabled	 {false};  // does not imply that there are valid values value.
     bool						is_default_value_enabled {false};  // does not imply that there is a default value.
-    ProhibitedValueSet_var 		values_prohibited 		{}; // remember to consider the case of the characters ie. upper/lower  // todo: complete this: add this to constructor!
-    //std::set<ValidValue_var> & 	valid_values_shared 			{};	// NOTE: numeric checks are presented as a string and converted, remember to consider the case of the characters ie. upper/lower  // todo: complete this: add this to constructor!
-    //std::set<ProhibitedValue_var> & values_prohibited_shared 		{}; // remember to consider the case of the characters ie. upper/lower  // todo: complete this: add this to constructor!
+    ProhibitedValueSet_var 		values_prohibited 		{}; // remember to consider the case of the characters ie. upper/lower  // TODO: complete this: add this to constructor!
+    //std::set<ValidValue_var> & 	valid_values_shared 			{};	// NOTE: numeric checks are presented as a string and converted, remember to consider the case of the characters ie. upper/lower  // TODO: complete this: add this to constructor!
+    //std::set<ProhibitedValue_var> & values_prohibited_shared 		{}; // remember to consider the case of the characters ie. upper/lower  // TODO: complete this: add this to constructor!
 
     std::string   			  	regex_pattern 			{}; // could incorporate the min/max length, but that would be complicated?
     std::function<void (int)>	custom_validation_fn 	{};
@@ -355,16 +355,16 @@ public:
    // const std::set<std::string> value_default_deny_equivalents  {{NO},"no","N","n"}; 	  // note: use .at(0) for a defaulted value
     const std::string 		    value_default_approve_prompt 	{YES};
     const std::string 			value_default_deny_prompt 		{NO};
-    bool 						is_ignore_case_on_validation	{true};  // todo: what does this do?  not implemented yet.
+    bool 						is_ignore_case_on_validation	{true};  // TODO: what does this do?  not implemented yet.
 };
 class ValidityFieldSpecAlphanum {
 public:
     const ValidityFieldSpecBase base							{};
     const LengthRange			lengths_storage					{};
-    bool 						is_ignore_case_on_validation	{true};  // todo: what does this do?  not implemented yet.
+    bool 						is_ignore_case_on_validation	{true};  // TODO: what does this do?  not implemented yet.
     bool 						is_password						{false};
-                        //assert( (is_password && !is_allow_control_chars) && "Length must be greater than 0." );   // todo: must debug n>1 case later.
-                        //assert( (is_password && !is_echo_skc_to_tty) && "Length must be greater than 0." );   // todo: must debug n>1 case later.
+                        //assert( (is_password && !is_allow_control_chars) && "Length must be greater than 0." );   // TODO: must debug n>1 case later.
+                        //assert( (is_password && !is_echo_skc_to_tty) && "Length must be greater than 0." );   // TODO: must debug n>1 case later.
                         //if (     is_password )
                         //is_allow_control_chars = false;
 };
@@ -372,19 +372,19 @@ class ValidityFieldSpecInteger {
 public:
     const ValidityFieldSpecBase base							{};
     IntegerValueRange 			range 				{};
-    bool						is_signed			{true};  // this could be redundant with min/max but could improve performance. todo: complete this: implement
+    bool						is_signed			{true};  // this could be redundant with min/max but could improve performance. TODO: complete this: implement
 };
 class ValidityFieldSpecDecimal {
 public:
     const ValidityFieldSpecBase base							{};
     DecimalValueRange 			range 				{};
-    bool						is_signed			{true};  // this could be redundant with min/max but could improve performance. todo: complete this: implement
+    bool						is_signed			{true};  // this could be redundant with min/max but could improve performance. TODO: complete this: implement
 };
 class ValidityFieldSpecScientific {			// not implemented yet.
 public:
     const ValidityFieldSpecBase base							{};
-    DecimalValueRange 			range 				{};  // todo: MISSING !!!!!!!!!!!!!!!!
-    bool						is_signed			{true};  // this could be redundant with min/max but could improve performance. todo: complete this: implement
+    DecimalValueRange 			range 				{};  // TODO: MISSING !!!!!!!!!!!!!!!!
+    bool						is_signed			{true};  // this could be redundant with min/max but could improve performance. TODO: complete this: implement
 };
 using ValidityFieldSpec_var = std::variant< ValidityFieldSpecBool, ValidityFieldSpecAlphanum, ValidityFieldSpecInteger, ValidityFieldSpecDecimal /*, ValidityFieldSpecScientific */ >;
 
@@ -396,23 +396,23 @@ enum class IO_field_trim {
     ws_right_and_inter,
     ws_both_and_inter,
     none
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
-enum class IO_field_alignment {  // todo: complete this.
+enum class IO_field_alignment {  // TODO: complete this.
     left,
     right,
     center,
     none
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
-enum class IO_field_echo_mode {  // todo: complete this.
+enum class IO_field_echo_mode {  // TODO: complete this.
     normal,
     no_echo,
     password,  				// show * for each kb_normal_char entered, shows length of password.
     password_echo_one_char, // show one char after it is entered but don't show entire password, instead show * for prior characters.
     password_echo_fixed,
     password_echo_while_editing  // forgot what I meant.
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
 class PromptFieldSpecification {
 public:

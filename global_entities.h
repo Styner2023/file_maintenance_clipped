@@ -11,7 +11,7 @@
 #include <stacktrace>
 #include <source_location>
 
-// BEGIN OF SNIP todo
+// BEGIN OF SNIP TODO
 // END OF SNIP
 
 /* few items for debugging purposes */
@@ -42,7 +42,7 @@ inline constexpr uint8_t MDTUI_PRE_RELEASE          {0};  // 0=alpha, 1=beta, 2=
 inline constexpr uint8_t MDTUI_BUILD 				{1};
 inline constexpr uint8_t MDTUI_SOFTWARE_PLATFORM   {1};  // 1 = linux
 inline constexpr uint8_t MDTUI_HARDWARE_PLATFORM   {1};  // 1 = x86_64
-inline constexpr uint8_t MDTUI_ENDIANNESS 			{0};  //  0=unknown, 1=big endian, 2=little endian, ... there are other types!!  todo: NOT set properly or USED
+inline constexpr uint8_t MDTUI_ENDIANNESS 			{0};  //  0=unknown, 1=big endian, 2=little endian, ... there are other types!!  TODO: NOT set properly or USED
 
 /// current limits of the program
 inline constexpr int IO_ROW_FIELDS_NUM_MAX 		{20}; // zero origin, so human number is: this value + 1
@@ -60,17 +60,17 @@ static_assert ( PDATA_MAX_LENGTH <= INT32_MAX, "number too large" );
 /// key program types
 using Data_type_boolean 		= bool;
 using Data_type_character 		= char;
-using Data_type_uint64 			= uint64_t;  		// todo: should GUID be 128 bits?  Was that the only reason for this type?
+using Data_type_uint64 			= uint64_t;  		// TODO: should GUID be 128 bits?  Was that the only reason for this type?
 using Data_type_time_point 		= std::chrono::system_clock::time_point;
-using Data_type_tm				= std::tm;  		// todo: will probably never used.
-using Data_type_alphanumeric 	= std::string;  	// todo: does not carry the correct characters, ie.  lib_tty::KbFundamentalUnit
+using Data_type_tm				= std::tm;  		// TODO: will probably never used.
+using Data_type_alphanumeric 	= std::string;  	// TODO: does not carry the correct characters, ie.  lib_tty::KbFundamentalUnit
 //using Data_type_shortinteger 	= short int;  		// not implemented
 using Data_type_integer 		= int;
 //using Data_type_longinteger 	= long int;  		// not implemented
 //using Data_type_longlonginteger	= long long int;  // not implemented
 //using Data_type_xxdecimal 	= float;  			// a floating point
 using Data_type_decimal 		= double;  			// a floating point
-using Data_type_scientific 		= long double;  	// a floating point // todo: kludge!, see below regarding: Data_type_scientific
+using Data_type_scientific 		= long double;  	// a floating point // TODO: kludge!, see below regarding: Data_type_scientific
 
 /// used for both software and file format versions.
 struct Version {
@@ -108,7 +108,7 @@ struct Software_product {
 };
 
 /// types of data supported for file_maintenance and user input
-using Data_type_variant = std::variant<		// todo: What was I thinking? How many of these are used?
+using Data_type_variant = std::variant<		// TODO: What was I thinking? How many of these are used?
     std::monostate,
     Data_type_boolean,
     Data_type_character,
@@ -122,7 +122,7 @@ using Data_type_variant = std::variant<		// todo: What was I thinking? How many 
     >;
 
 /// types of data supported for the result of user input, ie function return types
-using InteractionResultData_Variant = std::variant<  // todo: What was I thinking? How many of these are used?
+using InteractionResultData_Variant = std::variant<  // TODO: What was I thinking? How many of these are used?
     std::monostate,
     Data_type_boolean,
     Data_type_character,
@@ -133,7 +133,7 @@ using InteractionResultData_Variant = std::variant<  // todo: What was I thinkin
     Data_type_integer,
     Data_type_decimal,
     Data_type_scientific,  // NOTE: each of these types must be unique.
-    std::vector<Data_type_variant>  // todo: Seriously a vector? What was I thinking? How many of these are used?
+    std::vector<Data_type_variant>  // TODO: Seriously a vector? What was I thinking? How many of these are used?
     >;
 
 #endif // GLOBAL_ENTITIES_H

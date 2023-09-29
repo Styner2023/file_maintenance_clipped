@@ -7,7 +7,7 @@
 #include "io_field.h"
 #include "io_field_specs_variant.h"
 #include "io_row.h"
-// BEGIN OF SNIP todo
+// BEGIN OF SNIP TODO
 // END OF SNIP
 
 /* some helper functions to do integrity checks between the vector of values against the struct Row of values
@@ -18,7 +18,7 @@ public:
     Field_check( Data_row_t const & data_row_) : data_row (data_row_) {}
     bool operator()( Field_spec_t const & field_spec ) {
         if ( field_spec.is_primary_key_component) {
-            auto var_of_data_type_kludge = field_spec.data_location;  // todo TODO: I'm just stripping off the ref so I can use decltype().  Is there a better way?
+            auto var_of_data_type_kludge = field_spec.data_location;  // TODO TODO: I'm just stripping off the ref so I can use decltype().  Is there a better way?
             auto the_field_in_data_row = *(reinterpret_cast< decltype( var_of_data_type_kludge ) const *>(&data_row + field_spec.memory_offset_from_row_begin));
             if ( field_spec.getData_value() == the_field_in_data_row )
                 return true;
@@ -46,11 +46,11 @@ public:
     std::string				   full_description {"FILL full description in!"};
     std::string				   help 			{"FILL help in!"};
     std::vector<IO_field_spec_variant> fields 	{};
-/*  OR std::array<IO_field_spec, //IO_ROW_FIELDS_NUM_MAX >// todo: use X_MACROs to replace counts  https://stackoverflow.com/questions/12194793/how-do-i-get-the-number-of-members-in-a-structure https://www.embedded.com/reduce-c-language-coding-errors-with-x-macros-part-1/
-//  bool				       is_allow_duplicate_full_rows {false};  // todo: complete this.
-// 	std::vector<field_compound_key_component>	unique_key // todo: complete this, this feature disallows duplicate rows based on a subset of columns, ie. not the full row as in is_allow_duplicate_full_rows.
-//  std::shared_ptr<IO_table_spec> 			    parent_table {};  // todo: complete this: work out the pointers
-//  std::vector<std::shared_ptr<IO_table_spec>> child_tables {};  // todo: complete this: work out the pointers
+/*  OR std::array<IO_field_spec, //IO_ROW_FIELDS_NUM_MAX >// TODO: use X_MACROs to replace counts  https://stackoverflow.com/questions/12194793/how-do-i-get-the-number-of-members-in-a-structure https://www.embedded.com/reduce-c-language-coding-errors-with-x-macros-part-1/
+//  bool				       is_allow_duplicate_full_rows {false};  // TODO: complete this.
+// 	std::vector<field_compound_key_component>	unique_key // TODO: complete this, this feature disallows duplicate rows based on a subset of columns, ie. not the full row as in is_allow_duplicate_full_rows.
+//  std::shared_ptr<IO_table_spec> 			    parent_table {};  // TODO: complete this: work out the pointers
+//  std::vector<std::shared_ptr<IO_table_spec>> child_tables {};  // TODO: complete this: work out the pointers
 //  Row_Field_loc_a_val_row_mappings field_validation_fn_mapping {}; // not needed in OOAD version? must be initialize later!!
 //  void create_map();
 //  void assign_field_validation(unsigned short const field_index, IO_field_spec const &);  // obsolete?
@@ -66,7 +66,7 @@ bool is_check_pk_component_duplicate( IO_field_spec_alphanumeric * fs, IO_row_va
 
 class IO_table {
 public:
-    IO_table_spec  			        spec {};  // todo: should I init it with {}?
+    IO_table_spec  			        spec {};  // TODO: should I init it with {}?
     std::vector< IO_row_variant > 	rows {};
     // std::map< IO_row_index_variant, IO_row_variant, IO_row_index_compare_variant>	rows_ordered {};
 
@@ -76,7 +76,7 @@ public:
 
     void read_candidate_row( size_t const row_index ) {
         /*std::get<IO_row_person *>(spec.io_candidate_row) = std::get<IO_row_person>(rows.at( row_index ));
-        IO_row_variant row_kludge {rows.at(row_index)};  // todo: warning: raw_pointer.
+        IO_row_variant row_kludge {rows.at(row_index)};  // TODO: warning: raw_pointer.
         std::visit( [] (auto & row, auto candidate_row ) ->void {
             *candidate_row = row;
         }, rows.at(row_index), spec.io_candidate_row );
@@ -132,7 +132,7 @@ public:
         // *** the challenge is to cleanly construct data_variant with the correct variant types.  See special constructors for variants.
         Data_variant data_variant;
         data_variant = { Data_struct_person { std::get<IO_row_person>(rows.at(row_index)), std::get<IO_row_person *>(spec.io_candidate_row)} };
-        // if (spec.io_candidate_row is IO_row_person) data_variant = { Data_struct_person { std::get<IO_row_person>(rows.at(row_index)), std::get<IO_row_person *>(spec.io_candidate_row)} };  // todo: another strategy to load the variant?
+        // if (spec.io_candidate_row is IO_row_person) data_variant = { Data_struct_person { std::get<IO_row_person>(rows.at(row_index)), std::get<IO_row_person *>(spec.io_candidate_row)} };  // TODO: another strategy to load the variant?
         //Data_variant data_pair_var { std::pair( rows.at(row_index), spec.io_candidate_row ) };
         std::visit( CandidateAssignVisitor2(), data_variant );
 
@@ -141,7 +141,7 @@ public:
     }
 
     auto insert_candidate_row() {
-        std::variant< std::vector<IO_row_variant> * > rows_kludge {&rows};  // todo: warning: raw_pointer.
+        std::variant< std::vector<IO_row_variant> * > rows_kludge {&rows};  // TODO: warning: raw_pointer.
         auto r = std::visit( [] (auto & rows, auto row ) {
             //cerr << __PRETTY_FUNCTION__<<endl;
             //cerr << ", size:"<<rows->size()<<endl;
@@ -152,7 +152,7 @@ public:
     }
     // **** assumes the pk and data are ready to update.
     void update_candidate_row( size_t const row_index ) {
-        std::variant< std::vector<IO_row_variant> * > rows_kludge {&rows};  // todo: warning: raw_pointer.
+        std::variant< std::vector<IO_row_variant> * > rows_kludge {&rows};  // TODO: warning: raw_pointer.
         std::visit( [row_index] (auto & rows, auto row ) {
             //cerr << ", size:"<<rows->size()<<endl;
             rows->at( row_index ) = *row; // cerr << "update_candidate_row()-rows->at()=row, size:"<<rows->size()<<"\n"; cerr << "insert_candidate_row()-rows.emplace_back(row), row.print(): "; row->print();
@@ -172,7 +172,7 @@ public:
         if ( std::holds_alternative< IO_row_person >(rows.at(0))) {
             rows.erase( std::get<IO_row_person>(rows.at(0))   * row_index )
         }
-        std::variant< std::vector<IO_row_variant> * > rows_kludge {&rows};  // todo: warning: raw_pointer.
+        std::variant< std::vector<IO_row_variant> * > rows_kludge {&rows};  // TODO: warning: raw_pointer.
         std::visit( [row_index] (auto & rows, auto itr_begin ) {
             cerr << ", size:"<<rows->size()<<endl;
             //rows->erase( itr_begin * row_index ); cerr << "delete_candidate_row()-rows->at()=row, size:"<<rows->size()<<"\n";

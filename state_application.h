@@ -6,7 +6,7 @@
 #include <ostream>
 #include "global_entities.h"
 #include "io_row.h"
-// BEGIN OF SNIP todo
+// BEGIN OF SNIP TODO
 // END OF SNIP
 // used to determine when to perform pagination.
 struct Panel_dimensions {
@@ -46,7 +46,7 @@ class State_application { // holds all data used by the user's application, but 
     bool 			        is_data_unsaved {false};  // the user has unsaved data input/editing that has not been committed to disk.
     int 				    int_data 		  {};  // used for passing parameters through the menu system for use by the application.
     size_t 				    size_t_data  	  {};  // used for passing parameters through the menu system for use by the application.
-    Row_range 				row_range 		  {};  // todo: not used, is it needed?
+    Row_range 				row_range 		  {};  // TODO: not used, is it needed?
 public:
     Data_file_state_adata 	data_file_state_adata 	{};
     Panel_dimensions        panel_dimensions 		{.height = 15, .width = 80};

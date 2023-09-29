@@ -20,7 +20,7 @@ class IO_table;
 enum class IO_row_spec {  // https://www.w3schools.com/html/html_form_attributes.asp
     auto_complete,
     no_validate
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
 
 class IO_row_company { // just a stub to demonstrate the type
@@ -34,16 +34,16 @@ public:
 };
 //class IO_row_person_opt {  // OBSOLETE, will delete later once we are sure of our design.
 //public:
-// //vector<std::unique_ptr<IO_data_type>  todo: should this be part of the design?
+// //vector<std::unique_ptr<IO_data_type>  TODO: should this be part of the design?
 // // NOTE: any std::optional<> data member should NOT have an initializer providing a value! This is depeneded upon in set_field_num();
 // /* 00 */ std::optional<std::string>		  name				{};
 // /* 01 */ std::optional<double>				  balance			{};
 // /* 02 */ std::optional<int> 	 			  age				{};    // NOTE: std::optional here allows for a "NULLable field" in the sense of SQL.
-// /* 03 */ std::optional<bool>				  is_cpp_programmer {};    // todo: how to represent NOTHING or std::monostate?
+// /* 03 */ std::optional<bool>				  is_cpp_programmer {};    // TODO: how to represent NOTHING or std::monostate?
 // /* 04 */ std::optional<std::tm>			  date_of_birth 	{};  // this is a human readable C type, C++20 has a replacement.
 // /* 05 */ std::optional<std::string>		  optional_data 	{};  // NOTE: an optional string field is not NULLable, but can be blank
 // /* 06 */ std::optional<bool>   			  yesno 			{};
-// /* 07 */ std::optional<std::chrono::system_clock::time_point>	system_time_stamp {};  // todo:  TODO is this even human readable in a decent format?  c++20?
+// /* 07 */ std::optional<std::chrono::system_clock::time_point>	system_time_stamp {};  // TODO:  TODO is this even human readable in a decent format?  c++20?
 // /* 08 */ std::optional<uint64_t>			  guid				{};
 // // ^^ number above should match IO_ROW_FIELDS_NUM_PERSON
 //    //bool set_row_field_at_num( IO_table table, unsigned short const num, std::string const & val );
@@ -51,7 +51,7 @@ public:
 //};
 class IO_row_person {
 public:
- //vector<std::unique_ptr<IO_data_type>  todo: should this be part of the design?
+ //vector<std::unique_ptr<IO_data_type>  TODO: should this be part of the design?
  // WARNING: data members should NOT have an initializer providing a value, because it will be ignored! Create a default value (within valid_values) instead.
  /* 00 */ std::string		  name				{};
  /* 01 */ double			  balance			{};
@@ -60,7 +60,7 @@ public:
  /* 04 */ std::chrono::system_clock::time_point	date_of_birth 	{};
  /* 05 */ std::string		  optional_data 	{};
  /* 06 */ bool   			  is_opt_in 		{};
- /* 07 */ std::chrono::system_clock::time_point	system_time_stamp {};  // todo:  TODO is this even human readable in a decent format?  c++20?
+ /* 07 */ std::chrono::system_clock::time_point	system_time_stamp {};  // TODO:  TODO is this even human readable in a decent format?  c++20?
  /* 08 */ uint64_t			  guid				{};
           std::bitset<IO_ROW_FIELDS_NUM_MAX>	is_null_field		    {};  // Each bit represents one of the above fields,
           bool				  is_deleted		{false};
@@ -91,11 +91,11 @@ public:
 //    /* 00 */ std::string		  name				{};
 //    /* 01 */ double			      balance			{};
 //    /* 02 */ int 	 			  age				{};    // NOTE: std::optional here allows for a "NULLable field" in the sense of SQL.
-//    /* 03 */ bool				  is_cpp_programmer {};    // todo: how to represent NOTHING or std::monostate?
+//    /* 03 */ bool				  is_cpp_programmer {};    // TODO: how to represent NOTHING or std::monostate?
 //    /* 04 */ std::tm			  date_of_birth 	{};  // this is a human readable C type, C++20 has a replacement.
 //    /* 05 */ std::string		  optional_data 	{};  // NOTE: an optional string field is not NULLable, but can be blank
 //    /* 06 */ bool   			  is_opt_in 		{};
-//    /* 07 */ std::chrono::system_clock::time_point	system_time_stamp {};  // todo:  TODO is this even human readable in a decent format?  c++20?
+//    /* 07 */ std::chrono::system_clock::time_point	system_time_stamp {};  // TODO:  TODO is this even human readable in a decent format?  c++20?
 //    /* 08 */ uint64_t			  guid				{};
 //    std::bitset<IO_ROW_FIELDS_NUM_MAX>	  is_null_field		{};  // Each bit represents one of the above fields,
 //    bool				  		  is_deleted		{false};
@@ -113,13 +113,13 @@ using Person_index1_key_t = struct {
     decltype( IO_row_person::balance ) key_value_p1 {};
 };
 
-struct Person_pk_compare_t {  // todo: use variadic templates, and or combine with next struct
+struct Person_pk_compare_t {  // TODO: use variadic templates, and or combine with next struct
     bool operator()( Person_pk_t const & lhs, Person_pk_t const & rhs) const {
         return lhs.key_value_p0 < rhs.key_value_p0;  // https://foonathan.net/2018/07/ordering-relations-programming/
     }
 };
 
-struct Person_index1_compare_t {  // todo: use variadic templates
+struct Person_index1_compare_t {  // TODO: use variadic templates
     bool operator()( Person_index1_key_t const & lhs, Person_index1_key_t const & rhs) const {
         return std::tie(lhs.key_value_p0, lhs.key_value_p1) < std::tie(rhs.key_value_p0, rhs.key_value_p1);  // https://foonathan.net/2018/07/ordering-relations-programming/
     }
@@ -133,9 +133,9 @@ struct Person_index1_compare_t {  // todo: use variadic templates
 //                > row_var;
 //    Key_t key_value {};
 //    IO_row_index() {
-//        if constexpr ( std::is_same<Unique_t,bool>::value ) {  // todo: TODO a better way to do this?
+//        if constexpr ( std::is_same<Unique_t,bool>::value ) {  // TODO: TODO a better way to do this?
 //            std::map< Key_t, Data_t, Compar_t > rows;
-//            row_var = rows;  // todo: TODO is this a memory leak or dangling pointer?
+//            row_var = rows;  // TODO: TODO is this a memory leak or dangling pointer?
 //        } else {
 //            std::multimap< Key_t, Data_t, Compar_t > rows;
 //            row_var = rows;

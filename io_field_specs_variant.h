@@ -13,14 +13,14 @@ using State_menu_variant = std::variant<State_menu>;
 /// Allows for the different data types that can be accepted from the user by a data field.
 using  IO_field_spec_variant = std::variant<
     IO_field_spec_bool,
-    //IO_field_spec_character,          // todo:
-    //IO_field_spec_uint64,             // todo:
-    //IO_field_spec_tm,                 // todo:
-    //IO_field_spec_time_point,         // todo:
+    //IO_field_spec_character,          // TODO:
+    //IO_field_spec_uint64,             // TODO:
+    //IO_field_spec_tm,                 // TODO:
+    //IO_field_spec_time_point,         // TODO:
     IO_field_spec_alphanumeric,
     IO_field_spec_integer,
     IO_field_spec_decimal
-    //IO_field_spec_scientific          // todo:
+    //IO_field_spec_scientific          // TODO:
 >;
 
 #endif // IO_FIELD_SPECS_VARIANT_H

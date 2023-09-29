@@ -5,7 +5,7 @@
 
 /** Used when starting a new output operation.
  * used_content denotes the initial output
- * todo: it is assumed to fit in the panel, should check, but what to do if it won't!?
+ * TODO: it is assumed to fit in the panel, should check, but what to do if it won't!?
  */
 void pagination_reset( State_menu & state, Panel_dimensions const & used_content);
 

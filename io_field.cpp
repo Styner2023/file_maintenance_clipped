@@ -28,7 +28,7 @@ almost_equal(T x, T y, int ulp)
 //        return val == "Y" ? true : false;
 
 //    } else if ( std::holds_alternative< IO_field_spec_character >( table.spec.fields.at(num).field_spec )) {
-//        if ( val.length() == 0 ) return {};  // todo: should return std::monostate?
+//        if ( val.length() == 0 ) return {};  // TODO: should return std::monostate?
 //        else if (val.length() == 1 ) return val[0];
 //        else throw std::logic_error( "value_to_field():FATAL ERROR: expecting zero or one characters and got more than one in a string."+__FILE_NAME__ );
 
@@ -52,7 +52,7 @@ almost_equal(T x, T y, int ulp)
 //                         }
                          
 //                         
-// // ,4,365,-1,0,""};  // todo: complete this: perform transformation of date string to tm.
+// // ,4,365,-1,0,""};  // TODO: complete this: perform transformation of date string to tm.
 //                         return my_tm;
 
 //                        } else if ( std::holds_alternative< IO_field_spec_alphanumeric >( table.spec.fields.at(num).field_spec )) {
@@ -79,7 +79,7 @@ std::optional<ValidationFieldError> validate_scalar( Spec_type validity_spec, Ca
         auto const shifted_value = candidate * inverse_precision;
         cerr <<"validate_scalar<decimal>:"<< ", inverse_precision: " << inverse_precision << ", shifted_value:" << shifted_value<< endl;
         cerr <<" shifted_value - trunc(shifted_value) "<< shifted_value - trunc( shifted_value)<< endl;
-        if ( !almost_equal( shifted_value, trunc(shifted_value), 2 )) { // todo: TODO giving 2 as ULP units in the last place, what is that??
+        if ( !almost_equal( shifted_value, trunc(shifted_value), 2 )) { // TODO: TODO giving 2 as ULP units in the last place, what is that??
             return ValidationFieldError::precision_excess;
         }
     }
@@ -88,14 +88,14 @@ std::optional<ValidationFieldError> validate_scalar( Spec_type validity_spec, Ca
 
 std::optional<ValidationFieldError>
 IO_field_spec_bool::	validate_data(Data_type_boolean const candidate) {
-    if ( is_system_calculated_read_only ) return ValidationFieldError::system_calculated;  // todo: note that is is also checked at data entry time.  one of them may be redundant.
+    if ( is_system_calculated_read_only ) return ValidationFieldError::system_calculated;  // TODO: note that is is also checked at data entry time.  one of them may be redundant.
     if ( is_programmer_only ) 			  return ValidationFieldError::system_calculated;
     return std::nullopt; }
 
 
 std::optional<ValidationFieldError>
 IO_field_spec_alphanumeric::	validate_data(Data_type_alphanumeric const & candidate) {
-    if ( is_system_calculated_read_only ) return ValidationFieldError::system_calculated;  // todo: note that is is also checked at data entry time.  one of them may be redundant.
+    if ( is_system_calculated_read_only ) return ValidationFieldError::system_calculated;  // TODO: note that is is also checked at data entry time.  one of them may be redundant.
     if ( is_programmer_only ) 			  return ValidationFieldError::system_calculated;
     if ( candidate.length() > std::get<ValidityFieldSpecAlphanum>(*validity_spec).lengths_storage.max )	return ValidationFieldError::too_long;
     if ( candidate.length() < std::get<ValidityFieldSpecAlphanum>(*validity_spec).lengths_storage.min )	return ValidationFieldError::too_short;
@@ -103,10 +103,10 @@ IO_field_spec_alphanumeric::	validate_data(Data_type_alphanumeric const & candid
 
 std::optional<ValidationFieldError>
 IO_field_spec_integer::			validate_data(Data_type_integer const candidate) {
-    if ( is_system_calculated_read_only ) return ValidationFieldError::system_calculated;  // todo: note that is is also checked at data entry time.  one of them may be redundant.
+    if ( is_system_calculated_read_only ) return ValidationFieldError::system_calculated;  // TODO: note that is is also checked at data entry time.  one of them may be redundant.
     if ( is_programmer_only ) 			  return ValidationFieldError::system_calculated;
     return validate_scalar( std::get<ValidityFieldSpecInteger>(* validity_spec), candidate );
-    /* try {  // todo: previously did conversion from string to int, don't need try anymore?
+    /* try {  // TODO: previously did conversion from string to int, don't need try anymore?
         if ( range.min > candidate ) 		return ValidationFieldError::range_overflow;
         if ( range.max < candidate ) 		return ValidationFieldError::range_underflow;
         if (is_system_calculated_read_only) return ValidationFieldError::system_calculated;
@@ -129,7 +129,7 @@ std::optional<ValidationFieldError>
 IO_field_spec_scientific::		validate_data(Data_type_scientific const candidate) {
     if ( is_system_calculated_read_only ) return ValidationFieldError::system_calculated;
     if ( is_programmer_only ) 			  return ValidationFieldError::system_calculated;
-    // return validate_scalar( this, candidate );  // todo: complete this:
+    // return validate_scalar( this, candidate );  // TODO: complete this:
     return  {};
 }
 
@@ -160,22 +160,22 @@ void IO_field_spec_decimal::		setData_value(const Data_type_decimal &value) 		{ 
 void IO_field_spec_scientific::		setData_value(const Data_type_scientific &value) 	{  data_location = value;  is_null_field_location[field_index_in_row] = false;}
 
 
-std::optional<Lib_tty::Key_char_i18ns> IO_field_spec_bool::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return data_location ? YES : NO ; 	  				     else return std::nullopt; }
-std::optional<Lib_tty::Key_char_i18ns> IO_field_spec_character::	getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
-std::optional<Lib_tty::Key_char_i18ns> IO_field_spec_uint64::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
-std::optional<Lib_tty::Key_char_i18ns> IO_field_spec_time_point::	getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return /* todo: std::to_string( data_value )*/ std::nullopt; 	 else return std::nullopt; }
-std::optional<Lib_tty::Key_char_i18ns> IO_field_spec_tm::			getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return /* todo: std::to_string( data_value )*/ std::nullopt; 	 else return std::nullopt; }
-std::optional<Lib_tty::Key_char_i18ns> IO_field_spec_alphanumeric::getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return data_location; 									 else return std::nullopt; }
-std::optional<Lib_tty::Key_char_i18ns> IO_field_spec_integer::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
-std::optional<Lib_tty::Key_char_i18ns> IO_field_spec_decimal::		getData_value_str() const {
+std::optional<Lib_tty::Key_chars_i18n> IO_field_spec_bool::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return data_location ? YES : NO ; 	  				     else return std::nullopt; }
+std::optional<Lib_tty::Key_chars_i18n> IO_field_spec_character::	getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
+std::optional<Lib_tty::Key_chars_i18n> IO_field_spec_uint64::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
+std::optional<Lib_tty::Key_chars_i18n> IO_field_spec_time_point::	getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return /* TODO: std::to_string( data_value )*/ std::nullopt; 	 else return std::nullopt; }
+std::optional<Lib_tty::Key_chars_i18n> IO_field_spec_tm::			getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return /* TODO: std::to_string( data_value )*/ std::nullopt; 	 else return std::nullopt; }
+std::optional<Lib_tty::Key_chars_i18n> IO_field_spec_alphanumeric::getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return data_location; 									 else return std::nullopt; }
+std::optional<Lib_tty::Key_chars_i18n> IO_field_spec_integer::		getData_value_str() const { if( !is_null_field_location[field_index_in_row]) return std::to_string( data_location ); 					 else return std::nullopt; }
+std::optional<Lib_tty::Key_chars_i18n> IO_field_spec_decimal::		getData_value_str() const {
     if( !is_null_field_location[field_index_in_row]) {
         std::ostringstream oss {};
         oss << std::fixed << std::setprecision( std::get<ValidityFieldSpecDecimal>( *validity_spec ).range.precision )<< data_location;
         cerr<< "getData_value_str().value,precision,value.str():"<<data_location<<", "<<std::get<ValidityFieldSpecDecimal>( *validity_spec ).range.precision<<", "<<oss.str()<<endl;
-        return oss.str();
+        return  Lib_tty::Key_chars_i18n {oss.str().begin(),oss.str().end()};
     }
     else return std::nullopt; }
-std::optional<Lib_tty::Key_char_i18ns> IO_field_spec_scientific::	getData_value_str() const { if( !is_null_field_location[field_index_in_row] ) return /*std::to_string( data_value );*/ std::nullopt; else return std::nullopt; }
+std::optional<Lib_tty::Key_chars_i18n> IO_field_spec_scientific::	getData_value_str() const { if( !is_null_field_location[field_index_in_row] ) return /*std::to_string( data_value );*/ std::nullopt; else return std::nullopt; }
 
 std::optional<Data_type_boolean > IO_field_spec_bool::				getData_value_location() const { if ( is_null_field_location[field_index_in_row] == false ) return data_location; else return std::nullopt; }
 std::optional<Data_type_alphanumeric> IO_field_spec_alphanumeric::	getData_value_location() const { if ( is_null_field_location[field_index_in_row] == false ) return data_location; else return std::nullopt; }
@@ -267,7 +267,7 @@ void IO_field_spec::print() const {
     std::visit( PrintVisitor(), *validity_spec );
 }
 void IO_field_spec_bool::			print() const { IO_field_spec::print(); cerr <<"data_location:"<<data_location<< endl; }
-void IO_field_spec_character::		print() const { IO_field_spec::print(); cerr << endl; }  // todo: complete this: as above.
+void IO_field_spec_character::		print() const { IO_field_spec::print(); cerr << endl; }  // TODO: complete this: as above.
 void IO_field_spec_uint64::			print() const { IO_field_spec::print(); cerr << endl; }
 void IO_field_spec_time_point::		print() const { IO_field_spec::print(); cerr << endl; }
 void IO_field_spec_tm::				print() const { IO_field_spec::print(); cerr << endl; }

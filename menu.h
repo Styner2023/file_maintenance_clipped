@@ -13,7 +13,7 @@
  *  which run 'actions', following which, program control returns to the menu which invoked an action.
  *  An application has only one root menu called 'main menu'.
  *  The class 'Menu' implements the storage and use (invocation/running) of the
- *  sub-menus and the options.  todo:reword all this.
+ *  sub-menus and the options.  TODO:reword all this.
  */
 struct Menu {
     std::string              name 		 {"Configuration error:Need to Initialize!"};
@@ -21,7 +21,7 @@ struct Menu {
     std::string              help 		 {"Detailed Help: When you see text followed by >> and the blinking box (the prompt followed by the cursor), the system is waiting for you to select what you want to do next. Type the one keyboard character which corresponds to the action you want. For example: (h)elp highlights the <h> key. The system will respond right away unless you are editing data, you don't need to press <ENTER> for the system to respond in most cases."};
     std::vector<Menu_option> options     {};
 
-    // Menu();  // constructor? todo??: could this fn() build the linked/self-referring datastructures to hold all the menus?
+    // Menu();  // constructor? TODO??: could this fn() build the linked/self-referring datastructures to hold all the menus?
     // Instead we are doing the below, which makes Menu creation more error prone, we do believe... :)
     friend void initialize_universal_options();
     friend void initialize_menu_main_options();

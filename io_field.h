@@ -23,7 +23,7 @@ enum class Security_role {
     restore_person,
     admin_person,
     unknown
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
 enum class Security_region {
     a,
@@ -34,7 +34,7 @@ enum class Security_region {
     a_and_e, 	// ugly yup!
     all,
     unknown
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
 enum class Security_level {
     public_info,
@@ -43,7 +43,7 @@ enum class Security_level {
     secret,
     top_secret,
     unknown
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
 enum class Security_action {
     read,
@@ -52,7 +52,7 @@ enum class Security_action {
     execute,
     all,
     unknown
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
 class Security_spec {
 public:
@@ -111,7 +111,7 @@ enum class IO_data_type {  // will not be used after fixup that is needed. repla
     integer_long,
     integer_long_long,
     decimal_long
-    //initial_state         // todo:
+    //initial_state         // TODO:
 };
 #define IO_FIELD_SPEC_CONSTRUCTOR_VARS \
         size_t field_index_in_row_, \
@@ -144,13 +144,13 @@ public:
     std::string	  			user_prompt 		    {"FILL user_prompt text in!"};
     std::string	  			full_description 	    {"FILL full description in!"};
     std::string	  			help 			        {"FILL help in!"};
-    std::string   		    pre_fill_value 			{}; // appears in the field to give help, but disappears as soon as someone starts typing.  // actually we are using full description in this manner.  todo: resolve issue.  // not used yet.
+    std::string   		    pre_fill_value 			{}; // appears in the field to give help, but disappears as soon as someone starts typing.  // actually we are using full description in this manner.  TODO: resolve issue.  // not used yet.
     LengthRange				lengths_input			{0,60};	   // used to specifiy the lengths that are acceptable during input, even for a number we don't want 10000 digits, so we limit the length.
     ValidityFieldSpec_var	* validity_spec			{nullptr};
     PromptFieldSpecification prompt_field_spec	{};  // not used yet.
     Security_spec    		security_spec 			{ super_user };
-    bool 		  			is_primary_key_component {false}; // When all pk components are concatinated, they designate what must be unique. A pk component must not be nullable, therefore not is_optional. If all are true then no fully duplicate rows are allowed. // todo: complete this invariant.
-    bool 		  			is_optional 			{false};  // todo: implemented?? Means that the user need not respond to this field. That might imply that the field would have to be nullable (especially in the case of bool and numbers), but not so much for std::string, since we might consider "" to be considered to NULL or "not answered".  On the other hand if it had a default value then it would not be null in fact.
+    bool 		  			is_primary_key_component {false}; // When all pk components are concatinated, they designate what must be unique. A pk component must not be nullable, therefore not is_optional. If all are true then no fully duplicate rows are allowed. // TODO: complete this invariant.
+    bool 		  			is_optional 			{false};  // TODO: implemented?? Means that the user need not respond to this field. That might imply that the field would have to be nullable (especially in the case of bool and numbers), but not so much for std::string, since we might consider "" to be considered to NULL or "not answered".  On the other hand if it had a default value then it would not be null in fact.
     bool 		  			is_initial_focus 	 	{false};  // not used yet.
     bool 		  			is_current_focus 	 	{false};  // not used yet.
     bool		  			is_greyed_out 	 		{false};  // not used yet.
@@ -175,9 +175,9 @@ public:
 //        prompt_field_spec(prompt_field_spec_), 			security_spec(security_spec_),  	is_optional(is_optional_),
 //        is_initial_focus(is_initial_focus_), 	is_current_focus(is_current_focus_),           	is_greyed_out(is_greyed_out_),		is_programmer_only(is_programmer_only_),  is_system_calculated_read_only( is_system_calculated_read_only_)
       */
-    virtual ~IO_field_spec() {}  // todo: I'm guessing... TODO  do I need delete or =0? rule of whatever?
+    virtual ~IO_field_spec() {}  // TODO: I'm guessing... TODO  do I need delete or =0? rule of whatever?
 };
-// todo: complete this: validate() fixup() functions - preprocess the field to for example remove ()- on a phone number or credit card.
+// TODO: complete this: validate() fixup() functions - preprocess the field to for example remove ()- on a phone number or credit card.
 class IO_field_spec_bool 			: public IO_field_spec {
 public:
     Data_type_boolean & 				data_location		;
@@ -200,9 +200,9 @@ public:
     // IO_field_spec_bool() = default;
     void 								clear_data_value();
 
-    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
+    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // TODO: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
-    std::optional<Lib_tty::Key_char_i18ns> 	getData_value_str() const;
+    std::optional<Lib_tty::Key_chars_i18n> 	getData_value_str() const;
     void 								setData_value(const Data_type_boolean &value);
     void 								setData_range(const Data_range &value);
     IO_field_spec_bool::Data_range 		getData_range() const;
@@ -222,10 +222,10 @@ public:
     void print() const override final;
     //IO_field_spec_character(
     void 								clear_data_value();
-    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
+    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // TODO: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void setData_value(const Data_type_character &value);
-    std::optional<Lib_tty::Key_char_i18ns>     getData_value_str() const;
+    std::optional<Lib_tty::Key_chars_i18n>     getData_value_str() const;
     void 								setData_range(const Data_range &value);
     IO_field_spec_character::Data_range 		getData_range() const;
 };
@@ -242,8 +242,8 @@ public:
     void print() const override final;
     //IO_field_spec_uint64(
     void 								clear_data_value();
-    std::optional<Lib_tty::Key_char_i18ns> 	getData_value_str() const;
-    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
+    std::optional<Lib_tty::Key_chars_i18n> 	getData_value_str() const;
+    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // TODO: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void                                setData_value(const Data_type_uint64 &value);
     void 								setData_range(const Data_range &value);
@@ -262,8 +262,8 @@ public:
     void print() const override final;
     //IO_field_spec_time_point(
     void 								clear_data_value();
-    std::optional<Lib_tty::Key_char_i18ns> 	getData_value_str() const;
-    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
+    std::optional<Lib_tty::Key_chars_i18n> 	getData_value_str() const;
+    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // TODO: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(const Data_type_time_point &value);
     void 								setData_range(const Data_range &value);
@@ -282,8 +282,8 @@ public:
     void print() const override final;
     // IO_field_spec_tm(
     void 								clear_data_value();
-    std::optional<Lib_tty::Key_char_i18ns> 	getData_value_str() const;
-    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
+    std::optional<Lib_tty::Key_chars_i18n> 	getData_value_str() const;
+    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // TODO: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(const Data_type_tm &value);
     void 								setData_range(const Data_range &value);
@@ -322,8 +322,8 @@ public:
     void 								clear_data_value();
     //std::optional<ValidationFieldError> validate_data( Data_type_alphanumeric const & candidate );
     std::optional<ValidationFieldError> validate_data( std::remove_reference_t<decltype (data_location)> const & candidate);
-    std::optional<Lib_tty::Key_char_i18ns> 	getData_value_str() const;
-    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
+    std::optional<Lib_tty::Key_chars_i18n> 	getData_value_str() const;
+    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // TODO: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(const Data_type_alphanumeric &value);
     void 								setData_range(const Data_range &value);
@@ -351,8 +351,8 @@ public:
     void 								clear_data_value();
     //std::optional<ValidationFieldError> validate_data( Data_type_integer const candidate );
     std::optional<ValidationFieldError> validate_data( std::remove_reference_t<decltype (data_location)> const candidate );
-    std::optional<Lib_tty::Key_char_i18ns> 	getData_value_str() const;
-    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
+    std::optional<Lib_tty::Key_chars_i18n> 	getData_value_str() const;
+    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // TODO: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(Data_type_integer const & value);
     void 								setData_range(const Data_range &value);
@@ -380,8 +380,8 @@ public:
     void 								clear_data_value();
     // std::optional<ValidationFieldError> validate_data(Data_type_decimal const candidate);
     std::optional<ValidationFieldError> validate_data( std::remove_reference_t<decltype (data_location)> const candidate );
-    std::optional<Lib_tty::Key_char_i18ns> 	getData_value_str() const;
-    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
+    std::optional<Lib_tty::Key_chars_i18n> 	getData_value_str() const;
+    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // TODO: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(const Data_type_decimal &value);
     void 								setData_range(const Data_range &value);
@@ -402,8 +402,8 @@ public:
     void 								clear_data_value();
     //std::optional<ValidationFieldError> validate_data(Data_type_scientific const candidate);
     std::optional<ValidationFieldError> validate_data( std::remove_reference_t<decltype (data_location)> const candidate );
-    std::optional<Lib_tty::Key_char_i18ns> 	getData_value_str() const;
-    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // todo: TODO: can this be templated outside of this derived class?
+    std::optional<Lib_tty::Key_chars_i18n> 	getData_value_str() const;
+    using rv = std::optional< std::remove_reference_t< decltype(data_location) >>;  // TODO: TODO: can this be templated outside of this derived class?
     rv 									getData_value_location() const;
     void 								setData_value(const Data_type_scientific &value);
     void 								setData_range(const Data_range &value);
@@ -419,7 +419,7 @@ public:
 //class IO_field {
 //public:
 //    std::any 	  field_value	{};
-//    std::any 	  field_storage_location	{}; // todo: do I need this?
+//    std::any 	  field_storage_location	{}; // TODO: do I need this?
 
 //    // virtual void 		setField_value(const std::any &value);
 //    // virtual std::any 	getField_value() const;
@@ -437,8 +437,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec > io_field_spec_bool;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ Key_char_i18ns, hot_key, file_status ] = value_plus;
-//        if ( Key_char_i18ns == "Y" )
+//        auto [ key_chars_i18n, hot_key_row, file_status ] = value_plus;
+//        if ( key_chars_i18n == "Y" )
 //            field_value = true;
 //        else
 //            field_value = false;
@@ -452,8 +452,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_character > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ Key_char_i18ns, hot_key, file_status ] = value_plus;
-//        field_value = Key_char_i18ns;
+//        auto [ key_chars_i18n, hot_key_row, file_status ] = value_plus;
+//        field_value = key_chars_i18n;
 //        return true;
 //    }
 //    //~IO_field_bool() = default;
@@ -473,7 +473,7 @@ public:
 //        //    std::string   default_value 	{};  	  // is placed instead of the NULL, which is available if optional (which implies nullable).
 //        //    std::string   regex_pattern 	{};      // could incorporate the min/max length, but that would be complicated?
 
-//        //    bool          is_null_able 		{false}; // means that this field will be std::optional<> for anything except std::sting?? todo: what is difference between "" and NULL and <default>?
+//        //    bool          is_null_able 		{false}; // means that this field will be std::optional<> for anything except std::sting?? TODO: what is difference between "" and NULL and <default>?
 
 //        //    IO_echo_mode  echo_mode_default {IO_echo_mode::normal};
 //        //    IO_alignment  alignment			{IO_alignment::none};
@@ -483,8 +483,8 @@ public:
 //        //    bool 	      is_programmer_only 	{false};  // used by the computer program only, not visible to any user!!
 //        //    bool 		  is_initial_focus 	 	{false};
 //        //    bool		  is_greyed_out 	 	{false};
-//        auto [ Key_char_i18ns, hot_key, file_status ] = value_plus;
-//        field_value = Key_char_i18ns;
+//        auto [ key_chars_i18n, hot_key_row, file_status ] = value_plus;
+//        field_value = key_chars_i18n;
 //        return true;
 //    }
 //    //~IO_field_bool() = default;
@@ -493,8 +493,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_time_point > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ Key_char_i18ns, hot_key, file_status ] = value_plus;
-//        field_value = Key_char_i18ns;
+//        auto [ key_chars_i18n, hot_key_row, file_status ] = value_plus;
+//        field_value = key_chars_i18n;
 //        return true;
 //    }
 //    //~IO_field_bool() = default;
@@ -503,8 +503,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_tm > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ Key_char_i18ns, hot_key, file_status ] = value_plus;
-//        field_value = Key_char_i18ns;
+//        auto [ key_chars_i18n, hot_key_row, file_status ] = value_plus;
+//        field_value = key_chars_i18n;
 //        return true;
 //    }                std::visit( AssignVisitor(), table.spec.fields.at(2), ir);
 
@@ -515,8 +515,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_tm > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ Key_char_i18ns, hot_key, file_status ] = value_plus;
-//        field_value = Key_char_i18ns;
+//        auto [ key_chars_i18n, hot_key_row, file_status ] = value_plus;
+//        field_value = key_chars_i18n;
 //        return true;
 //    }
 //    //~IO_field_bool() = default;
@@ -526,8 +526,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_integer > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ Key_char_i18ns, hot_key, file_status ] = value_plus;
-//        field_value = Key_char_i18ns;
+//        auto [ key_chars_i18n, hot_key_row, file_status ] = value_plus;
+//        field_value = key_chars_i18n;
 
 //        io_field_spec_alphanumeric->lengths_input.max;
 
@@ -540,8 +540,8 @@ public:
 //public:
 //    std::shared_ptr< IO_field_spec_decimal > io_field_spec_alphanumeric;
 //    bool validate_input_value( Kb_value_plus const & value_plus ) override final {
-//        auto [ Key_char_i18ns, hot_key, file_status ] = value_plus;
-//        field_value = Key_char_i18ns;
+//        auto [ key_chars_i18n, hot_key_row, file_status ] = value_plus;
+//        field_value = key_chars_i18n;
 //        return true;
 //    }
 //    //~IO_field_bool();

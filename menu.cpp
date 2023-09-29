@@ -16,24 +16,24 @@
 using std::cout, std::cin, std::cerr, std::endl;
 
 InteractionResult Menu::print( State_menu & state_menu) const {  // Note: we might use state in the future, for example to designate where to "print".
-    pagination_reset( state_menu, {.height = 1, .width = name.length() + 2 } );  // todo: TODO is it a bad idea to use this C99?
+    pagination_reset( state_menu, {.height = 1, .width = name.length() + 2 } );  // TODO: TODO is it a bad idea to use this C99?
     cout << name << ": ";
     cout.flush();
     InteractionResult ir {};
     for (Menu_option const & option: options ) {
         ir = option.print( state_menu );
-        ir = pagination( state_menu, {.height = 0, .width = 2} );  // todo: TODO is it a bad idea to use this C99?
-        if ( ir.navigation != InteractionIntentNav::continue_forward_pagination ) {
-            cout << ", ";  // todo: complete this, it's a bug.
+        ir = pagination( state_menu, {.height = 0, .width = 2} );  // TODO: TODO is it a bad idea to use this C99?
+        if ( ir.navigation != Lib_tty::InteractionIntentNav::continue_forward_pagination ) {
+            cout << ", ";  // TODO: complete this, it's a bug.
         }
-        else {} // todo: complete this. should rollback the prior pagination!! chicken or the egg situation.
+        else {} // TODO: complete this. should rollback the prior pagination!! chicken or the egg situation.
     }
-    /* todo: complete this above, code to deal with replacing trailing ","
+    /* TODO: complete this above, code to deal with replacing trailing ","
 //    for (auto i = state.getMenu_current()->options.begin(); i != state.getMenu_current()->options.end(); i++) {
 //       cout << i->name;
 //       if (i+1 != state.getMenu_current()->options.end()) cout << ",";
 //    }*/
-    ir = pagination( state_menu, {.height = 1, .width = 1} );  // todo: TODO is it a bad idea to use this C99?
+    ir = pagination( state_menu, {.height = 1, .width = 1} );  // TODO: TODO is it a bad idea to use this C99?
     cout << ".\n";
     return ir;
 }
@@ -97,7 +97,7 @@ void initialize_universal_options(State_menu & state, std::shared_ptr<Menu> menu
 /*
 //    menu->options.emplace_back ( Menu_option
 //    { "F",
-//       "forward",  // todo:  NEED TO CREATE a letter for BACKWARD ALSO!!
+//       "forward",  // TODO:  NEED TO CREATE a letter for BACKWARD ALSO!!
 //       "Continue forward in printing the next page of information",
 //       "",
 //       "",
@@ -344,8 +344,8 @@ void initialize_menu_edit_options(State_menu & state, std::shared_ptr<Menu> menu
               "Create a whole new user and password entry.",
               "help.",
               "preparing...",
-              //std::function< decltype(action_io_row_create ) > { std::bind( action_io_row_create, std::ref(state), std::placeholders::_1 )}  // todo: TODO why doesn't placeholder work here?
-              //{ std::bind( action_io_row_create, std::ref(state), std::placeholders::_1 )}  // todo: TODO why doesn't placeholder work here?
+              //std::function< decltype(action_io_row_create ) > { std::bind( action_io_row_create, std::ref(state), std::placeholders::_1 )}  // TODO: TODO why doesn't placeholder work here?
+              //{ std::bind( action_io_row_create, std::ref(state), std::placeholders::_1 )}  // TODO: TODO why doesn't placeholder work here?
               //std::function< decltype(action_io_row_create ) > { std::bind( action_io_row_create, std::ref(state), io_table_persons )}
               //std::function< decltype(action_io_row_create ) > { action_io_row_create }
               //[] ( State_menu & state /*ignored*/, IO_table & placeholder_1 ) { return action_io_row_create( state, placeholder_1); }
@@ -372,7 +372,7 @@ void initialize_menu_edit_options(State_menu & state, std::shared_ptr<Menu> menu
               [&state] (State_menu & kludge_state ) { return action_delete_all( state ); }
                                              });
 
-            // todo: complete this. what about (l)ist?
+            // TODO: complete this. what about (l)ist?
             initialize_universal_options( state, menu );
         }
 

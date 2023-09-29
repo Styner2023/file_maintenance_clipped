@@ -1,4 +1,4 @@
-Sorry for the poor README.  This code is open to code review. Please note that "doto:" refers to fixes the programmer _needs_ to make by him/herself.  todo?: means questions the programmer has to him/herself that sould be resolved later.  todo??: means these are areas where the programmer could use help from others during a CppMSG.com meetup meeting.
+Sorry for the poor README.  This code is open to code review. Please note that "doto:" refers to fixes the programmer _needs_ to make by him/herself.  TODO?: means questions the programmer has to him/herself that sould be resolved later.  TODO??: means these are areas where the programmer could use help from others during a CppMSG.com meetup meeting.
 
 Immedidate mode command line demonstration program mdtui.com
 

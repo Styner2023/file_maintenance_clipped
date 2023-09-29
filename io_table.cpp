@@ -13,12 +13,12 @@ bool is_check_pk_component_equal( IO_field_spec_t fs, const IO_row_variant &data
     // auto the_value_in_data_row = *(reinterpret_cast< decltype( var_of_data_type_kludge ) const *>( reinterpret_cast<char *>(&const_cast<IO_row_variant &>(data_row)) + fs.memory_offset_from_row_begin));
     auto the_value_in_data_row = *(reinterpret_cast< std::decay_t<decltype( fs.data_location )> const *>( reinterpret_cast<char *>(&const_cast<IO_row_variant &>(data_row)) + fs.memory_offset_from_row_begin));
     if constexpr ( std::is_same< std::decay_t<IO_field_spec_t>, IO_field_spec_alphanumeric >::value  ) {
-        if ( strcasecmp( fs.getData_value_location().value().c_str(), the_value_in_data_row.c_str()) == 0 )  // older fn name is: stricmp()  POSIX  // todo: use c++ to do this when c++ is ready for it, including locales.
+        if ( strcasecmp( fs.getData_value_location().value().c_str(), the_value_in_data_row.c_str()) == 0 )  // older fn name is: stricmp()  POSIX  // TODO: use c++ to do this when c++ is ready for it, including locales.
             return true;
         else
             return false;
     } else {
-        if ( fs.getData_value_location().value() == the_value_in_data_row )  // todo:  floating point numbers should match exactly since the true value is entered, not calculated.  Any epsilon would be applicable to all equal values.
+        if ( fs.getData_value_location().value() == the_value_in_data_row )  // TODO:  floating point numbers should match exactly since the true value is entered, not calculated.  Any epsilon would be applicable to all equal values.
             return true;
         else
             return false;
@@ -82,7 +82,7 @@ std::optional<std::vector<ValidationReport>> IO_table::check_rows_for_duplicate_
         return std::nullopt;
 }
 
-std::optional<IO_row_variant> IO_table::retrieve_row( size_t const row_index ) {  // NOTE: this probably doesn't need to be an optional.  // todo:
+std::optional<IO_row_variant> IO_table::retrieve_row( size_t const row_index ) {  // NOTE: this probably doesn't need to be an optional.  // TODO:
     return rows.at(row_index);
 }
 
@@ -116,13 +116,13 @@ void IO_table_spec::print() const {
 
 // static ValidityFieldSpecAlphanum validityFieldSpecAlphanum {};
 static ValidityFieldSpec_var  validityFieldSpecName   {
-    ValidityFieldSpecAlphanum {  // todo: TODO: does this need to be static?  Only used in same translation unit.
+    ValidityFieldSpecAlphanum {  // TODO: TODO: does this need to be static?  Only used in same translation unit.
         ValidityFieldSpecBase {
             LengthRange {0,50}, true, {'\a'},
             // ValidValueAlphanum_set {}, 													/*enabled*/true, /*default*/true,
             ValidValueAlphanum_set { {"Friend1Name",true,false}, {"Friend2NameDefault",true,true}, {"Friend3Name",true,false}, {"Friend4Name",true,false}},
             /* is_valid_values_enabled */true, /* is_default_value_enabled */true,
-            ProhibitedValueAlphanum_set { {"prohibit",true}, {NOT_USER_PROVIDED,true}},  // NOTE: USER_NOT_PROVIDED is prohibited because the field is NOT optional.  todo: complete this: make this an invariant.
+            ProhibitedValueAlphanum_set { {"prohibit",true}, {NOT_USER_PROVIDED,true}},  // NOTE: USER_NOT_PROVIDED is prohibited because the field is NOT optional.  TODO: complete this: make this an invariant.
             /*regex_pattern*/{},/*custom_validation_fn*/{}
         },
         LengthRange {0,30},

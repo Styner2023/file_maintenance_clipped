@@ -37,7 +37,7 @@ INCLUDEPATH += $$PWD/../lib_tty     # be sure we built lib_tty as a library, not
 
 SOURCES += \
     action_detail_row.cpp \
-    action_dialog.cpp \  # todo?: don't recall meaning of this warning: must be reconsided to "menu_system" version of this class
+    action_dialog.cpp \  # TODO?: don't recall meaning of this warning: must be reconsided to "menu_system" version of this class
     action_io_row.cpp \
     actions.cpp \
     field_navigation_interaction_map.cpp \
@@ -71,6 +71,7 @@ HEADERS += \
     io_row.h \
     io_table.h \
     #lib_tty.h \    # be sure we built lib_tty as a library, not as a test program with main.cpp
+    lib_tty.h \
     menu.h \
     menu_actions.h \
     menu_option.h \

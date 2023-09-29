@@ -7,7 +7,7 @@
 #include <stack>
 struct Menu;        // forward declartion.
 
-class State_menu {  /// Holds all state/data used by the menu system, but not data of the user's application.  todo: we are not sure that extra state got in here, versus in the other state variable.
+class State_menu {  /// Holds all state/data used by the menu system, but not data of the user's application.  TODO: we are not sure that extra state got in here, versus in the other state variable.
     std::shared_ptr< Menu > 				menu_main_sp 	   		{};	/// required, must have at least one menu.
     std::shared_ptr< Menu > 				menu_edit_sp     		{};	/// optional, edit is shown as example, programmer defined meaning.
     std::shared_ptr< Menu > 				menu_file_sp     		{};	/// optional, file is shown as example, programmer defined meaning.
@@ -17,12 +17,12 @@ class State_menu {  /// Holds all state/data used by the menu system, but not da
                                                                         /// This allows us to check Navigation completion codes, during user input entry of the action.
                                                                         /// We push a very specialized Interaction category before calling the action.
                                                                         /// After checking the return from the action, we pop.
-    std::shared_ptr< State_application > 	application_data_sp  	{}; /// todo: I needed to store state for everything except the menu state, placed it in here for convience, perhaps it should be elsewhere?
+    std::shared_ptr< State_application > 	application_data_sp  	{}; /// TODO: I needed to store state for everything except the menu state, placed it in here for convience, perhaps it should be elsewhere?
     bool 				  				    advanced_menu_enabled	{false}; /// the user is being shown the additional menu options designated as 'advanced', if there are any.
-    //bool 								    is_data_saved 		 	{true};  /// todo: not used, and worse, there is duplicate value in application_data.
+    //bool 								    is_data_saved 		 	{true};  /// TODO: not used, and worse, there is duplicate value in application_data.
   public:
     std::shared_ptr<Menu> 	menu_top_sp()   const;
-    void                  	push_menu_sp(   std::shared_ptr<Menu> const);  // todo: rename to be consistent.
+    void                  	push_menu_sp(   std::shared_ptr<Menu> const);  // TODO: rename to be consistent.
     std::shared_ptr<Menu> 	menu_pop_top_sp();
     std::shared_ptr<Menu> 	menu_pop_to_sp( std::shared_ptr<Menu> const);
 

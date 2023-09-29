@@ -53,7 +53,7 @@ int main ( int argc, char* arv[] ) { string my_arv { *arv}; cout << "~~~ argc,ar
     crash_signals_register();
     LOGGER_ ("********************************BEGIN PROGRAM**************************************");
 #ifndef NDEBUG
-    fieldNavInteractionIntentTable.verify();  // todo: only needed during debugging and testing.
+    fieldNavInteractionIntentTable.verify();  // TODO: only needed during debugging and testing.
 #endif
 
     Menu menu_main; // create main first, then the sub-menus.
@@ -61,7 +61,7 @@ int main ( int argc, char* arv[] ) { string my_arv { *arv}; cout << "~~~ argc,ar
     Menu menu_file;
     Menu menu_settings;
     State_menu state {};  /// instead of global variables, we pass this around instead.
-    // link? menus together starting at the main menu. todo: show example of a sub-sub menu.
+    // link? menus together starting at the main menu. TODO: show example of a sub-sub menu.
     state.setMenu_main( std::make_shared<Menu>(menu_main) ); // record menu pointers in state
     state.setMenu_edit( std::make_shared<Menu>(menu_edit) );
     state.setMenu_file( std::make_shared<Menu>(menu_file) );
@@ -77,7 +77,7 @@ int main ( int argc, char* arv[] ) { string my_arv { *arv}; cout << "~~~ argc,ar
     initialize_menu_settings_options( state, state.getMenu_settings());
 
     InteractionResult ir = process_main_menu( state );
-    LOGGERS("ir.hot_key.my_name:", ir.to_string());
+    LOGGERS("ir.hot_key_row.my_name:", ir.to_string());
 
     /* Debugging/dev history:
     // IO_table io_table_persons;
@@ -165,7 +165,7 @@ int main ( int argc, char* arv[] ) { string my_arv { *arv}; cout << "~~~ argc,ar
         }
         else return "NULL";
     };
-    std::variant<int, std::string> solid_picker_variant = picker();  // todo: TODO: how can I solidify a temp variable for the use in 'cout', other than creating a variable?
+    std::variant<int, std::string> solid_picker_variant = picker();  // TODO: TODO: how can I solidify a temp variable for the use in 'cout', other than creating a variable?
     cout << "\nint version: " << *std::get_if<int> (&solid_picker_variant)<< endl;
     cout << " OR get_if  string version: " <<  std::get_if<std::string> (&solid_picker_variant) << endl;
     cout << " OR complex string version: " << ( std::get_if<std::string> (&solid_picker_variant) ? *std::get_if<std::string>(&solid_picker_variant) : "") << endl;
