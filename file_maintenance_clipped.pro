@@ -71,7 +71,7 @@ HEADERS += \
     io_row.h \
     io_table.h \
     #lib_tty.h \    # be sure we built lib_tty as a library, not as a test program with main.cpp
-    lib_tty.h \
+    lib_tty.hpp \
     menu.h \
     menu_actions.h \
     menu_option.h \

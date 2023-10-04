@@ -1,4 +1,4 @@
-#include "lib_tty.h"
+#include "lib_tty.hpp"
 #include "interaction_result.h"
 #include "global_entities.h"
 #include "state_menu.h"
