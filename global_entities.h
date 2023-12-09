@@ -1,6 +1,4 @@
-#ifndef GLOBAL_ENTITIES_H
-#define GLOBAL_ENTITIES_H
-
+#pragma once
 #include <vector>
 #include <chrono>
 #include <string>
@@ -135,5 +133,3 @@ using InteractionResultData_Variant = std::variant<  // TODO: What was I thinkin
     Data_type_scientific,  // NOTE: each of these types must be unique.
     std::vector<Data_type_variant>  // TODO: Seriously a vector? What was I thinking? How many of these are used?
     >;
-
-#endif // GLOBAL_ENTITIES_H

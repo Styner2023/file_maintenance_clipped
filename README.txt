@@ -1,12 +1,21 @@
-Sorry for the poor README.  This code is open to code review. Please note that "doto:" refers to fixes the programmer _needs_ to make by him/herself.  TODO?: means questions the programmer has to him/herself that sould be resolved later.  TODO??: means these are areas where the programmer could use help from others during a CppMSG.com meetup meeting.
+Subject: Menu_System - a TUI/CLI interactive "moded" menu system in C++.
+         Immedidate mode command line demonstration program from mdtui.com
 
-Immedidate mode command line demonstration program mdtui.com
+Sorry for the currenlty poor quality README.
 
-Requires Lib_tty.o to fully link the program, which is available by contacting me via linkedin or twitter.  I have copied lib_tty.h for your convienence and to allow partial compilation for the purposes of doing a code review.
+~ Searchable Symbols in the Source Code ~
 
-Menu_System - a TUI/CLI interactive moded menu system in C++.
+This code is open to code-review, please note that:
+SYMBOL     MEANING
+ TODO:	   the principal programmer needs to: add, or do, or fix by him/herself.
+ TODO?:	   the principal programmer is not sure about something, that should be addressed at some point.
+ TODO?X:   the X/other programmer is not sure about something, that should be addressed at some point.
+ TODO??:   is a question for verbal discussion at CppMSG.com meetup meetings where the programmer would like help from others.
 
-This sub-project shows the use and testing of the code.
+Requires: Lib_tty.o to fully link the program, which is available by contacting me via linkedin or twitter.
+ - I have copied lib_tty.h for your convienence and to allow partial compilation for the purposes of doing a code review.
+
+This sub-project shows the use and testing of the framework code.
 
 This sample program implements the following menu structure:
 

@@ -116,37 +116,99 @@
                      </instance>
                     </item>
                     <item>
+                     <instance type="DClass">
+                      <DClass>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{42a58719-0de4-48bb-a8a4-fd14f5a1c06e}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{6fbd623c-b36a-48c4-a815-59e32f538a36}</object>
+                         <name>Class2</name>
+                         <pos>x:350;y:225</pos>
+                         <rect>x:-105;y:-95;w:210;h:190</rect>
+                         <auto-sized>false</auto-sized>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                       <namespace>GRNamespace</namespace>
+                       <template>
+                        <qlist>
+                         <item>grtemplate</item>
+                        </qlist>
+                       </template>
+                      </DClass>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DClass">
+                      <DClass>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{f1a24e4f-7435-4029-855d-395bfef31ab0}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{cf7dab4a-fd15-4144-aa09-47def4ebcd8b}</object>
+                         <name>New Class</name>
+                         <pos>x:10;y:180</pos>
+                         <rect>x:-40;y:-30;w:80;h:60</rect>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
+                      </DClass>
+                     </instance>
+                    </item>
+                    <item>
                      <instance type="DItem">
                       <DItem>
                        <base-DObject>
                         <DObject>
                          <base-DElement>
                           <DElement>
-                           <uid>{664dd795-06d5-43aa-9ee2-5a0cb8c0f612}</uid>
+                           <uid>{97b1b954-2a66-4a04-9507-5e96859b712b}</uid>
                           </DElement>
                          </base-DElement>
-                         <object>{79cea149-c765-4429-974b-a3a862d690a0}</object>
-                         <stereotypes>
-                          <qlist>
-                           <item>activation</item>
-                          </qlist>
-                         </stereotypes>
-                         <name>my Activation</name>
-                         <pos>x:170;y:295</pos>
-                         <rect>x:-5;y:-210;w:10;h:420</rect>
-                         <auto-sized>false</auto-sized>
-                         <visual-role>8</visual-role>
+                         <object>{4b1cf0cf-0773-4cfb-94e2-6003364c5c4e}</object>
+                         <name>New Documentd</name>
+                         <pos>x:30;y:300</pos>
+                         <rect>x:-20;y:-30;w:40;h:60</rect>
+                         <visual-role>0</visual-role>
                         </DObject>
                        </base-DObject>
-                       <variety>activation</variety>
+                       <variety>document</variety>
+                       <shape-editable>false</shape-editable>
+                      </DItem>
+                     </instance>
+                    </item>
+                    <item>
+                     <instance type="DItem">
+                      <DItem>
+                       <base-DObject>
+                        <DObject>
+                         <base-DElement>
+                          <DElement>
+                           <uid>{503cf711-00a2-4d86-a41f-671f262f95a6}</uid>
+                          </DElement>
+                         </base-DElement>
+                         <object>{27133dcf-12be-45bb-bef6-f22312da0841}</object>
+                         <name>New Item</name>
+                         <pos>x:640;y:120</pos>
+                         <rect>x:-35;y:-15;w:70;h:30</rect>
+                         <visual-role>0</visual-role>
+                        </DObject>
+                       </base-DObject>
                        <shape-editable>false</shape-editable>
                       </DItem>
                      </instance>
                     </item>
                    </qlist>
                   </elements>
-                  <last-modified>1647638539911</last-modified>
-                  <toolbarid>General</toolbarid>
+                  <last-modified>1697513939925</last-modified>
+                  <toolbarid>Deployment</toolbarid>
                  </MDiagram>
                 </base-MDiagram>
                </MCanvasDiagram>
@@ -253,7 +315,7 @@
                     </item>
                    </qlist>
                   </elements>
-                  <last-modified>1647638987629</last-modified>
+                  <last-modified>1697514019735</last-modified>
                   <toolbarid>General</toolbarid>
                  </MDiagram>
                 </base-MDiagram>
@@ -288,14 +350,14 @@
                  <qlist>
                   <item>
                    <MClassMember>
-                    <uid>{13c06182-9082-454d-9fc4-e0d8b6afd697}</uid>
+                    <uid>{d04d3b83-f0dc-4b68-b5ed-bf41e187f85a}</uid>
                     <type>1</type>
                     <declaration>id</declaration>
                    </MClassMember>
                   </item>
                   <item>
                    <MClassMember>
-                    <uid>{e2964983-28ef-4fd9-889c-3a1ad136b033}</uid>
+                    <uid>{887b1ae0-b73f-4758-88eb-1cbf9c5c9794}</uid>
                     <type>1</type>
                     <declaration>name</declaration>
                    </MClassMember>
@@ -323,6 +385,77 @@
                   <name>New Item</name>
                  </MObject>
                 </base-MObject>
+               </MItem>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{6fbd623c-b36a-48c4-a815-59e32f538a36}</uid>
+             <target>
+              <instance type="MClass">
+               <MClass>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{6fbd623c-b36a-48c4-a815-59e32f538a36}</uid>
+                   </MElement>
+                  </base-MElement>
+                  <name>Class2</name>
+                 </MObject>
+                </base-MObject>
+                <namespace>GRNamespace</namespace>
+                <template>
+                 <qlist>
+                  <item>grtemplate</item>
+                 </qlist>
+                </template>
+               </MClass>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{cf7dab4a-fd15-4144-aa09-47def4ebcd8b}</uid>
+             <target>
+              <instance type="MClass">
+               <MClass>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{cf7dab4a-fd15-4144-aa09-47def4ebcd8b}</uid>
+                   </MElement>
+                  </base-MElement>
+                  <name>New Class</name>
+                 </MObject>
+                </base-MObject>
+               </MClass>
+              </instance>
+             </target>
+            </handle>
+           </item>
+           <item>
+            <handle>
+             <uid>{4b1cf0cf-0773-4cfb-94e2-6003364c5c4e}</uid>
+             <target>
+              <instance type="MItem">
+               <MItem>
+                <base-MObject>
+                 <MObject>
+                  <base-MElement>
+                   <MElement>
+                    <uid>{4b1cf0cf-0773-4cfb-94e2-6003364c5c4e}</uid>
+                   </MElement>
+                  </base-MElement>
+                  <name>New Documentd</name>
+                 </MObject>
+                </base-MObject>
+                <variety-editable>false</variety-editable>
+                <variety>document</variety>
                </MItem>
               </instance>
              </target>
